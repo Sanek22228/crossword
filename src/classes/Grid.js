@@ -6,29 +6,39 @@ export class Grid{
     grid = [];
 
     constructor() {
-        this.grid = Array(this.height).map(()=>{Array(this.width).fill('0')})
-        this.displayGrid();
+        this.grid = Array.from(
+            {length : this.height},
+            () => {return Array(this.width).fill('0')}
+        );
     }
     
     displayGrid() {
         for (let row of this.grid){
             for (let cell of row)
-                console.log(cell, " | ");
+                console.log(`grid[${this.grid.indexOf(row)}][${row.indexOf(cell)}] : `);
+            console.log(row);
         }
     }
 
     expandGrid(rows, cols){
-        if(rows > 0){
-            for (let i = 0; i < rows; i++){
-                this.grid.push(Array(this.width).map(()=>{Array(this.width).fill('0')}))
-            }
-            this.height += rows;
+        while(this.height < rows){
+            this.grid.push(Array(this.width).fill('0'))
+            this.height++;
         }
-        if(cols > 0){
-            for(let i = 0; i < rows; i++){
+        while(this.width < cols){
+            for(let i = 0; i < this.height; i++){
                 this.grid[i].push('0');
             }
-            this.width += cols;
+            this.width++;
         }
+    }
+
+    clearGrid(){
+        this.height = DEFAULT_SIZE;
+        this.width = DEFAULT_SIZE;
+        this.grid = Array.from(
+            {length : this.height},
+            () => {return Array(this.width).fill('0')}
+        );
     }
 }

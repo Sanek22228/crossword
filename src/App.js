@@ -2,15 +2,22 @@
 import { useState } from 'react';
 import './App.css';
 import {validateWords} from './utils/wordValidation'
+import {CreateCrossword} from './utils/crosswordGenerator'
+import {CreateCrosswordTable} from './utils/crosswordVisualizer'
 
 function App(){
   const [inputValue, setInputValue] = useState("");
+  const [crosswordTable, setCrosswordTable] = useState(<></>);
 
   function HandleClick(){
+    setCrosswordTable(<></>);
+    
     if(inputValue !== ""){
       var words = inputValue.trim().split(" ");
       words = validateWords(words);
       console.log(words);
+      const crossword = CreateCrossword(words);
+      setCrosswordTable(CreateCrosswordTable(crossword));
     }
     else{
       console.error("Список слов")
@@ -29,7 +36,7 @@ function App(){
         </div>
         <button className='createBtn' onClick={HandleClick}>Создать</button>      
         <div className='crosswordContainer'>
-          
+          {crosswordTable}
         </div>
       </main>
     </>

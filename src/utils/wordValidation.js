@@ -27,6 +27,9 @@ export function validateWords(words){
         }
     })
     displayWords(validWords);
+    validWords.sort((a,b) => {
+        return b.length - a.length;
+    });
     return validWords;
 }
 

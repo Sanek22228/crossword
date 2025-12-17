@@ -1,0 +1,13 @@
+.emptyCell{
+    background-color: transparent;
+    border: 0;
+}
+
+.filledCell{
+    background-color: rgb(255, 238, 195);
+    border: 1px rgb(210, 165, 51);
+}
+
+th{
+    padding: .1vw .3vw;
+}
