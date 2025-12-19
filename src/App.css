@@ -4,6 +4,7 @@ main{
   text-align: center;
   align-items: center;
   gap: 4vw;
+  margin-bottom: 5vw;
 }
 
 .wordInput{
@@ -38,4 +39,9 @@ h2{
 
 textarea{
   font-size: 1.5em;
+}
+
+.crosswordContainer{
+  display: flex;
+  flex-direction: row;
 }

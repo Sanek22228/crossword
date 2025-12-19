@@ -8,7 +8,7 @@ var skippedWords;
 var crosswordGrid;
 
 export function CreateCrossword(words){
-
+    if(words.length === 0){return}
     addedWords = [];
     skippedWords = [];
     crosswordGrid = new Grid();
@@ -39,14 +39,12 @@ export function CreateCrossword(words){
     console.log("slipped words: ", skippedWords);
     console.log("added words: ", addedWords);
 
-    return new Crossword(addedWords, crosswordGrid.grid);
+    return new Crossword(addedWords, skippedWords, crosswordGrid.grid);
 }
 
 function PlaceFirstWord(words, direction){
 
     let firstWord = words[0];
-    // console.log(`first word: ${firstWord}`)
-
     let wordHalf = Math.ceil(firstWord.length / 2);
     let row, col;
 
@@ -71,26 +69,22 @@ function PlaceFirstWord(words, direction){
     let coordinates = new Coordinates(row,col,[]);
 
     for (let c of firstWord){
-        coordinates.coordinates.push([row,col])  
+        coordinates.cells.push([row,col])  
         crosswordGrid.grid[row][col] = c;
         if(direction === "horizontal")
             col++;
         else
             row++;
         if(row >= crosswordGrid.height || col >= crosswordGrid.width){
-            // console.warn("row or col is bigger than grid size");
             crosswordGrid.expandGrid(row, col);
         }
     }
-
-    // console.log(coordinates.coordinates);
     words.shift();
 
     return new Word(firstWord, direction, coordinates);
 }
 
 function TryPlaceWord(word1){
-    // console.warn(addedWords);
     for (let word2 of addedWords){
         for(let i = 0; i < word1.length; i++){
             for(let j = 0; j < word2.word.length; j++){
@@ -112,18 +106,17 @@ function PlaceAtIntersection(index1, index2, word1, word2){
 
     let wordObject = new Word(word1, word2.GetOppositeDirection(), coordinates);                  // ИСПРАВЛЕНО
 
-    if(CanPlaceWord(word1, coordinates.coordinates, word2)){
+    if(CanPlaceWord(wordObject, word2)){
         for (let i = 0; i < word1.length; i++){
-            crosswordGrid.grid[coordinates.coordinates[i][0]][coordinates.coordinates[i][1]] = word1[i];
-            console.log(`grid[${coordinates.coordinates[i][0]}][${coordinates.coordinates[i][1]}]: ${crosswordGrid.grid[coordinates.coordinates[i][0]][coordinates.coordinates[i][1]]}`)
+            crosswordGrid.grid[coordinates.cells[i][0]][coordinates.cells[i][1]] = word1[i];
+            console.log(`grid[${coordinates.cells[i][0]}][${coordinates.cells[i][1]}]: ${crosswordGrid.grid[coordinates.cells[i][0]][coordinates.cells[i][1]]}`)
         }
         addedWords.push(wordObject);
         console.log(`word ${word1} was added succefully \n added words: ${addedWords}`);
         return true;
     }
     else{
-        // console.log("can't place word");
-        return false;
+                return false;
     }
 }
 
@@ -132,7 +125,7 @@ function PlaceAtIntersection(index1, index2, word1, word2){
         new Coordinates
 */
 function GetCoordinates(index1, index2, word1, word2){
-    let c_coord = word2.wordCoordinates.coordinates[index2];
+    let c_coord = word2.coordinates.cells[index2];
 
     // console.log("Start coordinate: ", c_coord);
 
@@ -164,13 +157,13 @@ function GetCoordinates(index1, index2, word1, word2){
                 // expand
                 // move all words?
             }
-            coordinates.coordinates.push([row,col]);
+            coordinates.cells.push([row,col]);
         }
         coordinates.start_row = row;
 
         row = start_row;
         for (let i = 0; i < right.length; i++){
-            coordinates.coordinates.push([row,col]);
+            coordinates.cells.push([row,col]);
             row++;
             if(row >= crosswordGrid.height){
                 crosswordGrid.expandGrid(row, 0);
@@ -187,12 +180,12 @@ function GetCoordinates(index1, index2, word1, word2){
                 // expand
                 // move all words?
             }
-            coordinates.coordinates.push([row,col]);
+            coordinates.cells.push([row,col]);
         }
 
         col = start_col;
         for (let i = 0; i < right.length; i++){
-            coordinates.coordinates.push([row,col]);
+            coordinates.cells.push([row,col]);
             col++;
             if(col >= crosswordGrid.width){
                 crosswordGrid.expandGrid(0, col);
@@ -207,13 +200,13 @@ function GetCoordinates(index1, index2, word1, word2){
         иначе - возвращаем разницу a[1] и b[1]
     */
       
-    coordinates.coordinates.sort((a,b) => {
+    coordinates.cells.sort((a,b) => {
         if(a[0] !== b[0]){
             return a[0] - b[0];
         }
         return a[1] - b[1];
     });                          // ИСПРАВЛЕНО
-    console.log(coordinates.coordinates);
+    console.log(coordinates.cells);
     
     return coordinates;
 }
@@ -222,7 +215,7 @@ function GetCoordinates(index1, index2, word1, word2){
     returns
         true / false
 */
-function CanPlaceWord(word1, coordinates, word2){
+function CanPlaceWord(word1, word2){
     const directions = [
                 [-1, 0],
         [0, -1],           [0, 1],   
@@ -230,11 +223,11 @@ function CanPlaceWord(word1, coordinates, word2){
     ]; 
 
     for (let [dr,dc] of directions){
-        for (let [r,c] of coordinates){
+        for (let [r,c] of word1.coordinates.cells){
             // [r,c] = (1,1)
             // coordinates = [(1,0), (1,1), (1,2), (1,3)]
             const getIndexInCoordinates = (row, col) => {
-                return coordinates.findIndex(coord => coord[0] === row && coord[1] === col)
+                return word1.coordinates.cells.findIndex(coord => coord[0] === row && coord[1] === col)
             };
 
             let indexInCoordinates = getIndexInCoordinates(r,c);
@@ -242,10 +235,10 @@ function CanPlaceWord(word1, coordinates, word2){
 
             // crosswordGrid.grid[r][c] = 'a'
             // word1[indexInCoordinates] = 'a'
-            if(crosswordGrid.grid[r][c] !== '0' && word1[indexInCoordinates] !== crosswordGrid.grid[r][c]){
+            if(crosswordGrid.grid[r][c] !== '0' && word1.word[indexInCoordinates] !== crosswordGrid.grid[r][c]){
                 return false;
             }
-            else if(crosswordGrid.grid[r][c] !== '0' && word1[indexInCoordinates] === crosswordGrid.grid[r][c]){
+            else if(crosswordGrid.grid[r][c] !== '0' && word1.word[indexInCoordinates] === crosswordGrid.grid[r][c]){
                 continue;
             }
 
@@ -257,8 +250,8 @@ function CanPlaceWord(word1, coordinates, word2){
             ){
                 let gridElement = crosswordGrid.grid[resRow][resCol];
 
-                let InCoordinates = coordinates.some((a) => (a[0] === resRow && a[1] === resCol)) ||
-                    word2.wordCoordinates.coordinates.some((a) => a[0] === resRow && a[1] === resCol);
+                let InCoordinates = word1.coordinates.cells.some((a) => (a[0] === resRow && a[1] === resCol)) ||
+                    word2.coordinates.cells.some((a) => a[0] === resRow && a[1] === resCol);
 
                 if(gridElement !== '0' && !InCoordinates){
                     return false;

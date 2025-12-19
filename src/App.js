@@ -5,6 +5,8 @@ import {validateWords} from './utils/wordValidation'
 import {CreateCrossword} from './utils/crosswordGenerator'
 import {CreateCrosswordTable} from './utils/crosswordVisualizer'
 
+// document.onreset
+
 function App(){
   const [inputValue, setInputValue] = useState("");
   const [crosswordTable, setCrosswordTable] = useState(<></>);
@@ -32,7 +34,7 @@ function App(){
         <div>
           <h2>Введите слова:</h2>
           <br></br>
-          <textarea onChange={(e) => {setInputValue(e.target.value)}} type='text' name='wordInput' className='wordInput'></textarea>
+          <textarea autoFocus onChange={(e) => {setInputValue(e.target.value)}} type='text' name='wordInput' className='wordInput'></textarea>
         </div>
         <button className='createBtn' onClick={HandleClick}>Создать</button>      
         <div className='crosswordContainer'>

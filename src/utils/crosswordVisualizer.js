@@ -1,5 +1,7 @@
 import { Crossword } from '../classes/Crossword';
 import "../styles/crosswordTable.css";
+import * as XLSX from 'xlsx';
+import html2pdf from 'html2pdf.js';
 
 export function CreateCrosswordTable(crossword){
     if(!(crossword instanceof Crossword)){
@@ -10,18 +12,74 @@ export function CreateCrosswordTable(crossword){
     const grid = crossword.grid;
     
     return (
-        <table>
-            <tbody>
-                {grid.map((row, rowIndex) => (
-                    <tr key={rowIndex}>{
-                        row.map((cell, colIndex) => (
-                            cell === '0' 
-                                ? <th key={colIndex} className="emptyCell"></th>
-                                : <th key={colIndex} className="filledCell">{cell}</th>
-                        ))}
-                    </tr>
-                ))}
-            </tbody>
-        </table>
+        <div className='crossword'>
+            <div className='infoContainer'>
+                <div><b>Слова по горизонтали:</b> {FormatWordArray(crossword.horizontalWords)};</div>
+                <div><b>Слова по вертикали:</b> {FormatWordArray(crossword.verticalWords)};</div>
+                <div><b>Пропущенные слова:</b> {FormatWordArray(crossword.skippedWords, "string")}</div>
+            </div>
+            <table>
+                <tbody>
+                    {grid.map((row, rowIndex) => (
+                        <tr key={rowIndex}>{
+                            row.map((cell, colIndex) => (
+                                cell === '0' 
+                                    ? <th key={colIndex} className="emptyCell"></th>
+                                    : <th key={colIndex} className="filledCell">{cell}</th>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <div className='exportContainer'>
+                <button onClick={() => handleDownload("xls")} className='downloadBtn'>
+                    Скачать в XLS
+                </button>
+                <button onClick={() => handleDownload("pdf")} className='downloadBtn'>
+                    Скачать в PDF
+                </button>
+            </div>
+        </div>
     );
+}
+
+function handleDownload(type){
+    const filename = "crossword." + type;
+    const table = document.getElementsByClassName("crossword")[0];
+    if(type === "xls"){    
+        const wb =  XLSX.utils.table_to_book(table);
+        XLSX.writeFile(wb, filename);
+    }
+    else if(type === "pdf"){
+        html2pdf().set({
+            margin: 10,
+            filename: "crossword.pdf",
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
+        })
+        .from(table).save();
+    }
+}
+
+function FormatWordArray(wordArray, objectType){
+    let resString = "";
+    
+    if(objectType === "string"){
+        for(let i = 0; i < wordArray.length; i++){
+            resString += wordArray[i];
+            if(i !== wordArray.length-1)
+                resString += ", ";
+        }
+    }
+    else{
+        for(let i = 0; i < wordArray.length; i++){
+        resString += wordArray[i].word;
+        if(i !== wordArray.length-1)
+            resString += ", ";
+        }
+    }    
+    if(resString === ""){
+        return "отсутствуют";
+    }
+    return resString;
 }

@@ -11,3 +11,42 @@
 th{
     padding: .1vw .3vw;
 }
+div{
+    /* max-width: 30vw; */
+    text-align: justify;
+}
+.infoContainer{
+    width: fit-content;
+    max-width: 35vw;
+    text-align: center;
+}
+
+table{
+    text-align: center;
+    width: fit-content;
+}
+
+.crossword{
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.downloadBtn{
+    text-decoration: underline;
+    background: none;
+    border: none;
+}
+
+.downloadBtn:hover{
+    cursor: pointer;
+}
+
+.exportContainer{
+    visibility: hidden;
+}
+
+.crossword:hover .exportContainer{
+    visibility: visible;
+}

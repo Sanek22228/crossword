@@ -8,7 +8,7 @@ export class Word{
         if(!Object.values(Word.DIRECTIONS).includes(dir)){
             throw new Error(`invalid direction: '${dir}'`)
         }
-        this.wordCoordinates = coordinates;
+        this.coordinates = coordinates;
         this.word = word;
         this.direction = dir;                           // ИСПРАВЛЕНО
     }
