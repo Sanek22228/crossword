@@ -6,6 +6,8 @@ import { Crossword } from '../classes/Crossword'
 var addedWords;
 var skippedWords;
 var crosswordGrid;
+const HORIZONTAL_DIRECTION = "horizontal";
+// const VERTICAL_DIRECTION = "vertical";
 
 export function CreateCrossword(words){
     if(words.length === 0){return}
@@ -13,7 +15,7 @@ export function CreateCrossword(words){
     skippedWords = [];
     crosswordGrid = new Grid();
 
-    addedWords.push(PlaceFirstWord(words, "horizontal"));
+    addedWords.push(PlaceFirstWord(words, HORIZONTAL_DIRECTION));
 
     for(let word of words){
         if (!TryPlaceWord(word)){
@@ -51,7 +53,7 @@ function PlaceFirstWord(words, direction){
     do{
         row = Math.ceil(crosswordGrid.height / 2);
         col = Math.ceil(crosswordGrid.width / 2);
-        if(direction === "horizontal"){
+        if(direction === HORIZONTAL_DIRECTION){
             col -= wordHalf;
             if(col < 0){
                 crosswordGrid.expandGrid(0, crosswordGrid.width - col)
@@ -71,7 +73,7 @@ function PlaceFirstWord(words, direction){
     for (let c of firstWord){
         coordinates.cells.push([row,col])  
         crosswordGrid.grid[row][col] = c;
-        if(direction === "horizontal")
+        if(direction === HORIZONTAL_DIRECTION)
             col++;
         else
             row++;
@@ -103,20 +105,23 @@ function TryPlaceWord(word1){
 function PlaceAtIntersection(index1, index2, word1, word2){
     let coordinates = GetCoordinates(index1, index2, word1, word2);
     if(!coordinates) return false;
-
-    let wordObject = new Word(word1, word2.GetOppositeDirection(), coordinates);                  // ИСПРАВЛЕНО
+    
+    let wordObject = new Word(word1, word2.GetOppositeDirection(), coordinates);
 
     if(CanPlaceWord(wordObject, word2)){
+        let wordObject = new Word(word1, word2.GetOppositeDirection(), coordinates);
+
         for (let i = 0; i < word1.length; i++){
             crosswordGrid.grid[coordinates.cells[i][0]][coordinates.cells[i][1]] = word1[i];
             console.log(`grid[${coordinates.cells[i][0]}][${coordinates.cells[i][1]}]: ${crosswordGrid.grid[coordinates.cells[i][0]][coordinates.cells[i][1]]}`)
         }
+
         addedWords.push(wordObject);
         console.log(`word ${word1} was added succefully \n added words: ${addedWords}`);
         return true;
     }
     else{
-                return false;
+        return false;
     }
 }
 
@@ -126,8 +131,6 @@ function PlaceAtIntersection(index1, index2, word1, word2){
 */
 function GetCoordinates(index1, index2, word1, word2){
     let c_coord = word2.coordinates.cells[index2];
-
-    // console.log("Start coordinate: ", c_coord);
 
     var coordinates = new Coordinates(0,0,[]);
     
@@ -147,7 +150,7 @@ function GetCoordinates(index1, index2, word1, word2){
     let row = start_row;
     let col = start_col;
 
-    if(word2.direction === "horizontal"){
+    if(word2.direction === HORIZONTAL_DIRECTION){
         coordinates.start_col = start_col;
 
         for (let i = left.length; i > 0; i--){
@@ -222,6 +225,10 @@ function CanPlaceWord(word1, word2){
                 [1, 0],
     ]; 
 
+    if(!CheckPrevCell(word1.coordinates, word1.direction) || !CheckNextCell(word1.coordinates, word1.direction)){
+        return false;
+    }
+
     for (let [dr,dc] of directions){
         for (let [r,c] of word1.coordinates.cells){
             // [r,c] = (1,1)
@@ -239,6 +246,7 @@ function CanPlaceWord(word1, word2){
                 return false;
             }
             else if(crosswordGrid.grid[r][c] !== '0' && word1.word[indexInCoordinates] === crosswordGrid.grid[r][c]){
+                
                 continue;
             }
 
@@ -260,6 +268,42 @@ function CanPlaceWord(word1, word2){
             else{
                 return false;
             }
+        }
+    }
+    return true;
+}
+
+function CheckPrevCell(coordinates, direction){
+    let row = coordinates.cells[0][0];
+    let col = coordinates.cells[0][1];
+    if (direction === HORIZONTAL_DIRECTION){
+        col--;
+        if(col >= 0){
+            return crosswordGrid.grid[row][col] === '0';
+        }
+    }
+    else{
+        row--;
+        if(row >= 0){
+            return crosswordGrid.grid[row][col] === '0';
+        }
+    }
+    return true;
+}
+
+function CheckNextCell(coordinates, direction){
+    let row = coordinates.cells[coordinates.cells.length-1][0];
+    let col = coordinates.cells[coordinates.cells.length-1][1];
+    if (direction === HORIZONTAL_DIRECTION){
+        col++;
+        if(col < crosswordGrid.width){
+            return crosswordGrid.grid[row][col] === '0';
+        }
+    }
+    else{
+        row++;
+        if(row < crosswordGrid.height){
+            return crosswordGrid.grid[row][col] === '0';
         }
     }
     return true;
