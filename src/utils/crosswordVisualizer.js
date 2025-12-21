@@ -16,7 +16,7 @@ export function CreateCrosswordTable(crossword){
             <div className='infoContainer'>
                 <div><b>Слова по горизонтали:</b> {FormatWordArray(crossword.horizontalWords)};</div>
                 <div><b>Слова по вертикали:</b> {FormatWordArray(crossword.verticalWords)};</div>
-                <div><b>Пропущенные слова:</b> {FormatWordArray(crossword.skippedWords, "string")}</div>
+                {FormatWordArray(crossword.skippedWords, "string") && <div><b>Пропущенные слова:</b> {FormatWordArray(crossword.skippedWords, "string")};</div>}
             </div>
             <table>
                 <tbody>
@@ -77,9 +77,6 @@ function FormatWordArray(wordArray, objectType){
         if(i !== wordArray.length-1)
             resString += ", ";
         }
-    }    
-    if(resString === ""){
-        return "отсутствуют";
     }
     return resString;
 }

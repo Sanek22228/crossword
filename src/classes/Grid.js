@@ -33,9 +33,23 @@ export class Grid{
         }
     }
 
+    expandTop(count){
+        for(let i = 0; i < count; i++){
+            this.grid.unshift(Array(this.width).fill('0'));
+            this.height++;
+        }
+    }
+
+    expandLeft(count){
+        for (let row of this.grid){
+            for (let i = 0; i < count; i++){
+                row.unshift('0');
+            }
+        }
+        this.width += count;
+    }
+
     clearGrid(){
-        this.height = DEFAULT_SIZE;
-        this.width = DEFAULT_SIZE;
         this.grid = Array.from(
             {length : this.height},
             () => {return Array(this.width).fill('0')}
