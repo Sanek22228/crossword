@@ -1,7 +1,6 @@
 import { Crossword } from '../classes/Crossword';
 import "../styles/crosswordTable.css";
-import * as XLSX from 'xlsx';
-import html2pdf from 'html2pdf.js';
+import { ExportCrossword } from './crosswordExport'
 
 export function CreateCrosswordTable(crossword){
     if(!(crossword instanceof Crossword)){
@@ -18,7 +17,7 @@ export function CreateCrosswordTable(crossword){
                 <div><b>Слова по вертикали:</b> {FormatWordArray(crossword.verticalWords)};</div>
                 {FormatWordArray(crossword.skippedWords, "string") && <div><b>Пропущенные слова:</b> {FormatWordArray(crossword.skippedWords, "string")};</div>}
             </div>
-            <table>
+            <table id='filledTable'>
                 <tbody>
                     {grid.map((row, rowIndex) => (
                         <tr key={rowIndex}>{
@@ -31,7 +30,20 @@ export function CreateCrosswordTable(crossword){
                     ))}
                 </tbody>
             </table>
-            <div className='exportContainer'>
+            <table id='emptyTable' hidden>
+                <tbody>
+                    {grid.map((row, rowIndex) => (
+                        <tr key={rowIndex}>{
+                            row.map((cell, colIndex) => (
+                                cell === '0' 
+                                    ? <th key={colIndex} className="emptyCell"></th>
+                                    : <th key={colIndex} className="filledCell"></th>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <div className='exportBtnContainer'>
                 <button onClick={() => handleDownload("xls")} className='downloadBtn'>
                     Скачать в XLS
                 </button>
@@ -44,43 +56,7 @@ export function CreateCrosswordTable(crossword){
 }
 
 function handleDownload(type){
-    const filename = "crossword." + type;
-    const table = document.getElementsByClassName("crossword")[0];
-    if(type === "xls"){    
-        const ws =  XLSX.utils.table_to_sheet(table);
-        Object.keys(ws).forEach(cell => {
-            // cell[0] - value; cell[1] - type;
-            if(cell[0] === '!')return;
-            ws[cell].s = {
-                alignment: {
-                    horizontal : "center",
-                    vertical : "center",
-                },
-                border: {
-                    top: { style: "thin" },
-                    bottom: { style: "thin" },
-                    left: { style: "thin" },
-                    right: { style: "thin" }
-                },
-                fill: {
-                    fgColor: { rgb: "d2a533" }
-                }
-            }
-        });
-
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Crossword");
-        XLSX.writeFile(wb, filename, {cellStyles:true})
-    }
-    else if(type === "pdf"){
-        html2pdf().set({
-            margin: 100,
-            filename: "crossword.pdf",
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
-        })
-        .from(table).save();
-    }
+    ExportCrossword(type);
 }
 
 function FormatWordArray(wordArray, objectType){

@@ -4,6 +4,8 @@
 }
 
 .filledCell{
+    min-width: 1vw;
+    height: 1.7vw;
     background-color: rgb(255, 238, 195);
     border: 1px #d2a533;
 }
@@ -46,10 +48,10 @@ table{
     cursor: pointer;
 }
 
-.exportContainer{
+.exportBtnContainer{
     visibility: hidden;
 }
 
-.crossword:hover .exportContainer{
+.crossword:hover .exportBtnContainer{
     visibility: visible;
 }
