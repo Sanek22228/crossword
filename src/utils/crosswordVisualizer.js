@@ -47,12 +47,34 @@ function handleDownload(type){
     const filename = "crossword." + type;
     const table = document.getElementsByClassName("crossword")[0];
     if(type === "xls"){    
-        const wb =  XLSX.utils.table_to_book(table);
-        XLSX.writeFile(wb, filename);
+        const ws =  XLSX.utils.table_to_sheet(table);
+        Object.keys(ws).forEach(cell => {
+            // cell[0] - value; cell[1] - type;
+            if(cell[0] === '!')return;
+            ws[cell].s = {
+                alignment: {
+                    horizontal : "center",
+                    vertical : "center",
+                },
+                border: {
+                    top: { style: "thin" },
+                    bottom: { style: "thin" },
+                    left: { style: "thin" },
+                    right: { style: "thin" }
+                },
+                fill: {
+                    fgColor: { rgb: "d2a533" }
+                }
+            }
+        });
+
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Crossword");
+        XLSX.writeFile(wb, filename, {cellStyles:true})
     }
     else if(type === "pdf"){
         html2pdf().set({
-            margin: 10,
+            margin: 100,
             filename: "crossword.pdf",
             html2canvas: { scale: 2 },
             jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
