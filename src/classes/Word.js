@@ -11,6 +11,7 @@ export class Word{
         this.coordinates = coordinates;
         this.word = word;
         this.direction = dir;                           // ИСПРАВЛЕНО
+        this.id = 0;
     }
 
     GetOppositeDirection(){
