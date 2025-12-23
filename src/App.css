@@ -51,3 +51,26 @@ textarea{
   font-weight: bold;
   font-size: 1.2em;
 }
+
+.infoBtn{
+  background-color: transparent;
+  /* width: 10px; */
+  /* height: 10px; */
+  /* width: fit-content; */
+  border: 0;
+}
+
+.infoBtn img{
+  width: 1.5vw;
+  height: auto; 
+}
+
+.hint{
+  position: absolute;
+  max-width: 15vw;
+  background: rgba(128, 128, 128, 0.203);
+  padding: 1%;
+  border-radius: 1vw;
+  font-size: .9rem;
+  /* height: 100%; */
+}

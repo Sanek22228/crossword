@@ -5,6 +5,7 @@ import {validateWords} from './utils/wordValidation'
 import { CreateCrossword } from './utils/crosswordGenerator'
 import {CreateCrosswordTable} from './utils/crosswordVisualizer'
 import { wordsErrorHandler } from './utils/errorHandler';
+import infoIcon from './images/info.png';
 
 // document.onreset
 
@@ -12,6 +13,7 @@ function App(){
   const [inputValue, setInputValue] = useState("");
   const [crosswordTable, setCrosswordTable] = useState(<></>);
   const [error, setError] = useState("");
+  const [showHint, setHint] = useState(false);
 
   function HandleClick(){
     setCrosswordTable(<></>);
@@ -52,6 +54,8 @@ function App(){
           <h2>Введите слова:</h2>
           <br></br>
           <textarea autoFocus onChange={(e) => {setInputValue(e.target.value)}} type='text' name='wordInput' className='wordInput'></textarea>
+          <button style={{position: "relative"}} className='infoBtn' onMouseEnter={() => setHint(true)} onMouseLeave={() => setHint(false)}><img src={infoIcon} alt='info'></img></button>
+          {showHint && <span className='hint'>Слова не должны сожержать символы, отличающиеся от букв ("123", "_?" и т.п.); количество слов должно быть более 1</span>}
         </div>
         <button className='createBtn' onClick={HandleClick}>Создать</button>      
         {error && <p id='error'>{error}</p>}
