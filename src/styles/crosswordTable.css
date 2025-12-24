@@ -16,6 +16,12 @@
     height: 1.7vw;
     font-size: .7rem;
 }
+.hotizontalNumber{
+    text-align: right;
+}
+.verticalNumber{
+    vertical-align: bottom;
+}
 
 th{
     padding: .1vw .3vw;
