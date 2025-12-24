@@ -42,7 +42,9 @@ export function CreateCrossword(words){
     console.log("skipped words: ", skippedWords);
     console.log("added words: ", addedWords);
 
-    return new Crossword(addedWords, skippedWords, crosswordGrid.grid);
+    let crossword = new Crossword(addedWords, skippedWords, crosswordGrid.grid)
+    NumberCrossword(crossword);
+    return crossword;
 }
 
 function PlaceFirstWord(wordsCopy, direction){
@@ -163,7 +165,7 @@ function GetCoordinates(index1, index2, word1, word2){
 
         for (let i = left.length; i > 0; i--){
             row--;
-                if (row < 0){
+                if (row <= 0){
                     console.log(`row=${row} < 0`);
                     minRow++;
                 }
@@ -185,12 +187,13 @@ function GetCoordinates(index1, index2, word1, word2){
 
         for (let i = left.length; i > 0; i--){
             col--;
-            if (col < 0){
+            if (col <= 0){
                 console.log(`col=${col} < 0`);
                 minCol++;
             }
             coordinates.cells.push([row,col]);
         }
+        coordinates.start_col = col;
 
         col = start_col;
         for (let i = 0; i < right.length; i++){
@@ -317,11 +320,32 @@ function NormalizeGrid(countRow, countCol){
     console.log(`height: ${crosswordGrid.height}, width: ${crosswordGrid.width}`);
 
     addedWords.forEach(word => {
+        word.coordinates.start_row += countRow;
+        word.coordinates.start_col += countCol;
+
         for(let i = 0; i < word.coordinates.cells.length; i++){
             word.coordinates.cells[i][0] += countRow;
-            word.coordinates.cells[i][1] += countCol;  
-            console.log(`setting crosswordGrid.grid[${word.coordinates.cells[i][0]}][${word.coordinates.cells[i][1]}] as ${word.word[i]}`);
+            word.coordinates.cells[i][1] += countCol;
             crosswordGrid.grid[word.coordinates.cells[i][0]][word.coordinates.cells[i][1]] = word.word[i];
         }
+
+        console.log(`start row ${word.coordinates.start_row}, start col ${word.coordinates.start_col} === first coordinate ${word.coordinates.cells[0]}`);
+    });
+}
+
+// нумерация слов в кроссворде (с левого верхнего угла)
+function NumberCrossword(crossword){
+    let wordId = 1;
+    crossword.sortedWords.forEach((w) => {
+        console.log(`word: ${w.word}; direction: ${w.direction}; coordinates: ${w.coordinates.cells}; start_row: ${w.coordinates.start_row}; start_col: ${w.coordinates.start_col}`);
+        if(w.direction === HORIZONTAL_DIRECTION){
+            if(w.coordinates.start_col - 1 >= 0) crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1] = wordId.toString();
+            console.log(`crossword.grid[${w.coordinates.start_row}][${w.coordinates.start_col-1}] = ${crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1]}`);
+        }
+        else{
+            if(w.coordinates.start_row - 1 >= 0) crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col] = wordId.toString();
+            console.log(`crossword.grid[${w.coordinates.start_row-1}][${w.coordinates.start_col}] = ${crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col]}`);
+        }
+        wordId++;
     });
 }

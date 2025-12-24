@@ -20,12 +20,17 @@ export function CreateCrosswordTable(crossword){
             <table id='filledTable'>
                 <tbody>
                     {grid.map((row, rowIndex) => (
-                        <tr key={rowIndex}>{
-                            row.map((cell, colIndex) => (
-                                cell === '0' 
-                                    ? <th key={colIndex} className="emptyCell"></th>
-                                    : <th key={colIndex} className="filledCell">{cell}</th>
-                            ))}
+                       <tr key={rowIndex}>{
+                            row.map((cell, colIndex) => {
+                                let cellValue = Number(cell);
+                                if(isNaN(cellValue)){
+                                    return <th key={colIndex} className="filledCell">{cell}</th>;
+                                }
+                                else if(cellValue > 0){
+                                    return <th key={colIndex} className="numberCell">{cell}</th>;
+                                }
+                                return <th key={colIndex} className="emptyCell"></th>;
+                            })}
                         </tr>
                     ))}
                 </tbody>
@@ -34,11 +39,16 @@ export function CreateCrosswordTable(crossword){
                 <tbody>
                     {grid.map((row, rowIndex) => (
                         <tr key={rowIndex}>{
-                            row.map((cell, colIndex) => (
-                                cell === '0' 
-                                    ? <th key={colIndex} className="emptyCell"></th>
-                                    : <th key={colIndex} className="filledCell"></th>
-                            ))}
+                            row.map((cell, colIndex) => {
+                                let cellValue = Number(cell);
+                                if(isNaN(cellValue)){
+                                    return <th key={colIndex} className="filledCell"></th>;
+                                }
+                                else if(cellValue > 0){
+                                    return <th key={colIndex} className="numberCell">{cell}</th>;
+                                }
+                                return <th key={colIndex} className="emptyCell"></th>;
+                            })}
                         </tr>
                     ))}
                 </tbody>
