@@ -10,6 +10,13 @@
     border: 1px #d2a533;
 }
 
+.numberCell{
+    color: rgb(86, 85, 85);
+    min-width: 1vw;
+    height: 1.7vw;
+    font-size: .7rem;
+}
+
 th{
     padding: .1vw .3vw;
 }
