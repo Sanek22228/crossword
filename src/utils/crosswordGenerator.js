@@ -6,8 +6,6 @@ import { Crossword } from '../classes/Crossword'
 var addedWords;
 var skippedWords;
 var crosswordGrid;
-const HORIZONTAL_DIRECTION = "horizontal";
-// const VERTICAL_DIRECTION = "vertical";
 
 export function CreateCrossword(words){
     let wordsCopy = [...words];
@@ -15,7 +13,7 @@ export function CreateCrossword(words){
     skippedWords = [];
     crosswordGrid = new Grid();
 
-    addedWords.push(PlaceFirstWord(wordsCopy, HORIZONTAL_DIRECTION));
+    addedWords.push(PlaceFirstWord(wordsCopy, Word.DIRECTIONS.HORIZONTAL));
 
     for(let word of wordsCopy){
         if (!TryPlaceWord(word)){
@@ -56,7 +54,7 @@ function PlaceFirstWord(wordsCopy, direction){
     do{
         row = Math.ceil(crosswordGrid.height / 2);
         col = Math.ceil(crosswordGrid.width / 2);
-        if(direction === HORIZONTAL_DIRECTION){
+        if(direction === Word.DIRECTIONS.HORIZONTAL){
             col -= wordHalf;
             if(col < 0){
                 crosswordGrid.expandGrid(0, crosswordGrid.width - col)
@@ -76,7 +74,7 @@ function PlaceFirstWord(wordsCopy, direction){
     for (let c of firstWord){
         coordinates.cells.push([row,col])  
         crosswordGrid.grid[row][col] = c;
-        if(direction === HORIZONTAL_DIRECTION)
+        if(direction === Word.DIRECTIONS.HORIZONTAL)
             col++;
         else
             row++;
@@ -160,7 +158,7 @@ function GetCoordinates(index1, index2, word1, word2){
     let row = start_row;
     let col = start_col;
 
-    if(word2.direction === HORIZONTAL_DIRECTION){
+    if(word2.direction === Word.DIRECTIONS.HORIZONTAL){
         coordinates.start_col = start_col;
 
         for (let i = left.length; i > 0; i--){
@@ -280,7 +278,7 @@ function CanPlaceWord(word1, word2){
 function CheckPrevCell(coordinates, direction){
     let row = coordinates.cells[0][0];
     let col = coordinates.cells[0][1];
-    if (direction === HORIZONTAL_DIRECTION){
+    if (direction === Word.DIRECTIONS.HORIZONTAL){
         col--;
         if(col >= 0){
             return crosswordGrid.grid[row][col] === '0';
@@ -298,7 +296,7 @@ function CheckPrevCell(coordinates, direction){
 function CheckNextCell(coordinates, direction){
     let row = coordinates.cells[coordinates.cells.length-1][0];
     let col = coordinates.cells[coordinates.cells.length-1][1];
-    if (direction === HORIZONTAL_DIRECTION){
+    if (direction === Word.DIRECTIONS.HORIZONTAL){
         col++;
         if(col < crosswordGrid.width){
             return crosswordGrid.grid[row][col] === '0';
@@ -338,12 +336,18 @@ function NumberCrossword(crossword){
     let wordId = 1;
     crossword.sortedWords.forEach((w) => {
         console.log(`word: ${w.word}; direction: ${w.direction}; coordinates: ${w.coordinates.cells}; start_row: ${w.coordinates.start_row}; start_col: ${w.coordinates.start_col}`);
-        if(w.direction === HORIZONTAL_DIRECTION){
-            if(w.coordinates.start_col - 1 >= 0) crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1] = wordId.toString();
+        if(w.direction === Word.DIRECTIONS.HORIZONTAL){
+            if(w.coordinates.start_col - 1 >= 0) crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1] = {
+                value: wordId.toString(),
+                direction : Word.DIRECTIONS.HORIZONTAL
+            };
             console.log(`crossword.grid[${w.coordinates.start_row}][${w.coordinates.start_col-1}] = ${crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1]}`);
         }
         else{
-            if(w.coordinates.start_row - 1 >= 0) crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col] = wordId.toString();
+            if(w.coordinates.start_row - 1 >= 0) crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col] = {
+                value: wordId.toString(),
+                direction : Word.DIRECTIONS.VERTICAL
+            };
             console.log(`crossword.grid[${w.coordinates.start_row-1}][${w.coordinates.start_col}] = ${crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col]}`);
         }
         wordId++;

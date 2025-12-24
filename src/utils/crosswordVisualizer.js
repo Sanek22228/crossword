@@ -1,6 +1,7 @@
 import { Crossword } from '../classes/Crossword';
 import "../styles/crosswordTable.css";
 import { ExportCrossword } from './crosswordExport'
+import { Word } from '../classes/Word';
 
 export function CreateCrosswordTable(crossword){
     if(!(crossword instanceof Crossword)){
@@ -23,13 +24,14 @@ export function CreateCrosswordTable(crossword){
                        <tr key={rowIndex}>{
                             row.map((cell, colIndex) => {
                                 let cellValue = Number(cell);
-                                if(isNaN(cellValue)){
-                                    return <th key={colIndex} className="filledCell">{cell}</th>;
+                                if(typeof cell === 'object'){
+                                    return cell.direction === Word.DIRECTIONS.HORIZONTAL
+                                        ? <th key={colIndex} className="numberCell hotizontalNumber">{cell.value}</th>
+                                        : <th key={colIndex} className="numberCell verticalNumber">{cell.value}</th>; 
                                 }
-                                else if(cellValue > 0){
-                                    return <th key={colIndex} className="numberCell">{cell}</th>;
-                                }
-                                return <th key={colIndex} className="emptyCell"></th>;
+                                return isNaN(cellValue) 
+                                    ? <th key={colIndex} className="filledCell">{cell}</th>
+                                    : <th key={colIndex} className="emptyCell"></th>;
                             })}
                         </tr>
                     ))}
@@ -44,10 +46,13 @@ export function CreateCrosswordTable(crossword){
                                 if(isNaN(cellValue)){
                                     return <th key={colIndex} className="filledCell"></th>;
                                 }
-                                else if(cellValue > 0){
-                                    return <th key={colIndex} className="numberCell">{cell}</th>;
+                                else if(cellValue === 0){
+                                    return <th key={colIndex} className="emptyCell"></th>;
                                 }
-                                return <th key={colIndex} className="emptyCell"></th>;
+                                if(cell.direction === Word.DIRECTIONS.HORIZONTAL){
+                                    return <th key={colIndex} className="numberCell hotizontalNumber"></th>;
+                                }
+                                return <th key={colIndex} className="numberCell verticalNumber"></th>;
                             })}
                         </tr>
                     ))}
