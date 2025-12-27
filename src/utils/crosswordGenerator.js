@@ -226,9 +226,9 @@ function GetCoordinates(index1, index2, word1, word2){
 */
 function CanPlaceWord(word1, word2){
     const directions = [
-                [-1, 0],
-        [0, -1],           [0, 1],   
-                [1, 0],
+        [-1, -1],  [-1, 0],  [-1, 1],
+        [0, -1],             [0, 1],
+        [1, -1],   [1, 0],   [1, 1]
     ]; 
 
     if(!CheckPrevCell(word1.coordinates, word1.direction) || !CheckNextCell(word1.coordinates, word1.direction)){
