@@ -1,5 +1,3 @@
-import { wordsErrorHandler } from "./errorHandler";
-
 const MIN_WORDS_COUNT = 2;
 const MIN_CHARS_COUNT = 2;
 
@@ -47,7 +45,7 @@ export function validateWords(input){
             }
         }
         word = chars.join("");
-        if(word.length < 2){
+        if(word.length < MIN_CHARS_COUNT){
             valid = false;
         }
         if (valid){
