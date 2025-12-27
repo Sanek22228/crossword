@@ -8,15 +8,29 @@ export function ExportCrossword(type){
         const wb = XLSX.utils.table_to_book(exportContainer);
         XLSX.writeFile(wb, filename)
     }
-    else if(type === "pdf"){
-        html2pdf().set({
-            margin: 100,
-            filename: "crossword.pdf",
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "pt", format: "a4", orientation: "portrait" }
-        })
-        .from(exportContainer).save();
-    }
+    else if (type === "pdf") {
+    const pdfWidthPt = 595 - 40 * 2; // A4 - margins
+    const htmlWidthPx = exportContainer.scrollWidth;
+
+    const scale = pdfWidthPt / htmlWidthPx;
+
+    html2pdf().set({
+        margin: 40,
+        filename: "crossword.pdf",
+        html2canvas: {
+            scale: Math.min(scale, 2),
+            useCORS: true
+        },
+        jsPDF: {
+            unit: "pt",
+            format: "a4",
+            orientation: "portrait"
+        }
+    })
+    .from(exportContainer)
+    .save();
+}
+
 
     exportContainer.remove();
 }
