@@ -43,16 +43,14 @@ export function CreateCrosswordTable(crossword){
                         <tr key={rowIndex}>{
                             row.map((cell, colIndex) => {
                                 let cellValue = Number(cell);
-                                if(isNaN(cellValue)){
-                                    return <th key={colIndex} className="filledCell"></th>;
+                                if(typeof cell === 'object'){
+                                    return cell.direction === Word.DIRECTIONS.HORIZONTAL
+                                        ? <th key={colIndex} className="numberCell hotizontalNumber">{cell.value}</th>
+                                        : <th key={colIndex} className="numberCell verticalNumber">{cell.value}</th>; 
                                 }
-                                else if(cellValue === 0){
-                                    return <th key={colIndex} className="emptyCell"></th>;
-                                }
-                                if(cell.direction === Word.DIRECTIONS.HORIZONTAL){
-                                    return <th key={colIndex} className="numberCell hotizontalNumber"></th>;
-                                }
-                                return <th key={colIndex} className="numberCell verticalNumber"></th>;
+                                return isNaN(cellValue) 
+                                    ? <th key={colIndex} className="filledCell"></th>
+                                    : <th key={colIndex} className="emptyCell"></th>;
                             })}
                         </tr>
                     ))}
