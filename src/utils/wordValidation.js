@@ -1,3 +1,5 @@
+import { MAX_SIZE } from "../classes/Grid";
+
 const MIN_WORDS_COUNT = 2;
 const MIN_CHARS_COUNT = 2;
 
@@ -14,16 +16,13 @@ export function validateWords(input){
             let curLength = input.split(sep).length;
             if(maxWords < curLength && curLength >= MIN_WORDS_COUNT){
                 maxSep = sep;
-                console.log(maxSep);
             }
         }
         words = input.split(maxSep);
-        console.log(words);
     }
     else{
         words = input.split(" ");
     }
-    console.log(words);
 
     var validWords = []
     words.forEach(word =>{
@@ -45,7 +44,7 @@ export function validateWords(input){
             }
         }
         word = chars.join("");
-        if(word.length < MIN_CHARS_COUNT){
+        if(word.length < MIN_CHARS_COUNT || word.length > MAX_SIZE){
             valid = false;
         }
         if (valid){
