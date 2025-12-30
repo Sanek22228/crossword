@@ -5,20 +5,16 @@ export function ExportCrossword(type){
     const exportContainer = CreateExportElement();
     const filename = "crossword." + type;
     if(type === "xls"){    
-        const wb = XLSX.utils.table_to_book(exportContainer);
+        const wb = XLSX.utils.table_to_book();
         XLSX.writeFile(wb, filename)
     }
     else if (type === "pdf") {
-    const pdfWidthPt = 595 - 40 * 2; // A4 - margins
-    const htmlWidthPx = exportContainer.scrollWidth;
-
-    const scale = pdfWidthPt / htmlWidthPx;
 
     html2pdf().set({
         margin: 40,
         filename: "crossword.pdf",
         html2canvas: {
-            scale: Math.min(scale, 2),
+            scale: 3,
             useCORS: true
         },
         jsPDF: {
@@ -30,8 +26,6 @@ export function ExportCrossword(type){
     .from(exportContainer)
     .save();
 }
-
-
     exportContainer.remove();
 }
 
@@ -40,15 +34,12 @@ function CreateExportElement(){
     container.className = "crossword";
     var info = document.getElementsByClassName("infoContainer")[0].cloneNode(true);
     var filledTable = document.getElementById("filledTable").cloneNode(true);
-    // var info = document.getElementsByClassName("infoContainer")[0];
-    // var filledTable = document.getElementById("filledTable");
 
     var pageBreak = document.createElement("div");
     pageBreak.style.pageBreakBefore = "always";
 
     var emptyTable = document.getElementById("emptyTable").cloneNode(true);
     emptyTable.hidden = false;
-    // var emptyTable = document.getElementById("emptyTable");
 
     container.appendChild(info);
     container.appendChild(filledTable);
