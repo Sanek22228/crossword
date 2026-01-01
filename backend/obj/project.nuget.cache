@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "1G9OoXjP8Eo=",
+  "success": true,
+  "projectFilePath": "D:\\работа\\js projects\\react_project2\\backend\\backend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\alexa\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.0\\microsoft.aspnetcore.openapi.10.0.0.nupkg.sha512",
+    "C:\\Users\\alexa\\.nuget\\packages\\microsoft.openapi\\2.0.0\\microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
