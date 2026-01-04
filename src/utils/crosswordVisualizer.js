@@ -63,6 +63,7 @@ export function CreateCrosswordTable(crossword){
                 <button onClick={() => handleDownload("pdf")} className='downloadBtn'>
                     Скачать в PDF
                 </button>
+                <button id='publishBtn' onClick={() => ToPublishPage(crossword)}>Опубликовать</button>
             </div>
         </div>
     );
@@ -90,4 +91,16 @@ function FormatWordArray(wordArray, objectType){
         }
     }
     return resString;
+}
+
+function ToPublishPage(crossword){
+    let skippedWords = ValidateWordsWithDict(crossword.addedWords);
+    if(skippedWords !== null){
+        window.location.href = "index2.html";
+        window.localStorage.setItem("crossword", JSON.stringify(crossword));
+    }
+}
+
+function ValidateWordsWithDict(words){
+    return "words";
 }
