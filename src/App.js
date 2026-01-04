@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import {validateWords} from './utils/wordValidation'
 import { CreateCrossword } from './utils/crosswordGenerator'
@@ -10,10 +10,22 @@ import infoIcon from './images/info.png';
 // document.onreset
 
 function App(){
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(() => {return window.localStorage.getItem("words") ?? ""});
   const [crosswordTable, setCrosswordTable] = useState(<></>);
   const [error, setError] = useState("");
   const [showHint, setHint] = useState(false);
+
+  useEffect(() => {
+    window.localStorage.setItem("words", inputValue);
+  }, [inputValue]);
+
+  // const storedCrossword = window.localStorage.getItem("crossword");
+  // if(storedCrossword !== null){
+  //   setCrosswordTable(JSON.parse(storedCrossword));
+  // }
+  // else{
+  //   setCrosswordTable(<></>);
+  // }
 
   function HandleClick(){
     setCrosswordTable(<></>);
@@ -29,19 +41,13 @@ function App(){
         setError(wordsError);
         return;
       } 
-
       const crossword = CreateCrossword(words);
-      
       const crosswordError = wordsErrorHandler(words, crossword);
       if(crosswordError !== null){
         setError(crosswordError);
         return;
       } 
-  
       setCrosswordTable(CreateCrosswordTable(crossword));
-    }
-    else{
-      console.error("Список слов")
     }
   }
 
@@ -53,7 +59,7 @@ function App(){
         <div>
           <h2>Введите слова:</h2>
           <br></br>
-          <textarea autoFocus onChange={(e) => {setInputValue(e.target.value)}} type='text' name='wordInput' className='wordInput'></textarea>
+          <textarea value={inputValue} autoFocus onChange={(e) => setInputValue(e.target.value)} type='text' name='wordInput' className='wordInput'></textarea>
           <button style={{position: "relative"}} className='infoBtn' onMouseEnter={() => setHint(true)} onMouseLeave={() => setHint(false)}>
               <img src={infoIcon} alt='info'></img>
           </button>
