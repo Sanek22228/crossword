@@ -11,6 +11,7 @@ import infoIcon from './images/info.png';
 
 function App(){
   const [inputValue, setInputValue] = useState(() => {return window.localStorage.getItem("words") ?? ""});
+  // const [crosswordTable, setCrosswordTable] = useState(window.localStorage.getItem("crossword") ?? <></>);
   const [crosswordTable, setCrosswordTable] = useState(<></>);
   const [error, setError] = useState("");
   const [showHint, setHint] = useState(false);
@@ -18,14 +19,10 @@ function App(){
   useEffect(() => {
     window.localStorage.setItem("words", inputValue);
   }, [inputValue]);
-
-  // const storedCrossword = window.localStorage.getItem("crossword");
-  // if(storedCrossword !== null){
-  //   setCrosswordTable(JSON.parse(storedCrossword));
-  // }
-  // else{
-  //   setCrosswordTable(<></>);
-  // }
+  // useEffect(() => {
+  //   console.log("crosswordTable: ", crosswordTable);
+  //   window.localStorage.setItem("crossword", crosswordTable);
+  // }, [crosswordTable]);
 
   function HandleClick(){
     setCrosswordTable(<></>);
