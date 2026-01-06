@@ -56,11 +56,11 @@ export function validateWords(input){
         return b.length - a.length;
     });
     console.log(validWords);
-    return validWords;
+    return new Set(validWords);
 }
 
 const separators = [",", ".", "/", "#", "№", "-", "+", "=", "(", ")", "*", "!", "@", '"', "'",
-    "$",";", "^", ":", "&", "?", "[", "]", "{", "}", "\\", "_", "\n"
+    "$",";", "^", ":", "&", "?", "[", "]", "{", "}", "\\", "_", "\n",
 ]
 
 function displayWords(words){
