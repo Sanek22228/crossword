@@ -1,31 +1,33 @@
 
 import { useEffect, useState } from 'react';
-import './App.css';
-import {validateWords} from './utils/wordValidation'
-import { CreateCrossword } from './utils/crosswordGenerator'
-import {CreateCrosswordTable} from './utils/crosswordVisualizer'
-import { wordsErrorHandler } from './utils/errorHandler';
-import infoIcon from './images/info.png';
+import '../styles/App.css';
+import {validateWords} from '../utils/wordValidation'
+import { CreateCrossword } from '../utils/crosswordGenerator'
+import { CrosswordTable } from '../utils/crosswordVisualizer'
+import { wordsErrorHandler } from '../utils/errorHandler';
+import infoIcon from '../images/info.png';
+import { useCrossword } from '../hook/useCrossword';
 
 // document.onreset
 
 function Main(){
-const [inputValue, setInputValue] = useState(() => {return window.localStorage.getItem("words") ?? ""});
-  // const [crosswordTable, setCrosswordTable] = useState(window.localStorage.getItem("crossword") ?? <></>);
-  const [crosswordTable, setCrosswordTable] = useState(<></>);
+  const [inputValue, setInputValue] = useState(() => {return window.localStorage.getItem("words") ?? ""});
+  const [crossword, setCrossword] = useState(null);
   const [error, setError] = useState("");
   const [showHint, setHint] = useState(false);
+
+  const {curCrossword} = useCrossword();
 
   useEffect(() => {
     window.localStorage.setItem("words", inputValue);
   }, [inputValue]);
-  // useEffect(() => {
-  //   console.log("crosswordTable: ", crosswordTable);
-  //   window.localStorage.setItem("crossword", crosswordTable);
-  // }, [crosswordTable]);
+  useEffect(() => {
+    setCrossword(curCrossword);
+  }, [curCrossword])
 
   function HandleClick(){
-    setCrosswordTable(<></>);
+    setCrossword(null);
+    console.log(crossword);
     setError("");
     
     if(inputValue !== ""){
@@ -35,16 +37,19 @@ const [inputValue, setInputValue] = useState(() => {return window.localStorage.g
 
       const wordsError = wordsErrorHandler(words);
       if(wordsError !== null){
+        setCrossword(null);
         setError(wordsError);
         return;
       } 
-      const crossword = CreateCrossword(words);
-      const crosswordError = wordsErrorHandler(words, crossword);
+      let newCrossword = CreateCrossword(words);
+      const crosswordError = wordsErrorHandler(words, newCrossword);
       if(crosswordError !== null){
+        setCrossword(null);
         setError(crosswordError);
         return;
-      } 
-      setCrosswordTable(CreateCrosswordTable(crossword));
+      }
+      console.log("crossword: ", crossword);
+      setCrossword(newCrossword);
     }
   }
 
@@ -73,7 +78,7 @@ const [inputValue, setInputValue] = useState(() => {return window.localStorage.g
         <button className='createBtn' onClick={HandleClick}>Создать</button>      
         {error && <p id='error'>{error}</p>}
         <div className='crosswordContainer'>
-          {crosswordTable}
+          {crossword && <CrosswordTable crossword={crossword}/>}
         </div>
       </main>
     </>

@@ -1,13 +1,13 @@
-import { Link, Outlet } from 'react-router-dom'
+import { NavLink, Outlet } from 'react-router-dom'
 
 // document.onreset
 
 function Layout(){
   return(
     <>
-      <header>
-        <Link to='/'>Создать кроссворд</Link>
-        <Link to='/publication'>Опубликовать</Link>
+      <header style={{background: "grey", textAlign: "center", padding: "1%"}}>
+        <NavLink to='/' className={({isActive}) => `navlink ${isActive ? 'active': ''}`}>Создать кроссворд</NavLink>
+        <NavLink to='/publication' className={({isActive}) => `navlink ${isActive ? 'active' : ''}`}>Опубликовать</NavLink>
       </header>
       <Outlet></Outlet>
       <footer>
