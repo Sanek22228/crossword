@@ -1,19 +1,21 @@
 import { Routes, Route } from 'react-router-dom'
-import { Main } from './Main'
-import { Publication } from './Publication'
+import { Main } from './components/Main'
+import { Publication } from './components/Publication'
 import { Layout } from './components/Layout'
 
-// document.onreset
+import { CrosswordProvider } from './hoc/crosswordProvider'
 
 function App(){
   return(
     <>
-      <Routes>
-        <Route path='/' element={ <Layout/> }>
-          <Route index element={<Main/>}></Route>
-          <Route path='/publication' element={<Publication/>}></Route>
-        </Route>
-      </Routes>
+      <CrosswordProvider>
+        <Routes>
+          <Route path='/' element={ <Layout/> }>
+            <Route index element={<Main/>}></Route>
+            <Route path='/publication' element={<Publication/>}></Route>
+          </Route>
+        </Routes>
+      </CrosswordProvider>
     </>
   )
 }

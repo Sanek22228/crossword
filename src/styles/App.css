@@ -74,3 +74,18 @@ textarea{
   font-size: .8rem;
   /* height: 100%; */
 }
+
+footer{
+  position: absolute;
+  bottom: 0;
+}
+
+.active{
+  color: black !important;
+  cursor: default;
+}
+
+.navlink{
+  margin-right: 1%;
+  color: white;
+}

@@ -2,15 +2,31 @@ import { Crossword } from '../classes/Crossword';
 import "../styles/crosswordTable.css";
 import { ExportCrossword } from './crosswordExport'
 import { Word } from '../classes/Word';
+import { useNavigate } from 'react-router-dom';
+import { useCrossword } from '../hook/useCrossword';
 
-export function CreateCrosswordTable(crossword){
+
+// {crossword} деструктуризация, так как при создании <CrosswordTable crossword={crossword}/> передается объект props (properties), в котором crossword: crossword
+const CrosswordTable = ({crossword}) => {    
+    const navigate = useNavigate();
+    const {updateCrossword} = useCrossword();
+
     if(!(crossword instanceof Crossword)){
         console.error(`Expected Crossword instance`);
         return;
     }
 
+    function ToPublication(crossword){
+        let skippedWords = ValidateWordsWithDict(crossword.addedWords);
+        if(skippedWords === null){
+            updateCrossword(crossword, () => navigate('/publication'))
+        }
+        else{
+            return `Слов ${skippedWords} не существет`
+        }
+    }
+
     const grid = crossword.grid;
-    
     return (
         <div className='crossword'>
             <div className='infoContainer'>
@@ -93,13 +109,9 @@ function FormatWordArray(wordArray, objectType){
     return resString;
 }
 
-function ToPublication(crossword){
-    let skippedWords = ValidateWordsWithDict(crossword.addedWords);
-    if(skippedWords !== null){
-        window.location.href += "publication";
-    }
+function ValidateWordsWithDict(words){
+    //async function, needs to be connected to web api
+    return null;
 }
 
-function ValidateWordsWithDict(words){
-    return "words";
-}
+export { CrosswordTable };
