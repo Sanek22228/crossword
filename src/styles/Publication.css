@@ -1,0 +1,33 @@
+#definitions{
+  align-items: center;
+  text-align: center;
+  background: rgb(184, 183, 183);
+  padding: 2%;
+} 
+
+#crosswordInfo{
+  align-items: center; 
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex: 1;
+  justify-content: space-around;
+}
+
+ol{
+  padding-left: 20%;
+  align-items: center;
+}
+li{
+  text-align: left;
+  width: fit-content;
+}
+
+button{
+  background-color: #2E728D;
+  color: white;
+  padding: 1%;
+  border: 0;
+  font-size: 1em;
+  border-radius: .5vw;
+}
