@@ -1,13 +1,13 @@
 import { Crossword } from '../classes/Crossword';
 import "../styles/crosswordTable.css";
 import { ExportCrossword } from './crosswordExport'
-import { Word } from '../classes/Word';
 import { useNavigate } from 'react-router-dom';
 import { useCrossword } from '../hook/useCrossword';
+import { CrosswordGrid } from './CrosswordGrid';
 
 
 // {crossword} деструктуризация, так как при создании <CrosswordTable crossword={crossword}/> передается объект props (properties), в котором crossword: crossword
-const CrosswordTable = ({crossword}) => {    
+const CrosswordViewer = ({crossword}) => {    
     const navigate = useNavigate();
     const {updateCrossword} = useCrossword();
 
@@ -26,7 +26,6 @@ const CrosswordTable = ({crossword}) => {
         }
     }
 
-    const grid = crossword.grid;
     return (
         <div className='crossword'>
             <div className='infoContainer'>
@@ -34,44 +33,7 @@ const CrosswordTable = ({crossword}) => {
                 <div><b>Слова по вертикали:</b> {FormatWordArray(crossword.verticalWords)};</div>
                 {FormatWordArray(crossword.skippedWords, "string") && <div><b>Пропущенные слова:</b> {FormatWordArray(crossword.skippedWords, "string")};</div>}
             </div>
-            <table id='filledTable'>
-                <tbody>
-                    {grid.map((row, rowIndex) => (
-                       <tr key={rowIndex}>{
-                            row.map((cell, colIndex) => {
-                                let cellValue = Number(cell);
-                                if(typeof cell === 'object'){
-                                    return cell.direction === Word.DIRECTIONS.HORIZONTAL
-                                        ? <th key={colIndex} className="numberCell hotizontalNumber">{cell.value}</th>
-                                        : <th key={colIndex} className="numberCell verticalNumber">{cell.value}</th>; 
-                                }
-                                return isNaN(cellValue) 
-                                    ? <th key={colIndex} className="filledCell">{cell}</th>
-                                    : <th key={colIndex} className="emptyCell"></th>;
-                            })}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
-            <table id='emptyTable' hidden>
-                <tbody>
-                    {grid.map((row, rowIndex) => (
-                        <tr key={rowIndex}>{
-                            row.map((cell, colIndex) => {
-                                let cellValue = Number(cell);
-                                if(typeof cell === 'object'){
-                                    return cell.direction === Word.DIRECTIONS.HORIZONTAL
-                                        ? <th key={colIndex} className="numberCell hotizontalNumber">{cell.value}</th>
-                                        : <th key={colIndex} className="numberCell verticalNumber">{cell.value}</th>; 
-                                }
-                                return isNaN(cellValue) 
-                                    ? <th key={colIndex} className="filledCell"></th>
-                                    : <th key={colIndex} className="emptyCell"></th>;
-                            })}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <CrosswordGrid crossword={crossword}/>
             <div className='exportBtnContainer'>
                 <button onClick={() => handleDownload("xls")} className='downloadBtn'>
                     Скачать в XLS
@@ -114,4 +76,4 @@ function ValidateWordsWithDict(words){
     return null;
 }
 
-export { CrosswordTable };
+export { CrosswordViewer }

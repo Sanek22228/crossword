@@ -57,6 +57,8 @@ table{
     text-decoration: underline;
     background: none;
     border: none;
+    color: black;
+    font-size: .9em;
 }
 
 .downloadBtn:hover, #publishBtn:hover{
@@ -79,7 +81,7 @@ table{
 }
 
 #publishBtn {
-    background-color: rgb(216, 216, 216);
+    background-color: rgb(139, 139, 139);
     padding: 4% 6%;
     border-radius: 5vw;
     border: none;
