@@ -8,13 +8,14 @@
   /* font-weight: lighter; */
 }
 #crosswordInfo{
+  margin-top: 10vh;
   align-items: center; 
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 90%;
   flex: 1;
-  justify-content: center;
-  gap: 10vw;
+  justify-content: space-around;
+  /* gap: 10vw; */
 }
 
 #definitions{
@@ -22,22 +23,16 @@
   text-align: center;
   align-content: center;
   background: rgb(184, 183, 183);
-  padding: 2%;
-  height: 60%;
-  /* width: 15vw; */
+  padding: 3% 2%;
+  transform: translateY(10%);
+  max-width: 15vw;
 } 
 
-ol{
-  padding-left: 20%;
-  align-items: center;
-}
 li{
   text-align: left;
-  width: fit-content;
 }
 
 button{
-  /* font-weight: bold; */
   background-color: #2E728D;
   color: white;
   padding: 1%;
@@ -49,4 +44,17 @@ button{
 
 button:hover{
   cursor: pointer;
+}
+
+input{
+  background-color: transparent;
+  /* border: none; */
+  /* border-bottom: 1px black; */
+  /* text-decoration: underline; */
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+input:focus{
+  outline: none;
 }

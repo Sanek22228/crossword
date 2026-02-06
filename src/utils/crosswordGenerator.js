@@ -31,7 +31,6 @@ export function CreateCrossword(words){
 
     let changed = true;
     while(skippedWords.length > 0 && changed){
-        // console.log("skipped words: ", skippedWords);
         changed = false;
         for(let i = skippedWords.length-1; i >= 0; i--){
             if (TryPlaceWord(skippedWords[i])){

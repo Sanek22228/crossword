@@ -3,28 +3,30 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:3000");
+            policy.AllowAnyHeader();
+            policy.AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+app.UseRouting();
 
-app.Run(async context => {
-    var response = context.Response;
-    var request = context.Request;
-    var path = request.Path;
+app.UseCors(); // ← строго здесь
 
-    if(path == "publish" && request.Method == "POST")
-    {
-        
-    }
-    else if (true)
-    {
-        
-    }
-});
+app.UseAuthorization(); // если будет
 
 app.MapControllers();
+
 
 app.Run();

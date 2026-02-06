@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react';
 import { Word } from '../classes/Word';
 
 function CrosswordGrid({crossword}){
   const grid = crossword.grid;
+
   return(
     <>
       <table id='filledTable'>
@@ -13,11 +15,11 @@ function CrosswordGrid({crossword}){
                 if(typeof cell === 'object'){
                   return cell.direction === Word.DIRECTIONS.HORIZONTAL
                     ? <th key={colIndex} className="numberCell hotizontalNumber">{cell.value}</th>
-                    : <th key={colIndex} className="numberCell verticalNumber">{cell.value}</th>; 
+                    : <th key={colIndex} className="numberCell verticalNumber">{cell.value}</th>
                 }
                 return isNaN(cellValue) 
                   ? <th key={colIndex} className="filledCell">{cell}</th>
-                  : <th key={colIndex} className="emptyCell"></th>;
+                  : <th key={colIndex} className="emptyCell"></th>
               })}
             </tr>
           ))}
