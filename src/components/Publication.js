@@ -8,6 +8,7 @@ import { useCrossword } from "../hook/useCrossword";
 function Publication(){
   const navigate = useNavigate();
   const {curCrossword} = useCrossword();
+
   const [errorMessage, setErrorMessage] = useState("");
 
   function GoBack(){
@@ -19,15 +20,16 @@ function Publication(){
   }, [curCrossword]);
 
   function PublicateCrossword(){
-    if(CheckDefinitions()){
-      console.log("publication");
+    if(DefinitionsFulfilled()){
+      setErrorMessage("");
+      navigate('/account');
     }
     else{
-
+      setErrorMessage("Все поля объяснений должны быть заполнены");
     }
   }
 
-  function CheckDefinitions(){
+  function DefinitionsFulfilled(){
     var inputs = document.getElementsByTagName("input");
     var isNull = false;
     inputs.forEach(input => {
@@ -35,15 +37,7 @@ function Publication(){
         isNull = true;
       }
     });
-
-    if(isNull){
-      setErrorMessage("Все поля объяснений должны быть заполнены");
-      return false;
-    }
-    else{
-      setErrorMessage("");
-      return true;
-    }
+    return isNull ? false : true;
   }
 
   return(
@@ -68,17 +62,17 @@ function Publication(){
             <p><b>Объяснения по вертикали:</b></p>
             <ol id="vertical-definitions">
               {curCrossword.verticalWords.map((word, wordIndex) => 
-                <div key={wordIndex} style={{display:"flex", alignItems:"center", justifyContent:"center", maxHeight:"30px"}}>
-                  <li>
-                    <input></input>
-                  </li>
-                </div>
+                <li key={wordIndex}>
+                  <input/>
+                </li>
               )}
             </ol>
             <p><b>Объяснения по горизонтали:</b></p>
             <ol id="horizontal-definitions">
               {curCrossword.horizontalWords.map((word, wordIndex) => 
-                <div key={wordIndex} style={{display:"flex", alignItems:"center", justifyContent:"center", maxHeight:"30px"}}><li><input></input></li></div>)} 
+                <li key={wordIndex}>
+                  <input/>
+                </li>)}
               {/* <button style={{width: "10%", background:"none"}}><img style={{width:"100%"}} src={editIcon}/></button> */}
               {/* button for editing */}
             </ol>
