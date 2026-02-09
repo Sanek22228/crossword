@@ -366,19 +366,22 @@ function NormalizeGrid(countRow, countCol){
 // нумерация слов в кроссворде (с левого верхнего угла)
 function NumberCrossword(crossword){
     let wordId = 1;
-    crossword.sortedWords.forEach((w) => {
+    crossword.addedWords.forEach((w) => {
         if(w.direction === Word.DIRECTIONS.HORIZONTAL){
-            if(w.coordinates.start_col - 1 >= 0) crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1] = {
-                value: wordId.toString(),
-                direction : Word.DIRECTIONS.HORIZONTAL
-            };
+            if(w.coordinates.start_col - 1 >= 0) 
+                crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1] = {
+                    value: wordId.toString(),
+                    direction : Word.DIRECTIONS.HORIZONTAL
+                };
         }
         else{
-            if(w.coordinates.start_row - 1 >= 0) crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col] = {
-                value: wordId.toString(),
-                direction : Word.DIRECTIONS.VERTICAL
-            };
+            if(w.coordinates.start_row - 1 >= 0) 
+                crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col] = {
+                    value: wordId.toString(),
+                    direction : Word.DIRECTIONS.VERTICAL
+                };
         }
+        w.id = wordId;
         wordId++;
     });
 }

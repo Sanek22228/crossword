@@ -59,23 +59,24 @@ function Publication(){
             <CrosswordGrid crossword={crossword}/>
           </div>
           <div id="definitions">
-            <p><b>Объяснения по вертикали:</b></p>
-            <ol id="vertical-definitions">
+            <p><b>По вертикали:</b></p>
+            <div style={{display: "flex", flexDirection: "column"}} id="vertical-definitions">
               {curCrossword.verticalWords.map((word, wordIndex) => 
-                <li key={wordIndex}>
-                  <input/>
-                </li>
+                <div key={wordIndex}>
+                  <label>{word.id}.</label>
+                  <input type="text"/>
+                </div>
               )}
-            </ol>
-            <p><b>Объяснения по горизонтали:</b></p>
-            <ol id="horizontal-definitions">
+            </div>
+            <p><b>По горизонтали:</b></p>
+            <div style={{display: "flex", flexDirection: "column"}} id="horizontal-definitions">
               {curCrossword.horizontalWords.map((word, wordIndex) => 
-                <li key={wordIndex}>
-                  <input/>
-                </li>)}
-              {/* <button style={{width: "10%", background:"none"}}><img style={{width:"100%"}} src={editIcon}/></button> */}
-              {/* button for editing */}
-            </ol>
+                <div key={wordIndex}>
+                  <label>{word.id}.</label>
+                  <input type="text"/>
+                </div>
+              )}
+            </div>
             <button>
               Составить заново
             </button>

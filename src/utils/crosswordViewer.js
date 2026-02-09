@@ -17,13 +17,7 @@ const CrosswordViewer = ({crossword}) => {
     }
 
     function ToPublication(crossword){
-        let skippedWords = ValidateWordsWithDict(crossword.addedWords);
-        if(skippedWords === null){
-            updateCrossword(crossword, () => navigate('/publication'))
-        }
-        else{
-            return `Слов ${skippedWords} не существет`
-        }
+        updateCrossword(crossword, () => navigate('/publication'));
     }
 
     return (
@@ -69,11 +63,6 @@ function FormatWordArray(wordArray, objectType){
         }
     }
     return resString;
-}
-
-function ValidateWordsWithDict(words){
-    //async function, needs to be connected to web api
-    return null;
 }
 
 export { CrosswordViewer }
