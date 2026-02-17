@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import '../styles/Publication.css'
 import { CrosswordGrid } from '../utils/CrosswordGrid'
 import { useEffect, useState } from "react";
@@ -16,10 +16,16 @@ function Publication(){
   useEffect(() => {
     SetCrossword(curCrossword)
   }, [curCrossword]);
+
   const [definitions, updateDefinitions] = useState({
     vertical: curCrossword.verticalWords.map(w =>""),
     horizontal: curCrossword.horizontalWords.map(w => "")
   });
+
+  if(!crossword){
+    console.log(!crossword);
+    return <Navigate to="/"/>
+  }
 
   function PublicateCrossword(){
     if(DefinitionsFulfilled()){

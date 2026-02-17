@@ -73,7 +73,7 @@ function LoginModal() {
                 <Tabs.Content className={styles.tabsContent} value="tab2">
                     <p className={styles.text}>
                         Заполните все поля для создания нового аккаунта. Регистрируясь, вы принимаете наши  
-                        <a href=""> Условия использования и Политику конфиденциальности</a>
+                        <a href="/policy"> Условия использования и Политику конфиденциальности</a>
                     </p>
                     <fieldset className={styles.fieldset}>
                         <label className={styles.label} htmlFor="email">

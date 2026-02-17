@@ -8,6 +8,8 @@ import {RequireAuth} from './hoc/RequireAuth'
 import { AuthProvider } from './hoc/AuthProvider'
 import { Account } from './components/Account'
 import { LoginModal } from './components/LoginModal'
+import { Policy } from './components/Policy'
+import { RequireCrossword } from './hoc/RequireCrossword'
 
 function App(){
   return(
@@ -17,8 +19,9 @@ function App(){
           <Routes>
             <Route path='/' element={ <Layout/> }>
               <Route index element={<Main/>}></Route>
-              <Route path='/publication' element={<Publication/>}></Route>
+              <Route path='/publication' element={<RequireCrossword><Publication/></RequireCrossword>}></Route>
               <Route path='/account' element={<RequireAuth><Account/></RequireAuth>}></Route>
+              <Route path='/policy' element={<Policy/>}></Route>
             </Route>
           </Routes>
           <LoginModal/>
