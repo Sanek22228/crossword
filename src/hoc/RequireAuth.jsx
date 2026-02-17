@@ -1,15 +1,20 @@
-import { Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import { useAuth } from "../hook/useAuth";
 
 const RequireAuth = ({children}) => {
-    const {user} = useAuth();
-    const location = useLocation();
+    const {user, setLoginActive} = useAuth();
+
+    useEffect(() => {
+        if(!user)
+            setLoginActive(true);
+    }, [user]);
+
     if(!user){
-        console.log(`navigating to login page, user: ${user}, from location: ${location.pathname}`);
-        return <Navigate to='/login' state={{from: location}}/>;
+        return null;
     }
+
+    return children;
     // если проверка пройдена - отрисовываем дочернюю страницу
-    return children; 
 }
 
 export { RequireAuth }

@@ -8,9 +8,7 @@ import { useCrossword } from "../hook/useCrossword";
 function Publication(){
   const navigate = useNavigate();
   const {curCrossword} = useCrossword();
-
   const [errorMessage, setErrorMessage] = useState("");
-
   function GoBack(){
     navigate(-1);
   }
@@ -18,6 +16,10 @@ function Publication(){
   useEffect(() => {
     SetCrossword(curCrossword)
   }, [curCrossword]);
+  const [definitions, updateDefinitions] = useState({
+    vertical: curCrossword.verticalWords.map(w =>""),
+    horizontal: curCrossword.horizontalWords.map(w => "")
+  });
 
   function PublicateCrossword(){
     if(DefinitionsFulfilled()){
@@ -30,14 +32,7 @@ function Publication(){
   }
 
   function DefinitionsFulfilled(){
-    var inputs = document.getElementsByTagName("input");
-    var isNull = false;
-    inputs.forEach(input => {
-      if(input.value === ""){  
-        isNull = true;
-      }
-    });
-    return isNull ? false : true;
+    return definitions.vertical.every(def => def.trim() !== "") && definitions.horizontal.every(def => def.trim() !== "");
   }
 
   return(
@@ -61,19 +56,33 @@ function Publication(){
           <div id="definitions">
             <p><b>По вертикали:</b></p>
             <div style={{display: "flex", flexDirection: "column"}} id="vertical-definitions">
-              {curCrossword.verticalWords.map((word, wordIndex) => 
-                <div key={wordIndex}>
+              {curCrossword.verticalWords.map((word, i) => 
+                <div key={i}>
                   <label>{word.id}.</label>
-                  <input type="text"/>
+                  <input value={definitions.vertical[i]} onChange={(e) => {
+                    let copy = [...definitions.vertical];
+                    copy[i] = e.target.value;
+                    updateDefinitions({
+                      ...definitions,
+                      vertical: copy
+                    });
+                  }} type="text"/>
                 </div>
               )}
             </div>
             <p><b>По горизонтали:</b></p>
             <div style={{display: "flex", flexDirection: "column"}} id="horizontal-definitions">
-              {curCrossword.horizontalWords.map((word, wordIndex) => 
-                <div key={wordIndex}>
+              {curCrossword.horizontalWords.map((word, i) => 
+                <div key={i}>
                   <label>{word.id}.</label>
-                  <input type="text"/>
+                  <input value={definitions.horizontal[i]} onChange={(e) => {
+                    let copy = [...definitions.horizontal];
+                    copy[i] = e.target.value;
+                    updateDefinitions({
+                      ...definitions,
+                      horizontal: copy
+                    });
+                  }} type="text"/>
                 </div>
               )}
             </div>
