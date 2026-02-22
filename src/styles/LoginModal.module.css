@@ -125,6 +125,12 @@
     width: 100%;
 }
 
+/* applyes whien placeholder is hidden (means input has some value) and input is invalid  */
+input[type="email"]:not(:placeholder-shown):invalid {
+    box-shadow: 0 0 0 1px red;
+    /* color: red; */
+}
+
 .input:focus {
     box-shadow: 0 0 0 2px var(--violet-8);
 }
@@ -203,7 +209,12 @@
 	padding-right: 9px;
 	height: 36px;
 	gap: 8px;
+    box-shadow: 0 0 0 1px var(--violet-7);
+}
 
+
+.input:focus {
+    box-shadow: 0 0 0 2px var(--violet-8);
 }
 
 .Input,
@@ -216,6 +227,7 @@
 }
 
 .Input {
+    width: 90%;
 	&::selection {
 		background-color: var(--black-a6);
 		color: white;

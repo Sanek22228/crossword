@@ -6,11 +6,102 @@ import "@radix-ui/themes/styles.css";
 import { useNavigate } from "react-router-dom";
 import { unstable_PasswordToggleField as PasswordToggleField } from "radix-ui";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
 
 function LoginModal() {
     const navigate = useNavigate();
     const { signin, loginActive, setLoginActive } = useAuth();
-    console.log("login active", loginActive);
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPass, setConfirmPass] = useState("");
+    const [error, setError] = useState("");
+
+    function HandleAuthorization(){
+        console.log(`password: ${password}; email: ${email}`);
+        if(!ValidateEmail()){
+            setError("Почта введена неверно");
+            return;
+        }
+        if(!ValidatePassword()){
+            // setError("Неверный пароль?")
+            setError("Длина пароля должна быть длиннее 6 символов и иметь числа");
+            return;
+        }
+        if(!FindUser()){
+            setError("Пользователь не найден");
+            return;
+        }
+        if(!VerifyPassword()){
+            setError("Невверный пароль");
+            return;
+        }
+
+        setError("");
+        setLoginActive(false);
+        signin("user1");
+    }
+    function HandleRegistration(){
+        console.log(`password: ${password}; email: ${email}`);
+        if(!ValidateEmail()){
+            setError("Почта введена неверно");
+            return;
+        }
+        if(!ValidatePassword()){
+            // setError("Неверный пароль?")
+            setError("Длина пароля должна быть длиннее 6 символов и иметь числа");
+            return;
+        }
+        if(!ConfirmPassword()){
+            setError("Пароли не совпадают");
+            return;
+        }
+        if(!FindUser()){
+            setError("Пользователь не найден");
+            return;
+        }
+        if(!VerifyPassword()){
+            setError("Невверный пароль");
+            return;
+        }
+
+        setError("");
+        setLoginActive(false);
+        signin("user1");
+    }
+    function ValidateEmail(){
+        if(email.length < 1){
+            return false;
+        }
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+            return false;
+        }
+        return true;
+    }
+    function ValidatePassword(){
+        if(password.length < 6 || password.length > 20){
+            return false;
+        }
+        if(!/\d/.test(password)){
+            return false;
+        }
+        return true;
+    }
+    function ConfirmPassword(){
+        if(password !== confirmPass) return false;
+        return true
+    }
+    function FindUser(){
+        // email есть в БД
+        // ? user = {id, email, password}
+        return true;
+        // : return false
+    }
+    function VerifyPassword(){
+        // return user.password === password ?  true : false
+        return true;
+    }
+
 
     return (
         <>
@@ -47,15 +138,20 @@ function LoginModal() {
                         <label className={styles.label} htmlFor="email">
                             Почта
                         </label>
-                        <input className={styles.input} id="email" type="email" />
+                        <input 
+                            onChange={(e) => setEmail(e.target.value)} 
+                            value={email}
+                            className={styles.input} 
+                            id="email" type="email" placeholder="name@mail.com" required 
+                        />
                     </fieldset>
                     <fieldset className={styles.fieldset}>
-                        <label className={styles.label} htmlFor="password">
+                        <label className={styles.label} htmlFor="reg-password">
                             Пароль
                         </label>
                         <PasswordToggleField.Root>
 								<div className={`${styles.Root}`}>
-									<PasswordToggleField.Input className={`${styles.Input}`} />
+									<PasswordToggleField.Input className={`${styles.Input}`} onChange={(e) => setPassword(e.target.value)} value={password} id="reg-password"/>
 									<PasswordToggleField.Toggle className={styles.Toggle}>
 										<PasswordToggleField.Icon
 											visible={<EyeOpenIcon />}
@@ -65,8 +161,11 @@ function LoginModal() {
 								</div>
 						</PasswordToggleField.Root>
                     </fieldset>
+                    <p style={{color: "red"}} className={styles.text}>{error}</p>
                     <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
-                        <button className={`${styles.button} ${styles.green}`}>Войти</button>
+                        <button onClick={HandleAuthorization} className={`${styles.button} ${styles.green}`}>
+                            Войти
+                        </button>
                     </div>
                 </Tabs.Content>
                 
@@ -76,10 +175,15 @@ function LoginModal() {
                         <a href="/policy"> Условия использования и Политику конфиденциальности</a>
                     </p>
                     <fieldset className={styles.fieldset}>
-                        <label className={styles.label} htmlFor="email">
+                        <label className={styles.label} htmlFor="reg-email">
                             Почта
                         </label>
-                        <input className={styles.input} id="email" type="email" />
+                        <input 
+                            onChange={(e) => setEmail(e.target.value)} 
+                            value={email}
+                            className={styles.input} 
+                            id="reg-email" type="email" placeholder="name@mail.com" required 
+                        />
                     </fieldset>
                     <fieldset className={styles.fieldset}>
                         <label className={styles.label} htmlFor="password">
@@ -87,7 +191,7 @@ function LoginModal() {
                         </label>
                         	<PasswordToggleField.Root>
 								<div className={styles.Root}>
-									<PasswordToggleField.Input className={styles.Input} />
+									<PasswordToggleField.Input className={`${styles.Input}`} onChange={(e) => setPassword(e.target.value)} value={password}/>
 									<PasswordToggleField.Toggle className={styles.Toggle}>
 										<PasswordToggleField.Icon
 											visible={<EyeOpenIcon />}
@@ -103,7 +207,11 @@ function LoginModal() {
                         </label>
                         <PasswordToggleField.Root>
 								<div className={`${styles.Root}`}>
-									<PasswordToggleField.Input className={`${styles.Input}`} />
+									<PasswordToggleField.Input 
+                                        className={`${styles.Input}`} 
+                                        onChange={(e) => setConfirmPass(e.target.value)} 
+                                        value={confirmPass}
+                                    />
 									<PasswordToggleField.Toggle className={styles.Toggle}>
 										<PasswordToggleField.Icon
 											visible={<EyeOpenIcon />}
@@ -113,8 +221,14 @@ function LoginModal() {
 								</div>
 						</PasswordToggleField.Root>
                     </fieldset>
+                    <p style={{color: "red"}} className={styles.text}>{error}</p>
                     <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
-                        <button className={`${styles.button} ${styles.green}`}>Создать аккаунт</button>
+                        <button 
+                            className={`${styles.button} ${styles.green}`}
+                            onClick={HandleRegistration}
+                        >
+                            Создать аккаунт
+                        </button>
                     </div>
                 </Tabs.Content>
             </Tabs.Root>

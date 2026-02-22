@@ -1,8 +1,6 @@
 using System.Collections.Concurrent;
 using System.Text.Json;
-using System.Threading.Tasks;
 using backend.Contracts;
-using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
@@ -56,6 +54,7 @@ public class WordsController : ControllerBase
         }
     }
 
+    // unfinished (may require ML module for generating definitions)
     [HttpGet]
     public async Task<ActionResult> GetDefinitions()
     {
