@@ -2,9 +2,9 @@ namespace backend.Models;
 
 public class Word
 {
-    public Word(string value)
+    public Word(string val)
     {
-        Value = value;
+        Value = val;
     }
     public string Value {get; set;} = string.Empty;
     public string Definition {get; set;} = string.Empty;

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { unstable_PasswordToggleField as PasswordToggleField } from "radix-ui";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
+import { fetchLogin, fetchRegister, hello } from "../services/users";
+import { User } from "../classes/User";
 
 function LoginModal() {
     const navigate = useNavigate();
@@ -17,7 +19,7 @@ function LoginModal() {
     const [confirmPass, setConfirmPass] = useState("");
     const [error, setError] = useState("");
 
-    function HandleAuthorization(){
+    async function HandleAuthorization(){
         console.log(`password: ${password}; email: ${email}`);
         if(!ValidateEmail()){
             setError("Почта введена неверно");
@@ -28,10 +30,6 @@ function LoginModal() {
             setError("Длина пароля должна быть длиннее 6 символов и иметь числа");
             return;
         }
-        if(!FindUser()){
-            setError("Пользователь не найден");
-            return;
-        }
         if(!VerifyPassword()){
             setError("Невверный пароль");
             return;
@@ -39,9 +37,10 @@ function LoginModal() {
 
         setError("");
         setLoginActive(false);
+        await fetchLogin({email, password});
         signin("user1");
     }
-    function HandleRegistration(){
+    async function HandleRegistration(){
         console.log(`password: ${password}; email: ${email}`);
         if(!ValidateEmail()){
             setError("Почта введена неверно");
@@ -56,10 +55,6 @@ function LoginModal() {
             setError("Пароли не совпадают");
             return;
         }
-        if(!FindUser()){
-            setError("Пользователь не найден");
-            return;
-        }
         if(!VerifyPassword()){
             setError("Невверный пароль");
             return;
@@ -67,6 +62,7 @@ function LoginModal() {
 
         setError("");
         setLoginActive(false);
+        await fetchRegister({email, password});
         signin("user1");
     }
     function ValidateEmail(){
@@ -90,12 +86,6 @@ function LoginModal() {
     function ConfirmPassword(){
         if(password !== confirmPass) return false;
         return true
-    }
-    function FindUser(){
-        // email есть в БД
-        // ? user = {id, email, password}
-        return true;
-        // : return false
     }
     function VerifyPassword(){
         // return user.password === password ?  true : false

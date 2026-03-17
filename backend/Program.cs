@@ -2,11 +2,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<CrosswordAppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
-);
+
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    
+// 2-ой способ
+// builder.Services.AddScoped<AppDbContext>();
 
 builder.Services.AddCors(options =>
 {
@@ -23,15 +26,17 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+        app.UseSwaggerUI(c => 
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
 }
-app.UseRouting();
 
-app.UseCors(); // ← строго здесь
-
-app.UseAuthorization(); // если будет
+app.UseCors(); 
 
 app.MapControllers();
 
+app.Map("/", (AppDbContext context) => {return context.Database.CanConnect();});
 
 app.Run();
