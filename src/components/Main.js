@@ -15,6 +15,10 @@ function Main(){
   const [crossword, setCrossword] = useState(null);
   const [error, setError] = useState("");
   const [showHint, setHint] = useState(false);
+<<<<<<< HEAD
+=======
+  const [loading, setLoading] = useState(false);
+>>>>>>> backend
 
   const {curCrossword} = useCrossword();
 
@@ -23,16 +27,28 @@ function Main(){
   }, [inputValue]);
   useEffect(() => {
     setCrossword(curCrossword);
+<<<<<<< HEAD
   }, [curCrossword])
 
   function HandleClick(){
+=======
+  }, [curCrossword]);
+
+  async function HandleClick(){
+>>>>>>> backend
     setCrossword(null);
     console.log(crossword);
     setError("");
     
     if(inputValue !== ""){
       var words = inputValue;
+<<<<<<< HEAD
       words = validateWords(words);
+=======
+      setLoading(true);
+      words = await validateWords(words);
+      setLoading(false);
+>>>>>>> backend
       console.log(words);
 
       const wordsError = wordsErrorHandler(words);
@@ -82,6 +98,10 @@ function Main(){
         <button className='createBtn' onClick={HandleClick}>Создать</button>      
         {error && <p id='error'>{error}</p>}
         <div className='crosswordContainer'>
+<<<<<<< HEAD
+=======
+          {loading && <span className="loader"></span>}
+>>>>>>> backend
           {crossword && <CrosswordViewer crossword={crossword}/>}
         </div>
       </main>

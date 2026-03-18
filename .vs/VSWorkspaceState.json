@@ -1,7 +1,22 @@
 {
   "ExpandedNodes": [
+<<<<<<< HEAD
     ""
   ],
   "SelectedNode": "\\G:\\programming\\js",
+=======
+    "",
+    "\\backend",
+    "\\backend\\bin\\Debug",
+    "\\backend\\bin\\Debug\\net10.0",
+    "\\backend\\Contracts",
+    "\\backend\\Controllers",
+    "\\backend\\DataAccessModels",
+    "\\backend\\Models",
+    "\\src",
+    "\\src\\services"
+  ],
+  "SelectedNode": "\\src\\services",
+>>>>>>> backend
   "PreviewInSolutionExplorer": false
 }

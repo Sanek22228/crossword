@@ -17,6 +17,7 @@ const CrosswordViewer = ({crossword}) => {
     }
 
     function ToPublication(crossword){
+<<<<<<< HEAD
         let skippedWords = ValidateWordsWithDict(crossword.addedWords);
         if(skippedWords === null){
             updateCrossword(crossword, () => navigate('/publication'))
@@ -24,6 +25,9 @@ const CrosswordViewer = ({crossword}) => {
         else{
             return `Слов ${skippedWords} не существет`
         }
+=======
+        updateCrossword(crossword, () => navigate('/publication'));
+>>>>>>> backend
     }
 
     return (
@@ -71,9 +75,12 @@ function FormatWordArray(wordArray, objectType){
     return resString;
 }
 
+<<<<<<< HEAD
 function ValidateWordsWithDict(words){
     //async function, needs to be connected to web api
     return null;
 }
 
+=======
+>>>>>>> backend
 export { CrosswordViewer }

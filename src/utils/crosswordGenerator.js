@@ -31,7 +31,10 @@ export function CreateCrossword(words){
 
     let changed = true;
     while(skippedWords.length > 0 && changed){
+<<<<<<< HEAD
         // console.log("skipped words: ", skippedWords);
+=======
+>>>>>>> backend
         changed = false;
         for(let i = skippedWords.length-1; i >= 0; i--){
             if (TryPlaceWord(skippedWords[i])){
@@ -367,6 +370,7 @@ function NormalizeGrid(countRow, countCol){
 // нумерация слов в кроссворде (с левого верхнего угла)
 function NumberCrossword(crossword){
     let wordId = 1;
+<<<<<<< HEAD
     crossword.sortedWords.forEach((w) => {
         if(w.direction === Word.DIRECTIONS.HORIZONTAL){
             if(w.coordinates.start_col - 1 >= 0) crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1] = {
@@ -380,6 +384,24 @@ function NumberCrossword(crossword){
                 direction : Word.DIRECTIONS.VERTICAL
             };
         }
+=======
+    crossword.addedWords.forEach((w) => {
+        if(w.direction === Word.DIRECTIONS.HORIZONTAL){
+            if(w.coordinates.start_col - 1 >= 0) 
+                crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1] = {
+                    value: wordId.toString(),
+                    direction : Word.DIRECTIONS.HORIZONTAL
+                };
+        }
+        else{
+            if(w.coordinates.start_row - 1 >= 0) 
+                crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col] = {
+                    value: wordId.toString(),
+                    direction : Word.DIRECTIONS.VERTICAL
+                };
+        }
+        w.id = wordId;
+>>>>>>> backend
         wordId++;
     });
 }

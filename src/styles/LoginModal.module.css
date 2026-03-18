@@ -1,0 +1,247 @@
+@import "@radix-ui/colors/black-alpha.css";
+@import "@radix-ui/colors/green.css";
+@import "@radix-ui/colors/mauve.css";
+@import "@radix-ui/colors/violet.css";
+
+/* reset */
+.fieldset, 
+.input, 
+.button,
+.closeButton,
+.tabsTrigger,
+.passwordToggle {
+    all: unset;
+}
+
+.tabsRoot {
+    z-index: 2;
+    background-color: var(--gray-1);
+    border-radius: 6px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25vw;
+    max-width: 400px;
+    max-height: 85vh;
+    animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 10px var(--black-a4);
+}
+
+.tabsList {
+    flex-shrink: 0;
+    display: flex;
+    border-bottom: 1px solid var(--mauve-6);
+}
+
+.tabsTrigger {
+    font-family: inherit;
+    background-color: white;
+    padding: 0 20px;
+    height: 45px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    line-height: 1;
+    color: var(--mauve-11);
+    user-select: none;
+    cursor: pointer;
+}
+
+.tabsTrigger:first-child {
+    border-top-left-radius: 6px;
+}
+
+.tabsTrigger:last-child {
+    border-top-right-radius: 6px;
+}
+
+.tabsTrigger:hover {
+    color: var(--violet-11);
+}
+
+.tabsTrigger[data-state="active"] {
+    color: var(--violet-11);
+    box-shadow: inset 0 -1px 0 0 currentColor, 0 1px 0 0 currentColor;
+}
+
+.tabsContent {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: white;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    outline: none;
+}
+
+.text {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: var(--mauve-11);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.text a {
+    color: var(--violet-11);
+    text-decoration: none;
+}
+
+.text a:hover {
+    text-decoration: underline;
+}
+
+.fieldset {
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.label {
+    font-size: 13px;
+    line-height: 1;
+    margin-bottom: 10px;
+    color: var(--violet-12);
+    display: block;
+    user-select: none;
+}
+
+.input {
+    box-sizing: border-box;
+    flex: 1 0 auto;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 15px;
+    line-height: 1;
+    color: var(--violet-11);
+    box-shadow: 0 0 0 1px var(--violet-7);
+    height: 35px;
+    width: 100%;
+}
+
+/* applyes whien placeholder is hidden (means input has some value) and input is invalid  */
+input[type="email"]:not(:placeholder-shown):invalid {
+    box-shadow: 0 0 0 1px red;
+    /* color: red; */
+}
+
+.input:focus {
+    box-shadow: 0 0 0 2px var(--violet-8);
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    padding: 0 15px;
+    font-size: 15px;
+    line-height: 1;
+    font-weight: 500;
+    height: 35px;
+    cursor: pointer;
+}
+
+.button.green {
+    background-color: var(--green-4);
+    color: var(--green-11);
+}
+
+.button.green:hover {
+    background-color: var(--green-5);
+}
+
+.button.green:focus {
+    box-shadow: 0 0 0 2px var(--green-7);
+}
+
+.overlay {
+    background-color: var(--black-a9);
+    position: fixed;
+    inset: 0;
+    animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1;
+}
+
+.closeButton {
+    font-family: inherit;
+    border-radius: 100%;
+    height: 25px;
+    width: 25px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--violet-11);
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    background-color: var(--gray-3);
+    cursor: pointer;
+}
+
+.closeButton:hover {
+    background-color: var(--violet-4);
+}
+
+.closeButton:focus {
+    box-shadow: 0 0 0 2px var(--violet-7);
+}
+
+/* Стили для поля с паролем */
+.Root {
+	display: flex;
+	flex-wrap: nowrap;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	border-radius: 4px;
+	
+    color: var(--violet-11);
+    box-shadow: 0 0 0 1px var(--violet-7);
+
+	padding: 0 0.75em;
+	padding-right: 9px;
+	height: 36px;
+	gap: 8px;
+    box-shadow: 0 0 0 1px var(--violet-7);
+}
+
+
+.input:focus {
+    box-shadow: 0 0 0 2px var(--violet-8);
+}
+
+.Input,
+.Toggle {
+	all: unset;
+	box-sizing: border-box;
+	height: 18px;
+	font-size: 15px;
+	line-height: 1;
+}
+
+.Input {
+    width: 90%;
+	&::selection {
+		background-color: var(--black-a6);
+		color: white;
+	}
+}
+
+.Toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	aspect-ratio: 1;
+	border-radius: 0.5px;
+	&:focus-visible {
+		outline: 2px solid var(--accent-9);
+		outline-offset: 2px;
+	}
+}
