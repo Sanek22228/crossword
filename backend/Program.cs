@@ -7,6 +7,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddDbContext<AppDbContext>(options => 
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddSingleton<PasswordHasher>();
     
 // 2-ой способ
 // builder.Services.AddScoped<AppDbContext>();

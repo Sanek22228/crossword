@@ -10,14 +10,11 @@ namespace backend.Controllers;
 public class UserController : ControllerBase
 {
     private readonly AppDbContext _context;
-    public UserController(AppDbContext context)
+    private readonly PasswordHasher _hasher;
+    public UserController(AppDbContext context, PasswordHasher hasher)
     {
         _context = context;
-    }
-    [HttpPost]
-    public async Task<IActionResult> Hello()
-    {
-        return Ok("hello");
+        _hasher = hasher;
     }
 
     [HttpPost("register")]
@@ -27,6 +24,7 @@ public class UserController : ControllerBase
         if(user == null)
         {
             var newUser = new User(request.Email, request.Password);
+            newUser.Password = _hasher.HashPassword(newUser.Password ?? "");
             await _context.Users.AddAsync(newUser, ct);
             await _context.SaveChangesAsync(ct);
             newUser.UserName = $"user{newUser.Id}";
@@ -45,7 +43,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Login([FromBody] UserRequest request, CancellationToken ct)
     {
         var user = await GetUser(request, ct);
-        if (user?.Password != request.Password) {
+        if(user == null || !_hasher.VerifyPassword(request.Password, user.Password ?? "")) {
             return Unauthorized();
         }
         return Ok(new User()
@@ -59,7 +57,6 @@ public class UserController : ControllerBase
     // возможно вместо UserRequest request передавать только string email
     async Task<User?> GetUser(UserRequest request, CancellationToken ct)
     {
-        var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email, ct);
-        return user;
+        return await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email, ct);
     }
 }

@@ -35,10 +35,15 @@ function LoginModal() {
             return;
         }
 
-        setError("");
-        setLoginActive(false);
-        await fetchLogin({email, password});
-        signin("user1");
+        let user = await fetchLogin({email, password});
+        if(user){     
+            setError("");
+            setLoginActive(false);
+            signin(user);
+        }
+        else{
+            setError("Пользователь не найден");
+        }
     }
     async function HandleRegistration(){
         console.log(`password: ${password}; email: ${email}`);
@@ -60,10 +65,15 @@ function LoginModal() {
             return;
         }
 
-        setError("");
-        setLoginActive(false);
-        await fetchRegister({email, password});
-        signin("user1");
+        let user = await fetchRegister({email, password});
+        if(user){
+            signin(user);   
+            setError("");
+            setLoginActive(false);
+        }
+        else{
+            setError("Пользователь уже зарегистирован")
+        }
     }
     function ValidateEmail(){
         if(email.length < 1){
