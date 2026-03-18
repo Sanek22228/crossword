@@ -7,8 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { unstable_PasswordToggleField as PasswordToggleField } from "radix-ui";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import { fetchLogin, fetchRegister, hello } from "../services/users";
-import { User } from "../classes/User";
+import { fetchLogin, fetchRegister } from "../services/users";
 
 function LoginModal() {
     const navigate = useNavigate();
