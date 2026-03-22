@@ -1,17 +1,10 @@
 import { MAX_SIZE } from "../classes/Grid";
-<<<<<<< HEAD
-=======
 import { fetchValidation } from "../services/dictionary";
->>>>>>> backend
 
 const MIN_WORDS_COUNT = 2;
 const MIN_CHARS_COUNT = 2;
 
-<<<<<<< HEAD
-export function validateWords(input){
-=======
 export async function validateWords(input){
->>>>>>> backend
     input = input.trim();
     let words = '';
 
@@ -32,11 +25,7 @@ export async function validateWords(input){
         words = input.split(" ");
     }
 
-<<<<<<< HEAD
-    var validWords = []
-=======
     var validWords = [];
->>>>>>> backend
     words.forEach(word =>{
         let valid = true;
         let trimmedWord = word.trim();
@@ -67,10 +56,6 @@ export async function validateWords(input){
     validWords.sort((a,b) => {
         return b.length - a.length;
     });
-<<<<<<< HEAD
-    console.log(validWords);
-    return new Set(validWords);
-=======
     validWords = Array.from(new Set(validWords));
     var skippedWords = await fetchValidation(validWords);
     console.log("non valid words: ", skippedWords);
@@ -78,7 +63,6 @@ export async function validateWords(input){
     console.log("valid Words: ", validWords);
     return validWords;
     // return skippedWords == null ? validWords: validWords.filter(w => !skippedWords.includes(w));
->>>>>>> backend
 }
 
 const separators = [",", ".", "/", "#", "№", "-", "+", "=", "(", ")", "*", "!", "@", '"', "'",

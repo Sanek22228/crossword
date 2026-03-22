@@ -3,20 +3,35 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import { useAuth } from "../hook/useAuth";
 import styles from '../styles/LoginModal.module.css';
 import "@radix-ui/themes/styles.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { unstable_PasswordToggleField as PasswordToggleField } from "radix-ui";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { fetchLogin, fetchRegister } from "../services/users";
+import { useCrossword } from "../hook/useCrossword.jsx";
+import {fetchCrosswordPublication} from "../services/crosswords.js"
+import '../styles/App.css';
 
 function LoginModal() {
     const navigate = useNavigate();
+    const location = useLocation();
     const { signin, loginActive, setLoginActive } = useAuth();
+    const {crossword} = useCrossword();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(true);
+
+    // при изменении маршрута прятать модалку
+    useEffect(()=>{
+        if(loginActive){
+            setLoginActive(false);
+        }
+        // чтобы не ругался терминал
+        // eslint-disable-next-line react-hooks/exhaustive-deps 
+    },[location.pathname])
 
     async function HandleAuthorization(){
         console.log(`password: ${password}; email: ${email}`);
@@ -25,16 +40,20 @@ function LoginModal() {
             return;
         }
         if(!ValidatePassword()){
-            // setError("Неверный пароль?")
             setError("Длина пароля должна быть длиннее 6 символов и иметь числа");
             return;
         }
-        if(!VerifyPassword()){
-            setError("Невверный пароль");
+        setLoading(true);
+        let user;
+        try{
+            user = await fetchLogin({email, password});
+        }
+        catch(e){
+            console.error(error);
+            setError("Что-то пошло не так");
             return;
         }
-
-        let user = await fetchLogin({email, password});
+        setLoading(false);
         if(user){     
             setError("");
             setLoginActive(false);
@@ -45,7 +64,6 @@ function LoginModal() {
         }
     }
     async function HandleRegistration(){
-        console.log(`password: ${password}; email: ${email}`);
         if(!ValidateEmail()){
             setError("Почта введена неверно");
             return;
@@ -59,20 +77,33 @@ function LoginModal() {
             setError("Пароли не совпадают");
             return;
         }
-        if(!VerifyPassword()){
-            setError("Невверный пароль");
+        setLoading(true);
+        let user;
+        try{
+            user = await fetchRegister({email, password});
+        }
+        catch(e){
+            console.error(error);
+            setError("Что-то пошло не так");
             return;
         }
-
-        let user = await fetchRegister({email, password});
         if(user){
-            signin(user);   
+            signin(user);
+            try{
+                await fetchCrosswordPublication(crossword, user.Id)
+            }
+            catch(e){
+                console.error(error);
+                setError("Что-то пошло не так");
+                return;
+            }
             setError("");
             setLoginActive(false);
         }
         else{
             setError("Пользователь уже зарегистирован")
         }
+        setLoading(false);
     }
     function ValidateEmail(){
         if(email.length < 1){
@@ -96,18 +127,15 @@ function LoginModal() {
         if(password !== confirmPass) return false;
         return true
     }
-    function VerifyPassword(){
-        // return user.password === password ?  true : false
-        return true;
-    }
 
 
     return (
+        loginActive ?
         <>
             <Tabs.Root 
+                onValueChange={()=>setError("")}
                 className={styles.tabsRoot} 
                 defaultValue="tab1" 
-                style={{ visibility: loginActive ? "visible" : "hidden" }}
             >
                 <button 
                     className={styles.closeButton} 
@@ -161,8 +189,20 @@ function LoginModal() {
 						</PasswordToggleField.Root>
                     </fieldset>
                     <p style={{color: "red"}} className={styles.text}>{error}</p>
-                    <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
-                        <button onClick={HandleAuthorization} className={`${styles.button} ${styles.green}`}>
+                    <div style={{ 
+                        display: "grid", 
+                        gridTemplateColumns: "1fr auto",
+                        alignItems: "center",
+                    }}>
+                        <div>
+                            {loading && <span className="loader"></span>}
+                        </div>
+                        
+                        <button 
+                            onClick={HandleAuthorization} 
+                            className={`${styles.button} ${styles.green}`}
+                            style={{ justifySelf: "end" }}
+                        >
                             Войти
                         </button>
                     </div>
@@ -221,18 +261,29 @@ function LoginModal() {
 						</PasswordToggleField.Root>
                     </fieldset>
                     <p style={{color: "red"}} className={styles.text}>{error}</p>
-                    <div style={{ display: "flex", marginTop: 20, justifyContent: "flex-end" }}>
+                    <div style={{ 
+                        display: "grid", 
+                        gridTemplateColumns: "1fr auto",
+                        alignItems: "center"
+                    }}>
+                        <div>
+                            {loading && <span className="loader"></span>}
+                        </div>
+                        
                         <button 
+                            onClick={HandleRegistration} 
                             className={`${styles.button} ${styles.green}`}
-                            onClick={HandleRegistration}
+                            style={{ justifySelf: "end" }}
                         >
-                            Создать аккаунт
+                            Войти
                         </button>
                     </div>
                 </Tabs.Content>
             </Tabs.Root>
-            <div className={styles.overlay} style={{ visibility: loginActive ? "visible" : "hidden" }} />
+            <div className={styles.overlay}/>
         </>
+        :
+        null
     );
 }
 

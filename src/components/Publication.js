@@ -1,25 +1,14 @@
-<<<<<<< HEAD
-import { useNavigate } from "react-router-dom";
-=======
 import { Navigate, useNavigate } from "react-router-dom";
->>>>>>> backend
 import '../styles/Publication.css'
 import { CrosswordGrid } from '../utils/CrosswordGrid'
 import { useEffect, useState } from "react";
 import { useCrossword } from "../hook/useCrossword";
-<<<<<<< HEAD
-=======
 // import editIcon from "../images/edit.svg";
->>>>>>> backend
 
 function Publication(){
   const navigate = useNavigate();
   const {curCrossword} = useCrossword();
-<<<<<<< HEAD
-
-=======
   const [errorMessage, setErrorMessage] = useState("");
->>>>>>> backend
   function GoBack(){
     navigate(-1);
   }
@@ -28,11 +17,6 @@ function Publication(){
     SetCrossword(curCrossword)
   }, [curCrossword]);
 
-<<<<<<< HEAD
-  return(
-    <>
-      <main style={{alignItems: "center", height: "80vh"}}>
-=======
   const [definitions, updateDefinitions] = useState({
     vertical: curCrossword.verticalWords.map(w =>""),
     horizontal: curCrossword.horizontalWords.map(w => "")
@@ -60,7 +44,6 @@ function Publication(){
   return(
     <>
       <main style={{alignItems: "center"}}>
->>>>>>> backend
         <button id="backBtn" onClick={GoBack}>Отмена</button>
         <div id="crosswordInfo">
           <div id="words">
@@ -78,26 +61,6 @@ function Publication(){
           </div>
           <div id="definitions">
             <p><b>По вертикали:</b></p>
-<<<<<<< HEAD
-            <ol id="vertical-definitions">
-              <li>
-                бла бла бла
-              </li>
-              <li>
-                бла бла бла
-              </li>
-            </ol>
-            <p><b>По горизонтали:</b></p>
-            <ol id="horizontal-definitions">
-              <li>
-                бла бла бла
-              </li>
-              <li>
-                бла бла бла
-              </li>
-            </ol>
-            <button >
-=======
             <div style={{display: "flex", flexDirection: "column"}} id="vertical-definitions">
               {curCrossword.verticalWords.map((word, i) => 
                 <div key={i}>
@@ -130,17 +93,12 @@ function Publication(){
               )}
             </div>
             <button>
->>>>>>> backend
               Составить заново
             </button>
           </div>
         </div>
-<<<<<<< HEAD
-        <button style={{fontWeight: "bold"}}>Опубликовать</button>
-=======
         <button style={{fontWeight: "bold"}} onClick={PublicateCrossword}>Опубликовать</button>
         <div style={{color:"red", marginBottom: 0}} id="error-container">{errorMessage}</div>
->>>>>>> backend
       </main>
     </>
   );

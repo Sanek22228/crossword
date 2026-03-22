@@ -6,7 +6,21 @@ main{
   gap: 4vw;
   margin-bottom: 5vw;
 }
-
+header {
+  background-color: #939393;
+  text-align: center;
+  padding: 0.7%;
+  top: 0;
+  position: sticky;
+  max-height: 120px;
+  margin-bottom: 20px;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
 .wordInput{
   width: 40vw;
   height: 10vw;
@@ -91,13 +105,15 @@ footer{
 }
 
 .loader {
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      position: relative;
-      animation: rotate 1s linear infinite
-    }
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: relative;
+  animation: rotate 1s linear infinite;
+  }
     .loader::before {
+      width: 20px;
+      height: 20px;
       content: "";
       box-sizing: border-box;
       position: absolute;
