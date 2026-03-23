@@ -1,0 +1,59 @@
+[33m870ed9c2fbc9cb2503fb9b3e704905ce29119600[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m migrate to vite (move index.html to root folder, change file fromats to jsx if needed, add vite.config.js, change start and build command in package.json
+[33mc427eb3693ed4d51a9611f6e2d21845cbf6a0c91[m add health check for backend and postgre, health check page with email. added loader for registration and login
+[33m0e60493b77251341ca14b6c5760f12eea2ae1bb5[m Merge branch 'backend'
+[33m0e63f60285d74c8154f26d237c45b41453ad3a47[m[33m ([m[1;32mbackend[m[33m)[m clear trash
+[33mb2149ca89370fb10e5516061db3d4ba344380e4a[m feat: add Argon2id password hashing and DI integration for UserController
+[33m1caf609d261a7a0ba25c2783e9a9963df9357b28[m [200~feat: setup database core, auth logic and swagger
+[33m5d32344070943d7963979fff682e423d6fedabef[m added db context to Program.cs, default connection string to appsettings.json (ignored). Created UserController, directory DataAccess with AppDbContext.cs and directory Models insode of it with User, Crossword, CrosswordWord models
+[33m1c5701fd37cec1ba0da70ba7a707ee35ac36eb16[m added hoc RequireCrossword to prevent going to publicationPage, where crossword is required and redirect to main page. Created base for Policy page and directing to this page via link in registration modal
+[33m27ab1b4d09f01745aa9dffef2ccfe20a6083af8e[m added and styled modal for login/registration, used components from radix ui. Added some logic for modal, like showing when user has no account and going back with cross button click event
+[33m489f580bfa7a404d82beb96f5818fb3f8531974c[m edited sorting of word arrays in crossword class, replaced <ol> in Publication page with div and numbered words by their id
+[33meb6ef155c56956540dd8e3bda3abd7bc7d807b70[m added autherization provider, now without login user can't publicate crossword or go to account page and directed to login page
+[33mba3ad73d890167c4c3f28e08689746f88cdbb76e[m created servise to connect backend to interface and to use fetching data; added inputs for definitions of vertical and horizontal words, cannot push button publication while one of inputs is empty; added loading circle while word validation
+[33m924436ab96d3fff8caede9723864686e2c96f4be[m removing bin, object directories and appsetting.json
+[33mbde7404ee8c0f74596883c730ef0be1218a2c09c[m connected Yandex Dictionary API to backend , so now words are verified and non existing words won't be included in the crossword. API key is hidden in appsettings.json which is in gitignore
+[33m888cf3f99e2a102dcbe44ab07fe8f1677ecfa923[m created directories for Models, Controllers, Contracts; started working on word validation function
+[33mb6c82239ef64fb210d4336b0bc21f79a793e6608[m added backend directory and minimal project to verify the work of it
+[33m275d159b88ca1659acc3ce1cdf8bef6598dd1ac2[m Merge pull request #5 from Sanek22228/interface
+[33mf47cf00ad73cc8625f77168ce4f4c4075f917787[m final puclication page styling
+[33m442259e542f2513eea3b693b9fca500fa1cc3f5a[m[33m ([m[1;31morigin/interface[m[33m)[m final puclication page styling
+[33m515f7130bac1fc89d62eae7488d6da7a75d7e37c[m added styles for header, footer, publication page. information about crossword displays on the publication page
+[33ma9aa00cb54b25d9045b427a383aa9a14d2105862[m added styles for header, footer, publication page. information about crossword displays on the publication page
+[33m0d80592ff34eb2eda9a24d4403f5f1728aecc206[m created basic interface for publication page. added Publication.css
+[33md816d7718db7a4023555c3dd6ab3205aca252780[m created basic interface for publication page. added Publication.css
+[33m809d29d0fffec9d79a05a32152bb0b37429b5068[m added hoc and hook for tracking crosswrod changes, now while switching between pages crossword saves
+[33m5ef2b882ff265ee57fd9054b771331559aad7ead[m added hoc and hook for tracking crosswrod changes, now while switching between pages crossword saves
+[33mcf5f3aeb9f6dd392ac16898b7901f2a65517acd5[m installed react-router-dom; created 2 routes: main, publication; added base outlet foe future developing
+[33me926e36c503f60547ef83cfe03cc5589e637b837[m installed react-router-dom; created 2 routes: main, publication; added base outlet foe future developing
+[33m11b29e155fd97f818403cc537f3ed4b8848309b4[m added comments to App.js for saving crossword to local storage (failed); improved wordValidation.js: now it return new Set(), so there's np repeates in word list
+[33m336136cba4649e210c1c5db7253cbdf3a0cb1bb4[m added comments to App.js for saving crossword to local storage (failed); improved wordValidation.js: now it return new Set(), so there's np repeates in word list
+[33m5d8f4750af07112a57e914f5d85569e9fc60c87c[m added saving word list to local storage by using useEffect
+[33mdde3669c23e5ce8ce2f18637f03dd2d3e4d55695[m added saving word list to local storage by using useEffect
+[33m513bec77db53b00a81410334d8b428b55ed6d4b8[m imposed restrictions on grid size to 25x25
+[33mc7a68fb588f7e2e06cd22816abf7350be2a925ae[m imposed restrictions on grid size to 25x25
+[33m501f59a47d97a7d78df04e3b1c2d929cc0c6d0fb[m improved export: numbering the empty grid; scale grid if width is too big
+[33mad0e837e0039dcb1da6c5de35d9c0f67592d30ef[m improved export: numbering the empty grid; scale grid if width is too big
+[33mc071299b620f9e0e0a80e856d9f56fb969567780[m added diagonal directions in crosswordGenerator to prevent numbers overlay
+[33mfa0a2d99a94daafb1b609d02e1f3f503fce8cab5[m added diagonal directions in crosswordGenerator to prevent numbers overlay
+[33m797617fded34a14f4c6066dc838999ff808181e2[m corrected mistackes
+[33mc594ca0df846b24306497075f1db5527849f7258[m corrected mistackes
+[33mc7f193bb4345e4bb0be724861f89f57909bedc42[m improved wordValidation.js
+[33mb5ab6a8c1dd2baec7d8f782d9c74b7971861b720[m improved wordValidation.js
+[33mdff6354ab403b221ca09cc3669363a616ffb6e0a[m added styles for crossord numbering
+[33m58cfe1306cf95bef8c831e4b27432c488fed1a6e[m added styles for crossord numbering
+[33md5a50143c3cf001b459869f3067c4838edb7dbde[m added crossword numbering
+[33mccba13878a3a3dcdb64cb1212f584daa8b92ee32[m added crossword numbering
+[33m6a5297893a675414c8b40a677b7d214c066836be[m[33m ([m[1;31morigin/feature/crossword-algorithm[m[33m)[m redacted css
+[33m271e4354fc6f46fb95b1bbf0c091c61fe3ec4643[m redacted css
+[33m350f545ec023bc3b27112b779e77cd1435776eda[m added hint about rules for words input
+[33mab0f04a2e7adc7ca02ed52d02e13217e3d79b4ef[m added hint about rules for words input
+[33m700f20d75762f8f6f1b2a6c0b7d6798a6760eb2e[m Merge pull request #4 from Sanek22228/feature/export/pdf
+[33m4b967025dfefb432985e904bd21456d168e588f0[m Merge pull request #4 from Sanek22228/feature/export/pdf
+[33ma59380480cda73975c5d4f243a61d668358b433b[m[33m ([m[1;31morigin/feature/export/pdf[m[33m)[m added empty crossword grid to pdf export
+[33m4955b5f09a30b959cced1c3f478f0cd9b5c2bf84[m first feature/export/pdf commit
+[33m4013f39f3149a99205290a372458a42d92ed9eef[m modified export to pdf
+[33m8f438e4306d0dc392c0bba449532e6477ab3a038[m added expansion of crossword grid to left and top with shifting all added words; if skipped words is null then don't visualize info about them
+[33md9402d13f4502b3a2e06930f593d18467eaef7bd[m errors solved
+[33m6cde5fc337c5e952469f411a119f602c165918c3[m added export to .xls and .pdf
+[33mf95673ef23eccb755b20dff8229d4274730de138[m working version
+[33m04e6da17d066d8dfcbdf9a9c6ea2d833e81b2161[m first commint

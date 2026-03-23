@@ -33,7 +33,6 @@ function App(){
   useEffect(()=>{
     (async () => {
       setHealthStatus(await getConnection());
-      // console.log(healthStatus);
       }
     )()
   },[])
