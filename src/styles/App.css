@@ -7,20 +7,31 @@ main{
   margin-bottom: 5vw;
 }
 header {
-  background-color: #939393;
+  background-color: #9c9c9c;
   text-align: center;
-  padding: 0.7%;
+  padding: 0.2%;
   top: 0;
   position: sticky;
-  max-height: 120px;
   margin-bottom: 20px;
   z-index: 1;
   width: 100%;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 5vh;
   align-items: center;
   box-sizing: border-box;
 }
+nav{
+  display: flex;
+  justify-content: center;
+  gap: 1.5vw;
+}
+.account-link{
+  height: 80%;
+  text-align: right;
+  padding-right: 1vw;
+}
+
 .wordInput{
   width: 40vw;
   height: 10vw;
@@ -29,10 +40,9 @@ header {
 .createBtn{
   padding: 1% 2%;
   text-align: center;
-  /* width: 10vw; */
   background-color: #2E728D;
   color: white;
-  font-size: 1.5em;
+  font-size: 1.3em;
   font-weight: bold;
   border-radius: 10px;
   border: 0;
@@ -60,17 +70,14 @@ textarea{
   flex-direction: row;
 }
 
-#error{
+.error{
   color: red;
-  font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1.1em;
+  margin: 0;
 }
 
 .infoBtn{
   background-color: transparent;
-  /* width: 10px; */
-  /* height: 10px; */
-  /* width: fit-content; */
   border: 0;
 }
 
@@ -105,15 +112,13 @@ footer{
 }
 
 .loader {
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   position: relative;
   animation: rotate 1s linear infinite;
   }
     .loader::before {
-      width: 20px;
-      height: 20px;
       content: "";
       box-sizing: border-box;
       position: absolute;

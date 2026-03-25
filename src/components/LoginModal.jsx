@@ -22,7 +22,7 @@ function LoginModal() {
     const [password, setPassword] = useState("");
     const [confirmPass, setConfirmPass] = useState("");
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     // при изменении маршрута прятать модалку
     useEffect(()=>{
@@ -194,10 +194,7 @@ function LoginModal() {
                         gridTemplateColumns: "1fr auto",
                         alignItems: "center",
                     }}>
-                        <div>
-                            {loading && <span className="loader"></span>}
-                        </div>
-                        
+                        {loading && <span className="loader"></span>}                        
                         <button 
                             onClick={HandleAuthorization} 
                             className={`${styles.button} ${styles.green}`}
@@ -207,7 +204,6 @@ function LoginModal() {
                         </button>
                     </div>
                 </Tabs.Content>
-                
                 <Tabs.Content className={styles.tabsContent} value="tab2">
                     <p className={styles.text}>
                         Заполните все поля для создания нового аккаунта. Регистрируясь, вы принимаете наши  
@@ -266,10 +262,7 @@ function LoginModal() {
                         gridTemplateColumns: "1fr auto",
                         alignItems: "center"
                     }}>
-                        <div>
                             {loading && <span className="loader"></span>}
-                        </div>
-                        
                         <button 
                             onClick={HandleRegistration} 
                             className={`${styles.button} ${styles.green}`}

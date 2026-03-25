@@ -13,7 +13,7 @@ function Main(){
   const [inputValue, setInputValue] = useState(() => {return window.localStorage.getItem("words") ?? ""});
   const [error, setError] = useState("");
   const [showHint, setHint] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const {curCrossword} = useCrossword();
   const [crossword, setCrossword] = useState(curCrossword);
@@ -78,7 +78,7 @@ function Main(){
           </div>
         </div>
         <button className='createBtn' onClick={HandleClick}>Создать</button>      
-        {error && <p id='error'>{error}</p>}
+        {error && <p className='error'>{error}</p>}
         <div className='crosswordContainer'>
           {loading && <span className="loader"></span>}
           {crossword && <CrosswordViewer crossword={crossword}/>}
