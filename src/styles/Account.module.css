@@ -1,0 +1,41 @@
+*{
+    margin: 0;
+}
+
+.accountContainer{
+    width: 80%;
+    padding: 2vw;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 5vw;
+    margin-top: 3vw;
+}
+.accountInfo{
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+    gap: .3vh;
+}
+.accountInfo img{
+    width: 80%;
+}
+.accountInfo h2{
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+}
+.editBtn{
+    background-color: rgb(211, 211, 211);
+    color: black;
+    width: 80%;
+    padding: 3%;
+}
+
+.crosswordInfo{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    
+}
+.crosswordTable{
+
+}

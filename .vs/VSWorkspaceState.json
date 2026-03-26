@@ -1,5 +1,10 @@
 {
   "ExpandedNodes": [
+<<<<<<< HEAD
+    ""
+  ],
+  "SelectedNode": "\\G:\\programming\\js",
+=======
     "",
     "\\backend",
     "\\backend\\bin\\Debug",
@@ -12,5 +17,6 @@
     "\\src\\services"
   ],
   "SelectedNode": "\\src\\services",
+>>>>>>> backend
   "PreviewInSolutionExplorer": false
 }

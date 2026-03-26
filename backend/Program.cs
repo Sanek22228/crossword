@@ -5,13 +5,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-builder.Services.AddDbContext<AppDbContext>(options => 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+}
 
-builder.Services.AddSingleton<PasswordHasher>();
-    
+builder.Services.AddHealthChecks()
+    .AddNpgSql(connectionString);
+
+builder.Services.AddDbContext<AppDbContext>(options => 
+    options.UseNpgsql(connectionString));
 // 2-ой способ
 // builder.Services.AddScoped<AppDbContext>();
+
+builder.Services.AddSingleton<PasswordHasher>();    
 
 builder.Services.AddCors(options =>
 {
@@ -38,6 +46,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors(); 
 
 app.MapControllers();
+
+app.MapHealthChecks("/health");
 
 app.Map("/", (AppDbContext context) => {return context.Database.CanConnect();});
 

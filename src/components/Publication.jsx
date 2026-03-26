@@ -92,13 +92,13 @@ function Publication(){
                 </div>
               )}
             </div>
-            <button>
+            {/* <button>
               Составить заново
-            </button>
+            </button> */}
           </div>
         </div>
-        <button style={{fontWeight: "bold"}} onClick={PublicateCrossword}>Опубликовать</button>
-        <div style={{color:"red", marginBottom: 0}} id="error-container">{errorMessage}</div>
+        <p className="error">{errorMessage}</p>
+        <button style={{fontWeight: "bold", width: "10vw", margin: 0}} onClick={PublicateCrossword}>Готово</button>
       </main>
     </>
   );

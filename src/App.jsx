@@ -10,8 +10,42 @@ import { Account } from './components/Account'
 import { LoginModal } from './components/LoginModal'
 import { Policy } from './components/Policy'
 import { RequireCrossword } from './hoc/RequireCrossword'
+import { fethcHealth } from './services/connection'
+import { useEffect, useState } from 'react'
+import HealthCheckPage from './components/HealthCheckPage'
 
 function App(){
+  
+  const [healthStatus, setHealthStatus] = useState(null);
+
+  async function getConnection(){
+    try{
+      var health = await fethcHealth();
+    }
+    catch(e){
+      console.error(e);
+      health = "Unhealthy";
+    }
+    return health;
+  }
+
+  // в useEffect нельзя напрямую использовать async, поэтому использую самовызывающуюся функцию
+  useEffect(()=>{
+    (async () => {
+      setHealthStatus(await getConnection());
+      }
+    )()
+  },[])
+
+  if(healthStatus === null) return null
+
+  if(healthStatus !== "Healthy"){
+      return(
+      <>
+        <HealthCheckPage/>
+      </>
+    )
+  }
   return(
     <>
       <AuthProvider>
@@ -28,7 +62,7 @@ function App(){
         </CrosswordProvider>
       </AuthProvider>
     </>
-  )
+    )
 }
 
 export default App;
