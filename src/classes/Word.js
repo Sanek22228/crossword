@@ -11,7 +11,8 @@ export class Word{
         this.coordinates = coordinates;
         this.word = word;
         this.direction = dir;
-        this.id = 0;
+        this.order = 0;
+        this.isSkipped = false;
         // this.intersections = intersections;
     }
 

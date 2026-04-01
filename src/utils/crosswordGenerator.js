@@ -40,10 +40,14 @@ export function CreateCrossword(words){
         }
     }
 
-    console.log("skipped words: ", skippedWords);
-    console.log("added words: ", addedWords);
+    
+    skippedWords.forEach(word => {
+        word.isSkipped = true;
+    });
 
-    let crossword = new Crossword(addedWords, skippedWords, crosswordGrid.grid)
+    let crossword = new Crossword([...addedWords, ...skippedWords], crosswordGrid.grid)
+    console.log("skipped words: ", crossword.skippedWords);
+    console.log("added words: ", crossword.addedWords);
     NumberCrossword(crossword);
     return crossword;
 }
@@ -254,7 +258,7 @@ function GetCoordinates(index1, index2, word1, word2){
 }
 
 /*
-    returns
+    return
         true / false
 */
 function CanPlaceWord(word1, word2){
