@@ -1,25 +1,24 @@
+import { Word } from "./Word";
+
 export class Crossword{
-    constructor(addedWords, skippedWords, grid){
-        
-        addedWords.sort((a,b) => {
-            if(a.coordinates.start_row !== b.coordinates.start_row) return a.coordinates.start_row - b.coordinates.start_row;
-            else return a.coordinates.start_col - b.coordinates.start_col;
-        })
-
-        this.verticalWords = addedWords.filter((w) => {return w.direction === "vertical"});
-        this.horizontalWords = addedWords.filter((w) => {return w.direction === "horizontal"});
-
-        this.wordAmount = addedWords.length;
+    constructor(words, grid){
+        this.words = words;
+        this.wordAmount = this.addedWords.length;
         this.grid = grid;
-        this.addedWords = addedWords;
-        this.skippedWords = skippedWords;
     }
-
-    SetWordArrays(){
-        
+    // SortWords() {
+    //     this.addedWords.sort((a,b) => {return a.id - b.id});
+    // }
+    get addedWords(){
+        return this.words.filter(w => (!w.isSkipped));  
     }
-
-    SortWords() {
-        this.addedWords.sort((a,b) => {return a.id - b.id});
+    get skippedWords(){
+        return this.words.filter(w => (w.isSkipped));
+    }
+    get horizontalWords(){
+        return this.words.filter(w => (w.direction == Word.DIRECTIONS.HORIZONTAL));
+    }
+    get verticalWords(){
+        return this.words.filter(w => (w.direction == Word.DIRECTIONS.VERTICAL));
     }
 }
