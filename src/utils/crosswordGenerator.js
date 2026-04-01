@@ -40,7 +40,6 @@ export function CreateCrossword(words){
         }
     }
 
-    
     skippedWords.forEach(word => {
         word.isSkipped = true;
     });
@@ -369,23 +368,23 @@ function NormalizeGrid(countRow, countCol){
 
 // нумерация слов в кроссворде (с левого верхнего угла)
 function NumberCrossword(crossword){
-    let wordId = 1;
+    let wordOrder = 1;
     crossword.addedWords.forEach((w) => {
         if(w.direction === Word.DIRECTIONS.HORIZONTAL){
             if(w.coordinates.start_col - 1 >= 0) 
                 crossword.grid[w.coordinates.start_row][w.coordinates.start_col-1] = {
-                    value: wordId.toString(),
+                    value: wordOrder.toString(),
                     direction : Word.DIRECTIONS.HORIZONTAL
                 };
         }
         else{
             if(w.coordinates.start_row - 1 >= 0) 
                 crossword.grid[w.coordinates.start_row-1][w.coordinates.start_col] = {
-                    value: wordId.toString(),
+                    value: wordOrder.toString(),
                     direction : Word.DIRECTIONS.VERTICAL
                 };
         }
-        w.id = wordId;
-        wordId++;
+        w.order = wordOrder;
+        wordOrder++;
     });
 }
