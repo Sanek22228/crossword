@@ -64,7 +64,7 @@ function Publication(){
             <div style={{display: "flex", flexDirection: "column"}} id="vertical-definitions">
               {curCrossword.verticalWords.map((word, i) => 
                 <div key={i}>
-                  <label>{word.id}.</label>
+                  <label>{word.order}.</label>
                   <input value={definitions.vertical[i]} onChange={(e) => {
                     let copy = [...definitions.vertical];
                     copy[i] = e.target.value;
@@ -80,7 +80,7 @@ function Publication(){
             <div style={{display: "flex", flexDirection: "column"}} id="horizontal-definitions">
               {curCrossword.horizontalWords.map((word, i) => 
                 <div key={i}>
-                  <label>{word.id}.</label>
+                  <label>{word.order}.</label>
                   <input value={definitions.horizontal[i]} onChange={(e) => {
                     let copy = [...definitions.horizontal];
                     copy[i] = e.target.value;
