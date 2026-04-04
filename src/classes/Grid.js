@@ -3,7 +3,7 @@ export const MAX_SIZE = 25;
 
 export class Grid{
     height = DEFAULT_SIZE;
-    width = DEFAULT_SIZE;
+    width = DEFAULT_SIZE;ч
     grid = [];
 
     constructor() {

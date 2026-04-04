@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +15,12 @@ if (string.IsNullOrEmpty(connectionString))
 builder.Services.AddHealthChecks()
     .AddNpgSql(connectionString);
 
+var dataSourceBuilder = new NpgsqlDataSourceBuilder(builder.Configuration.GetConnectionString("DefaultConnection"));
+dataSourceBuilder.EnableDynamicJson();
+var dataSource = dataSourceBuilder.Build();
+
 builder.Services.AddDbContext<AppDbContext>(options => 
-    options.UseNpgsql(connectionString));
+    options.UseNpgsql(dataSource));
 // 2-ой способ
 // builder.Services.AddScoped<AppDbContext>();
 
