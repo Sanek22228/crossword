@@ -3,12 +3,16 @@ import '../styles/Publication.css'
 import { CrosswordGrid } from '../utils/CrosswordGrid'
 import { useEffect, useState } from "react";
 import { useCrossword } from "../hook/useCrossword";
+import { fetchCrosswordPublication } from "../services/crosswords";
+import { useAuth } from "../hook/useAuth"
 // import editIcon from "../images/edit.svg";
 
 function Publication(){
   const navigate = useNavigate();
   const {curCrossword} = useCrossword();
   const [errorMessage, setErrorMessage] = useState("");
+  const {user, setLoginActive} = useAuth();
+  
   function GoBack(){
     navigate(-1);
   }
@@ -27,10 +31,17 @@ function Publication(){
     return <Navigate to="/"/>
   }
 
-  function PublicateCrossword(){
+  async function PublicateCrossword(){
     if(DefinitionsFulfilled()){
       setErrorMessage("");
-      navigate('/account');
+      if(user != null){
+        console.log(user.id);
+        await fetchCrosswordPublication(user, crossword);
+        navigate("/account");
+      }
+      else{
+        setLoginActive(true);
+      }
     }
     else{
       setErrorMessage("Все поля объяснений должны быть заполнены");

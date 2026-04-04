@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -16,8 +16,7 @@ namespace backend.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
                     Password = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "text", nullable: true)
@@ -31,12 +30,11 @@ namespace backend.Migrations
                 name: "Crosswords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     WordAmount = table.Column<int>(type: "integer", nullable: false),
-                    Grid = table.Column<string>(type: "jsonb", nullable: true)
+                    Grid = table.Column<List<List<string>>>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,15 +51,14 @@ namespace backend.Migrations
                 name: "CrosswordWords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    WordText = table.Column<string>(type: "text", nullable: true),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    WordText = table.Column<string>(type: "text", nullable: false),
                     StartRow = table.Column<int>(type: "integer", nullable: false),
                     StartCol = table.Column<int>(type: "integer", nullable: false),
                     IsSkipped = table.Column<bool>(type: "boolean", nullable: false),
                     Direction = table.Column<int>(type: "integer", nullable: false),
                     WordOrder = table.Column<int>(type: "integer", nullable: false),
-                    CrosswordId = table.Column<int>(type: "integer", nullable: false)
+                    CrosswordId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {

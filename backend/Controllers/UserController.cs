@@ -23,11 +23,11 @@ public class UserController : ControllerBase
         var user = await GetUser(request, ct);
         if(user == null)
         {
-            var newUser = new User(request.Email, request.Password);
-            newUser.Password = _hasher.HashPassword(newUser.Password ?? "");
-            await _context.Users.AddAsync(newUser, ct);
-            await _context.SaveChangesAsync(ct);
+            var newUser = new User();
+            newUser.Email = request.Email;
+            newUser.Password = _hasher.HashPassword(request.Password);
             newUser.UserName = $"user{newUser.Id}";
+            await _context.Users.AddAsync(newUser, ct);
             await _context.SaveChangesAsync(ct);
             return Ok(new
             {
