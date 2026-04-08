@@ -11,7 +11,7 @@ function Publication(){
   const navigate = useNavigate();
   const {curCrossword} = useCrossword();
   const [errorMessage, setErrorMessage] = useState("");
-  const {user, setLoginActive} = useAuth();
+  const {user, setLoginActive, setOnSuccessAction} = useAuth();
   
   function GoBack(){
     navigate(-1);
@@ -37,10 +37,11 @@ function Publication(){
       if(user != null){
         console.log(user.id);
         await fetchCrosswordPublication(user, crossword);
-        navigate("/account");
+        navigate(`/account/${user.id}`);
       }
       else{
         setLoginActive(true);
+        setOnSuccessAction(() => async (loggedUser) => await fetchCrosswordPublication(loggedUser, crossword));
       }
     }
     else{

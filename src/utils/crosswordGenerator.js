@@ -22,7 +22,7 @@ export function CreateCrossword(words){
     for(let word of wordsCopy){
         if (!TryPlaceWord(word)){
             console.warn("try place word failed skipped words push ", word)
-            skippedWords.push(word);
+            skippedWords.push(new Word(word));
         }
         else{
             console.warn("function try place word succeed, added words push", word);
@@ -40,9 +40,9 @@ export function CreateCrossword(words){
         }
     }
 
-    skippedWords.forEach(word => {
-        word.isSkipped = true;
-    });
+    for (let i = 0; i < skippedWords.length; i++) {
+        skippedWords[i].isSkipped = true;
+    }
 
     let crossword = new Crossword([...addedWords, ...skippedWords], crosswordGrid.grid)
     console.log("skipped words: ", crossword.skippedWords);

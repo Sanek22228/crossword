@@ -6,7 +6,6 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-
 public class UserController : ControllerBase
 {
     private readonly AppDbContext _context;
@@ -23,9 +22,11 @@ public class UserController : ControllerBase
         var user = await GetUser(request, ct);
         if(user == null)
         {
-            var newUser = new User();
-            newUser.Email = request.Email;
-            newUser.Password = _hasher.HashPassword(request.Password);
+            var newUser = new User()
+            {
+                Email = request.Email,
+                Password = _hasher.HashPassword(request.Password)
+            };
             newUser.UserName = $"user{newUser.Id}";
             await _context.Users.AddAsync(newUser, ct);
             await _context.SaveChangesAsync(ct);
@@ -33,7 +34,7 @@ public class UserController : ControllerBase
             {
                 Email = newUser.Email,
                 Id = newUser.Id,
-                UserName = newUser.UserName
+                UserName = newUser.UserName,
             });
         }
         return Unauthorized();
@@ -50,7 +51,7 @@ public class UserController : ControllerBase
         {
             Id = user.Id,
             Email = user.Email, 
-            UserName = user.UserName
+            UserName = user.UserName,
         });
     }
 
@@ -58,5 +59,22 @@ public class UserController : ControllerBase
     async Task<User?> GetUser(UserRequest request, CancellationToken ct)
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email, ct);
+    }
+    // public async Task<User?> GetUser(Guid id, CancellationToken ct)
+    // {
+    //     return await _context.Users.FirstOrDefaultAsync(x => x.Id == id, ct);
+    // }
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetStats(Guid id, CancellationToken ct)
+    {
+        try
+        {
+            var curUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == id, ct);
+            return Ok((curUser?.Crosswords.Count, curUser?.CompletedCrosswords));
+        }
+        catch
+        {
+            return BadRequest("Неверный идентификатор");
+        }
     }
 }

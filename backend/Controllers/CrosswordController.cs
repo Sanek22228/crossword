@@ -43,4 +43,10 @@ public class CrosswordController : ControllerBase
         await _context.SaveChangesAsync(ct);
         return Ok();
     }
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetUserCrosswords(Guid id)
+    {
+        var crosswords = await _context.Crosswords.Where(crossword => crossword.UserId == id).ToListAsync();
+        return Ok(crosswords);
+    }
 }

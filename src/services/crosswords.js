@@ -10,19 +10,28 @@ export const fetchCrosswordPublication = async (user, crossword) => {
         wordOrder: word.order
     }))
     try {
+        var cleanGrid = crossword.grid.map(r => 
+                r.map(cell => (typeof cell === "object" && cell !== null ? cell.value : cell)));
         var response = await axios.post("http://localhost:5298/crossword/", {
             userId: user.id,
             wordAmount: crossword.wordAmount,
-            grid: crossword.grid.map(r => {r.forEach(c => {
-                if(typeof c === "object" && c !== null){
-                    c = "0";
-                }
-            });}),
+            grid: cleanGrid,
             crosswordWords: crosswordWords
         });
         return response.data;
     }
     catch(e){
         console.error("Server errors:", e.response?.data?.errors);
+    }
+}
+
+export const fetchUserCrosswords = async(user) => {
+    try{
+        var response = await axios.get(`http://localhost:5298/crossword/${user.id}`);
+        return response.data;
+    }
+    catch(e){
+        console.error("Server errors:", e.response?.data?.errors);
+        return null;
     }
 }

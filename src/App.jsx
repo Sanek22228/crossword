@@ -54,7 +54,7 @@ function App(){
             <Route path='/' element={ <Layout/> }>
               <Route index element={<Main/>}></Route>
               <Route path='/publication' element={<RequireCrossword><Publication/></RequireCrossword>}></Route>
-              <Route path='/account' element={<RequireAuth><Account/></RequireAuth>}></Route>
+              <Route path="/account/:id" element={<RequireAuth><Account/></RequireAuth>}></Route>
               <Route path='/policy' element={<Policy/>}></Route>
             </Route>
           </Routes>

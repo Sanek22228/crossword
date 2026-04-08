@@ -2,11 +2,12 @@ import { Word } from '../classes/Word';
 
 function CrosswordGrid({crossword}){
   const grid = crossword.grid;
+  console.log(grid);
   return(
     <>
       <table id='filledTable'>
         <tbody>
-          {grid.map((row, rowIndex) => (
+          {grid && grid.map((row, rowIndex) => (
             <tr key={rowIndex}>{
               row.map((cell, colIndex) => {
                 let cellValue = Number(cell);

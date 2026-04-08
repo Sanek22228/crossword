@@ -25,7 +25,7 @@ const CrosswordViewer = ({crossword}) => {
             <div className='infoContainer'>
                 <div><b>Слова по горизонтали:</b> {FormatWordArray(crossword.horizontalWords)};</div>
                 <div><b>Слова по вертикали:</b> {FormatWordArray(crossword.verticalWords)};</div>
-                {FormatWordArray(crossword.skippedWords, "string") && <div><b>Пропущенные слова:</b> {FormatWordArray(crossword.skippedWords, "string")};</div>}
+                {FormatWordArray(crossword.skippedWords) && <div><b>Пропущенные слова:</b> {FormatWordArray(crossword.skippedWords)};</div>}
             </div>
             <CrosswordGrid crossword={crossword}/>
             <div className='exportBtnContainer'>
@@ -45,22 +45,12 @@ function handleDownload(type){
     ExportCrossword(type);
 }
 
-function FormatWordArray(wordArray, objectType){
+function FormatWordArray(wordArray){
     let resString = "";
-    
-    if(objectType === "string"){
-        for(let i = 0; i < wordArray.length; i++){
-            resString += wordArray[i];
-            if(i !== wordArray.length-1)
-                resString += ", ";
-        }
-    }
-    else{
-        for(let i = 0; i < wordArray.length; i++){
-        resString += wordArray[i].word;
-        if(i !== wordArray.length-1)
-            resString += ", ";
-        }
+    for(let i = 0; i < wordArray.length; i++){
+    resString += wordArray[i].word;
+    if(i !== wordArray.length-1)
+        resString += ", ";
     }
     return resString;
 }

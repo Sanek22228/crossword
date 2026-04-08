@@ -15,7 +15,7 @@ import '../styles/App.css';
 function LoginModal() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { signin, loginActive, setLoginActive } = useAuth();
+    const { signin, loginActive, setLoginActive, onSuccessAction, setOnSuccessAction } = useAuth();
     const {crossword} = useCrossword();
 
     const [email, setEmail] = useState("");
@@ -58,6 +58,11 @@ function LoginModal() {
             setError("");
             setLoginActive(false);
             signin(user);
+            navigate(`/account/${user.id}`);
+            if(onSuccessAction) {
+                await onSuccessAction(user)
+                setOnSuccessAction(null);
+            }
         }
         else{
             setError("Пользователь не найден");
@@ -85,6 +90,7 @@ function LoginModal() {
         catch(e){
             console.error(error);
             setError("Что-то пошло не так");
+            setLoading(false);
             return;
         }
         if(user){
@@ -95,10 +101,16 @@ function LoginModal() {
             catch(e){
                 console.error(error);
                 setError("Что-то пошло не так");
+                setLoading(false);
                 return;
             }
             setError("");
             setLoginActive(false);
+            navigate(`/account/${user.id}`);
+            if(onSuccessAction) {
+                onSuccessAction(user)
+                setOnSuccessAction(null);
+            }       
         }
         else{
             setError("Пользователь уже зарегистирован")
@@ -142,7 +154,6 @@ function LoginModal() {
                     aria-label="Close" 
                     onClick={() => {
                         setLoginActive(false); 
-                        navigate(-1, { replace: true });
                     }}
                 >
                     <Cross2Icon />

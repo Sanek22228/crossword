@@ -20,10 +20,10 @@ export const fetchRegister = async (user) => {
     }
 }
 
-export const hello = async () => {
+export const fetchUserStatistics = async (user) => {
     try{
-        var response = await axios.post("http://localhost:5298/user");
-        console.log(response.data);
+        var response = await axios.get(`http://localhost:5298/user/${user.id}`);
+        return response.data;
     }
     catch(e){
         console.error(e);

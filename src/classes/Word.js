@@ -3,16 +3,24 @@ export class Word{
         HORIZONTAL : "horizontal",
         VERTICAL : "vertical"
     }
-
+    // not skipped
     constructor(word, dir, coordinates){
-        if(!Object.values(Word.DIRECTIONS).includes(dir)){
-            throw new Error(`invalid direction: '${dir}'`)
-        }
-        this.coordinates = coordinates;
         this.word = word;
-        this.direction = dir;
-        this.order = 0;
-        this.isSkipped = false;
+        if(dir && coordinates){
+            if(!Object.values(Word.DIRECTIONS).includes(dir)){
+                throw new Error(`invalid direction: '${dir}'`)
+            }
+            this.coordinates = coordinates;
+            this.direction = dir;
+            this.order = 0;
+            this.isSkipped = false;
+        }
+        else{
+            this.coordinates = [];
+            this.direction = null;
+            this.isSkipped = true;
+        }
+        
         // this.intersections = intersections;
     }
 
