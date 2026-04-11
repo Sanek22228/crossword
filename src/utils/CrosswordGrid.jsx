@@ -2,7 +2,6 @@ import { Word } from '../classes/Word';
 
 function CrosswordGrid({crossword}){
   const grid = crossword.grid;
-  console.log(grid);
   return(
     <>
       <table id='filledTable'>

@@ -95,15 +95,6 @@ function LoginModal() {
         }
         if(user){
             signin(user);
-            try{
-                await fetchCrosswordPublication(crossword, user.Id)
-            }
-            catch(e){
-                console.error(error);
-                setError("Что-то пошло не так");
-                setLoading(false);
-                return;
-            }
             setError("");
             setLoginActive(false);
             navigate(`/account/${user.id}`);

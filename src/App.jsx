@@ -7,6 +7,7 @@ import { CrosswordProvider } from './hoc/crosswordProvider'
 import {RequireAuth} from './hoc/RequireAuth'
 import { AuthProvider } from './hoc/AuthProvider'
 import { Account } from './components/Account'
+import { AccountEditModal } from './components/AccountEditModal'
 import { LoginModal } from './components/LoginModal'
 import { Policy } from './components/Policy'
 import { RequireCrossword } from './hoc/RequireCrossword'
@@ -54,7 +55,9 @@ function App(){
             <Route path='/' element={ <Layout/> }>
               <Route index element={<Main/>}></Route>
               <Route path='/publication' element={<RequireCrossword><Publication/></RequireCrossword>}></Route>
-              <Route path="/account/:id" element={<RequireAuth><Account/></RequireAuth>}></Route>
+              <Route path="/account/:id" element={<RequireAuth><Account/></RequireAuth>}>
+                <Route path="edit" element={<AccountEditModal/>}></Route>
+              </Route>
               <Route path='/policy' element={<Policy/>}></Route>
             </Route>
           </Routes>

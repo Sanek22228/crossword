@@ -29,3 +29,13 @@ export const fetchUserStatistics = async (user) => {
         console.error(e);
     }
 }
+
+export const updateUser = async (user, data) => {
+    try{
+        var response = await axios.put(`http://localhost:5298/user/${user.id}`, data);
+        return response.data;
+    }
+    catch(e){
+        console.error(e)
+    }
+}
