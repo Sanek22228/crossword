@@ -7,15 +7,11 @@ import { unstable_PasswordToggleField as PasswordToggleField } from "radix-ui";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { fetchLogin, fetchRegister } from "../services/users";
-import { useCrossword } from "../hook/useCrossword.jsx";
-// import {fetchCrosswordPublication} from "../services/crosswords.js"
-import '../styles/App.css';
 
 function LoginModal() {
     const navigate = useNavigate();
     const location = useLocation();
     const { signin, loginActive, setLoginActive, onSuccessAction, setOnSuccessAction } = useAuth();
-    const {crossword} = useCrossword();
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");

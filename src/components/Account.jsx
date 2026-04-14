@@ -47,22 +47,25 @@ function Account(){
           {crosswords !== null && 
           crosswords.length > 0 ?
           crosswords.map((crossword,key) => (
-            <div key={key} className={styles.crosswordTable}>
-              <CrosswordGrid crossword={crossword}/>
-              <p>
-                Название: 
-                {/* Название: {crossword.name} */}
-              </p>
-              <p>
-                Дата создания: {new Date(crossword.createdAt).toLocaleDateString()}
-              </p>
-              {/* <div style={{display: "flex",alignItems: "center", gap: ".5vw"}}>
-                <span>
-                  Сложность: 
-                </span>
-                <Rating name="read-only" value={value} readOnly />
-              </div> */}
-            </div>
+            <>
+              <div key={key} className={styles.crosswordTable}>
+                <CrosswordGrid crossword={crossword}/>
+                <p>
+                  Название: 
+                  {/* Название: {crossword.name} */}
+                </p>
+                <p>
+                  Дата создания: {new Date(crossword.createdAt).toLocaleDateString()}
+                </p>
+                {/* <div style={{display: "flex",alignItems: "center", gap: ".5vw"}}>
+                  <span>
+                    Сложность: 
+                  </span>
+                  <Rating name="read-only" value={value} readOnly />
+                </div> */}
+                <div className={`${styles.crosswordOverlay}`}></div>
+              </div>
+            </>
           )) 
           : <p>У вас пока нет кроссвордов</p>
           }
