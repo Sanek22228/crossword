@@ -32,25 +32,11 @@ li{
   text-align: left;
 }
 
-button{
-  background-color: #2E728D;
-  color: white;
-  padding: 1%;
-  border: 0;
-  font-size: 1em;
-  border-radius: .6vw;
-  margin-top: 10px;
-}
-
-button:hover{
-  cursor: pointer;
-}
-
 input{
   background-color: transparent;
-  /* border: none; */
-  /* border-bottom: 1px black; */
-  /* text-decoration: underline; */
+  border: none;
+  border-bottom: 1px black;
+  /* text-decoration: underline;  */
   border: none;
   border-bottom: 1px solid black;
 }

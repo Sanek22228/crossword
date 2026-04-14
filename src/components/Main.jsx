@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import '../styles/App.css';
 import {validateWords} from '../utils/wordValidation'
 import { CreateCrossword } from '../utils/crosswordGenerator'
 import { CrosswordViewer } from '../utils/crosswordViewer'
@@ -77,7 +76,7 @@ function Main(){
             </div>
           </div>
         </div>
-        <button className='createBtn' onClick={HandleClick}>Создать</button>      
+        <button className='Button violet' style={{"padding":".5vw 1.5vw", "fontSize":"1.1rem"}} onClick={HandleClick}>Создать</button>      
         {error && <p className='error'>{error}</p>}
         <div className='crosswordContainer'>
           {loading && <span className="loader"></span>}

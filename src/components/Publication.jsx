@@ -56,7 +56,7 @@ function Publication(){
   return(
     <>
       <main style={{alignItems: "center"}}>
-        <button id="backBtn" onClick={GoBack}>Отмена</button>
+        {/* <button id="backBtn" onClick={GoBack}>Отмена</button> */}
         <div id="crosswordInfo">
           <div id="words">
             <p style={{marginBottom: '0'}}><b>Слова по вертикали:</b></p>
@@ -110,7 +110,7 @@ function Publication(){
           </div>
         </div>
         <p className="error">{errorMessage}</p>
-        <button style={{fontWeight: "bold", width: "10vw", margin: 0}} onClick={PublicateCrossword}>Готово</button>
+        <button style={{fontWeight: "bold", padding: ".4vw 2vw", margin: 0}} className='Button violet' onClick={PublicateCrossword}>Готово</button>
       </main>
     </>
   );

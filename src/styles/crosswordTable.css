@@ -82,11 +82,5 @@ table{
 }
 
 #publishBtn {
-    background-color: rgb(139, 139, 139);
-    padding: 4% 6%;
     border-radius: 5vw;
-    border: none;
-    width: fit-content;
-    margin-top: 1vw;
-    /* font-weight: bold; */
 }

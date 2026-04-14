@@ -2,14 +2,13 @@ import { Tabs } from "radix-ui";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useAuth } from "../hook/useAuth";
 import styles from '../styles/LoginModal.module.css';
-import "@radix-ui/themes/styles.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { unstable_PasswordToggleField as PasswordToggleField } from "radix-ui";
 import { EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { fetchLogin, fetchRegister } from "../services/users";
 import { useCrossword } from "../hook/useCrossword.jsx";
-import {fetchCrosswordPublication} from "../services/crosswords.js"
+// import {fetchCrosswordPublication} from "../services/crosswords.js"
 import '../styles/App.css';
 
 function LoginModal() {
@@ -141,7 +140,7 @@ function LoginModal() {
                 defaultValue="tab1" 
             >
                 <button 
-                    className={styles.closeButton} 
+                    className="closeButton" 
                     aria-label="Close" 
                     onClick={() => {
                         setLoginActive(false); 
@@ -199,7 +198,7 @@ function LoginModal() {
                         {loading && <span className="loader"></span>}                        
                         <button 
                             onClick={HandleAuthorization} 
-                            className={`${styles.button} ${styles.green}`}
+                            className="Button green"
                             style={{ justifySelf: "end" }}
                         >
                             Войти
@@ -267,15 +266,15 @@ function LoginModal() {
                             {loading && <span className="loader"></span>}
                         <button 
                             onClick={HandleRegistration} 
-                            className={`${styles.button} ${styles.green}`}
+                            className="Button green"
                             style={{ justifySelf: "end" }}
                         >
-                            Войти
+                            Создать аккаунт
                         </button>
                     </div>
                 </Tabs.Content>
             </Tabs.Root>
-            <div className={styles.overlay}/>
+            <div className="overlay"/>
         </>
         :
         null

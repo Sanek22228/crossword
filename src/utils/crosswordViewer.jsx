@@ -35,7 +35,7 @@ const CrosswordViewer = ({crossword}) => {
                 <button onClick={() => handleDownload("pdf")} className='downloadBtn'>
                     Скачать в PDF
                 </button>
-                <button id='publishBtn' onClick={() => ToPublication(crossword)}>Опубликовать</button>
+                <button id='publishBtn' className='Button violet' onClick={() => ToPublication(crossword)}>Опубликовать</button>
             </div>
         </div>
     );

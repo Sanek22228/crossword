@@ -15,6 +15,8 @@ import { fethcHealth } from './services/connection'
 import { useEffect, useState } from 'react'
 import HealthCheckPage from './components/HealthCheckPage'
 
+import './styles/App.css';
+
 function App(){
   
   const [healthStatus, setHealthStatus] = useState(null);
