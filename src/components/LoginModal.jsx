@@ -169,7 +169,7 @@ function LoginModal() {
                         <input 
                             onChange={(e) => setEmail(e.target.value)} 
                             value={email}
-                            className={styles.input} 
+                            className="Input"
                             id="email" type="email" placeholder="name@mail.com" required 
                         />
                     </fieldset>
@@ -179,7 +179,7 @@ function LoginModal() {
                         </label>
                         <PasswordToggleField.Root>
 								<div className={`${styles.Root}`}>
-									<PasswordToggleField.Input className={`${styles.Input}`} onChange={(e) => setPassword(e.target.value)} value={password} id="reg-password"/>
+									<PasswordToggleField.Input className="PasswordInput" onChange={(e) => setPassword(e.target.value)} value={password} id="reg-password"/>
 									<PasswordToggleField.Toggle className={styles.Toggle}>
 										<PasswordToggleField.Icon
 											visible={<EyeOpenIcon />}
@@ -217,7 +217,7 @@ function LoginModal() {
                         <input 
                             onChange={(e) => setEmail(e.target.value)} 
                             value={email}
-                            className={styles.input} 
+                            className="Input"
                             id="reg-email" type="email" placeholder="name@mail.com" required 
                         />
                     </fieldset>
@@ -227,7 +227,7 @@ function LoginModal() {
                         </label>
                         	<PasswordToggleField.Root>
 								<div className={styles.Root}>
-									<PasswordToggleField.Input className={`${styles.Input}`} onChange={(e) => setPassword(e.target.value)} value={password}/>
+									<PasswordToggleField.Input className="Input" onChange={(e) => setPassword(e.target.value)} value={password}/>
 									<PasswordToggleField.Toggle className={styles.Toggle}>
 										<PasswordToggleField.Icon
 											visible={<EyeOpenIcon />}
@@ -244,7 +244,7 @@ function LoginModal() {
                         <PasswordToggleField.Root>
 								<div className={`${styles.Root}`}>
 									<PasswordToggleField.Input 
-                                        className={`${styles.Input}`} 
+                                        className="PasswordInput" 
                                         onChange={(e) => setConfirmPass(e.target.value)} 
                                         value={confirmPass}
                                     />

@@ -88,3 +88,37 @@
 button:hover{
   cursor: pointer;
 }
+
+
+.Input {
+    all: unset;
+    box-sizing: border-box;
+    flex: 1 0 auto;
+    border-radius: 4px;
+    padding: 0 10px;
+    font-size: 15px;
+    line-height: 1;
+    color: var(--violet-11);
+    box-shadow: 0 0 0 1px var(--violet-7);
+    height: 35px;
+    width: 100%;
+}
+
+.PasswordInput{
+    width: 90%;
+	&::selection {
+		background-color: var(--black-a6);
+		color: white;
+	}
+}
+
+input{
+    border: none;
+}
+.Input:focus {
+	box-shadow: 0 0 0 2px var(--violet-8);
+}
+
+input[type="email"]:not(:placeholder-shown):invalid {
+    box-shadow: 0 0 0 1px red;
+}

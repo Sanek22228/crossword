@@ -32,13 +32,11 @@ li{
   text-align: left;
 }
 
-input{
+.QuestionInput{
   background-color: transparent;
   border: none;
-  border-bottom: 1px black;
-  /* text-decoration: underline;  */
-  border: none;
   border-bottom: 1px solid black;
+
 }
 
 input:focus{

@@ -97,29 +97,6 @@
     user-select: none;
 }
 
-.input {
-    box-sizing: border-box;
-    flex: 1 0 auto;
-    border-radius: 4px;
-    padding: 0 10px;
-    font-size: 15px;
-    line-height: 1;
-    color: var(--violet-11);
-    box-shadow: 0 0 0 1px var(--violet-7);
-    height: 35px;
-    width: 100%;
-}
-
-/* applyes whien placeholder is hidden (means input has some value) and input is invalid  */
-input[type="email"]:not(:placeholder-shown):invalid {
-    box-shadow: 0 0 0 1px red;
-    /* color: red; */
-}
-
-.input:focus {
-    box-shadow: 0 0 0 2px var(--violet-8);
-}
-
 .Root {
 	display: flex;
 	flex-wrap: nowrap;
@@ -138,25 +115,12 @@ input[type="email"]:not(:placeholder-shown):invalid {
     box-shadow: 0 0 0 1px var(--violet-7);
 }
 
-.input:focus {
-    box-shadow: 0 0 0 2px var(--violet-8);
-}
-
-.Input,
 .Toggle {
 	all: unset;
 	box-sizing: border-box;
 	height: 18px;
 	font-size: 15px;
 	line-height: 1;
-}
-
-.Input {
-    width: 90%;
-	&::selection {
-		background-color: var(--black-a6);
-		color: white;
-	}
 }
 
 .Toggle {

@@ -40,7 +40,7 @@ function AccountEditModal({ user }) {
                             Имя пользователя
                         </label>
                         <input 
-                            className={styles.Input} 
+                            className="Input"
                             id="username" 
                             value={userName} 
                             onChange={(e) => setUserName(e.target.value)}
