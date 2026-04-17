@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260407100359_InitialCreate")]
+    [Migration("20260417101709_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -65,6 +65,10 @@ namespace backend.Migrations
 
                     b.Property<bool>("IsSkipped")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("StartCol")
                         .HasColumnType("integer");

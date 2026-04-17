@@ -3,17 +3,20 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import styles from "../styles/accountEdit.module.css"; // Импорт без фигурных скобок
 import { useState } from "react";
 import { updateUser } from "../services/users";
+import { useAuth } from "../hook/useAuth";
+
 
 function AccountEditModal({ user }) {
-    const [userName, setUserName] = useState(user.userName ?? "");
+    const [userName, setUserName] = useState(user.userName || "");
     const [avatar, setAvatar] = useState(null);
+    const {updateUserData} = useAuth();
 
     async function SaveChanges() {
         // Передаем сам файл avatar, а не только имя, чтобы бэкенд мог его получить
-        const response = await updateUser(user.id, { userName, avatar });
+        const path = avatar ? avatar.name : "";
+        const response = await updateUser(user, { userName: userName, iconPath: path});
         if (response) {
-            // Обновляем локальный объект (хотя лучше использовать state родителя)
-            user.userName = response.userName;
+            updateUserData({userName: response});
         }
     }
 

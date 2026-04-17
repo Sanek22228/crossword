@@ -64,12 +64,14 @@ public class UserController : ControllerBase
             if(user != null)
             {  
                 if(user.UserName != userUpdateData.userName)
+                {
                     user.UserName = userUpdateData.userName;
+                    await _context.SaveChangesAsync(ct);
+                }
                 // if(user.IconPath != userUpdateData.iconPath)
                 //     user.IconPath = userUpdateData.iconPath;
-                await _context.SaveChangesAsync();
-                return Ok(user.UserName);
                 // return Ok({user.UserName, user.IconPath});
+                return Ok(user.UserName);
             }
             else
             {

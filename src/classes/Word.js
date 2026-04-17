@@ -3,7 +3,6 @@ export class Word{
         HORIZONTAL : "horizontal",
         VERTICAL : "vertical"
     }
-    // not skipped
     constructor(word, dir, coordinates){
         this.wordText = word;
         if(dir && coordinates){

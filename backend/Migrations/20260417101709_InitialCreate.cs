@@ -59,6 +59,7 @@ namespace backend.Migrations
                     IsSkipped = table.Column<bool>(type: "boolean", nullable: false),
                     Direction = table.Column<int>(type: "integer", nullable: false),
                     WordOrder = table.Column<int>(type: "integer", nullable: false),
+                    Question = table.Column<string>(type: "text", nullable: false),
                     CrosswordId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

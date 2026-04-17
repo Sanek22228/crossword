@@ -63,6 +63,10 @@ namespace backend.Migrations
                     b.Property<bool>("IsSkipped")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("StartCol")
                         .HasColumnType("integer");
 
