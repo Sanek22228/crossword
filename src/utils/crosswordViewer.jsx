@@ -1,9 +1,9 @@
 import { Crossword } from '../classes/Crossword';
 import "../styles/crosswordTable.css";
-import { ExportCrossword } from './crosswordExport'
 import { useNavigate } from 'react-router-dom';
 import { useCrossword } from '../hook/useCrossword';
 import { CrosswordGrid } from './CrosswordGrid';
+import { ExportButtons } from '../components/ExportButtons';
 
 
 // {crossword} деструктуризация, так как при создании <CrosswordTable crossword={crossword}/> передается объект props (properties), в котором crossword: crossword
@@ -29,26 +29,18 @@ const CrosswordViewer = ({crossword}) => {
             </div>
             <CrosswordGrid crossword={crossword}/>
             <div className='exportBtnContainer'>
-                <button onClick={() => handleDownload("xls")} className='downloadBtn'>
-                    Скачать в XLS
-                </button>
-                <button onClick={() => handleDownload("pdf")} className='downloadBtn'>
-                    Скачать в PDF
-                </button>
+                <ExportButtons crossword={crossword}/>
                 <button id='publishBtn' className='Button violet' onClick={() => ToPublication(crossword)}>Опубликовать</button>
             </div>
         </div>
     );
 }
 
-function handleDownload(type){
-    ExportCrossword(type);
-}
 
-function FormatWordArray(wordArray){
+export function FormatWordArray(wordArray){
     let resString = "";
     for(let i = 0; i < wordArray.length; i++){
-    resString += wordArray[i].word;
+    resString += wordArray[i].wordText;
     if(i !== wordArray.length-1)
         resString += ", ";
     }

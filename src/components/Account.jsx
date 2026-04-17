@@ -1,12 +1,13 @@
 import styles from "../styles/Account.module.css"
 import avatarIcon from "../images/avatar.webp";
-import Rating from '@mui/material/Rating';
+// import Rating from '@mui/material/Rating';
 import { useEffect, useState } from "react";
 import { useAuth } from "../hook/useAuth";
 import { CrosswordGrid } from "../utils/CrosswordGrid";
-import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import {fetchUserStatistics} from "../services/users"
 import { AccountEditModal } from "./AccountEditModal";
+import { ExportButtons } from "./ExportButtons";
 
 function Account(){
   // const [value, setValue] = useState(2);
@@ -44,31 +45,22 @@ function Account(){
           <AccountEditModal user={user}/>
         </div>
         <div className={styles.crosswordInfo}>
-          {crosswords !== null && 
-          crosswords.length > 0 ?
-          crosswords.map((crossword,key) => (
-            <>
-              <div key={key} className={styles.crosswordTable}>
-                <CrosswordGrid crossword={crossword}/>
-                <p>
-                  Название: 
-                  {/* Название: {crossword.name} */}
-                </p>
-                <p>
-                  Дата создания: {new Date(crossword.createdAt).toLocaleDateString()}
-                </p>
-                {/* <div style={{display: "flex",alignItems: "center", gap: ".5vw"}}>
-                  <span>
-                    Сложность: 
-                  </span>
-                  <Rating name="read-only" value={value} readOnly />
-                </div> */}
-                <div className={`${styles.crosswordOverlay}`}></div>
-              </div>
-            </>
-          )) 
-          : <p>У вас пока нет кроссвордов</p>
-          }
+          {crosswords && crosswords.length > 0 ?
+          crosswords.map((item, key) => (
+                <div key={item.id || key} className={styles.crosswordTable}>
+                  <CrosswordGrid crossword={item} />
+                  <p>Название: {/* item.name */}</p>
+                  <p>
+                    Дата создания: {new Date(item.createdAt).toLocaleDateString()}
+                  </p>
+                  <div className={styles.crosswordOverlay}>
+                    <ExportButtons crossword={item} />
+                  </div>
+                </div>
+              ))
+            : (
+            <p>У вас пока нет кроссвордов</p>
+          )}
         </div>
       </div>
       <Outlet/>

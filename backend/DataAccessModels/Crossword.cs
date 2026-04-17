@@ -9,7 +9,7 @@ public class Crossword
     public DateTime CreatedAt {get;set;}
     public int WordAmount {get;set;}
     [Column(TypeName = "jsonb")]
-    public List<List<string>> Grid {get;set;} = new();
+    public List<List<object>> Grid {get;set;} = new();
     public User User {get;set;} = null!;
     public List<CrosswordWord> CrosswordWords {get;set;} = new();
 }

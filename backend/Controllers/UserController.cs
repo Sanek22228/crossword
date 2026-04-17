@@ -97,8 +97,23 @@ public class UserController : ControllerBase
         {
             var user = await _context.Users
                 .Include(u => u.Crosswords)
+                .ThenInclude(c => c.CrosswordWords)
                 .FirstOrDefaultAsync(u => u.Id == id, ct);
-            var crosswords = user?.Crosswords.Select(c => new {c.Id, c.CreatedAt, c.Grid});
+            var crosswords = user?.Crosswords.Select(c => new {
+                c.Id, 
+                c.CreatedAt, 
+                c.Grid, 
+                Words = c.CrosswordWords.Select(w => new
+                {
+                    w.Id,
+                    w.WordText,
+                    w.WordOrder,
+                    w.IsSkipped,
+                    w.Direction,
+                    w.StartCol,
+                    w.StartRow
+                })
+            });
             var completed = user?.CompletedCrosswords;
             return Ok(new
             {

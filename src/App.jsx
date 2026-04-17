@@ -11,7 +11,7 @@ import { AccountEditModal } from './components/AccountEditModal'
 import { LoginModal } from './components/LoginModal'
 import { Policy } from './components/Policy'
 import { RequireCrossword } from './hoc/RequireCrossword'
-import { fethcHealth } from './services/connection'
+import { fetchHealth } from './services/connection'
 import { useEffect, useState } from 'react'
 import HealthCheckPage from './components/HealthCheckPage'
 
@@ -22,8 +22,9 @@ function App(){
   const [healthStatus, setHealthStatus] = useState(null);
 
   async function getConnection(){
+    let health;
     try{
-      var health = await fethcHealth();
+      health = await fetchHealth();
     }
     catch(e){
       console.error(e);
@@ -34,19 +35,17 @@ function App(){
 
   // в useEffect нельзя напрямую использовать async, поэтому использую самовызывающуюся функцию
   useEffect(()=>{
-    (async () => {
+    const checkConnection = async () => {
       setHealthStatus(await getConnection());
       }
-    )()
+    checkConnection();
   },[])
 
   if(healthStatus === null) return null
 
   if(healthStatus !== "Healthy"){
       return(
-      <>
         <HealthCheckPage/>
-      </>
     )
   }
   return(

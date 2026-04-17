@@ -35,7 +35,6 @@ function Publication(){
     if(DefinitionsFulfilled()){
       setErrorMessage("");
       if(user != null){
-        console.log(user.id);
         await fetchCrosswordPublication(user, crossword);
         navigate(`/account/${user.id}`);
       }

@@ -22,12 +22,13 @@ function Main(){
   }, [inputValue]);
 
   async function HandleClick(){
+    if(loading) return; // prevent race conditions
     setCrossword(null);
     console.log(crossword);
     setError("");
     
-    if(inputValue !== ""){
-      var words = inputValue;
+    if(inputValue.trim() !== ""){
+      let words = inputValue;
       setLoading(true);
       words = await validateWords(words);
       setLoading(false);
