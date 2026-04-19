@@ -7,7 +7,6 @@ public class CrosswordWord
     public string WordText {get;set;} = null!; // null-forgiving operator отключает предупреждение
     public int StartRow {get;set;}
     public int StartCol {get;set;}
-    public bool IsSkipped {get;set;}
     public Direction Direction {get;set;}
     public int WordOrder {get;set;}
     public string Question {get; set;} = null!;

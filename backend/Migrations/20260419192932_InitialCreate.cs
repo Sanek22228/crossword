@@ -35,7 +35,7 @@ namespace backend.Migrations
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     WordAmount = table.Column<int>(type: "integer", nullable: false),
-                    Grid = table.Column<List<List<string>>>(type: "jsonb", nullable: false)
+                    Grid = table.Column<List<List<object>>>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -56,9 +56,9 @@ namespace backend.Migrations
                     WordText = table.Column<string>(type: "text", nullable: false),
                     StartRow = table.Column<int>(type: "integer", nullable: false),
                     StartCol = table.Column<int>(type: "integer", nullable: false),
-                    IsSkipped = table.Column<bool>(type: "boolean", nullable: false),
                     Direction = table.Column<int>(type: "integer", nullable: false),
                     WordOrder = table.Column<int>(type: "integer", nullable: false),
+                    Question = table.Column<string>(type: "text", nullable: false),
                     CrosswordId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>

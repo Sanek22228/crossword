@@ -1,23 +1,22 @@
-import { Word } from '../classes/Word';
+import { CrosswordCell } from './CrosswordCell';
 
-function CrosswordGrid({crossword, showAnswers = true}){
+const MODES = {
+    FULL: "full",
+    VIEW: "view",
+    PLAY: "play"
+}
+
+function CrosswordGrid({crossword, mode = MODES.FULL}){
   const grid = crossword.grid;
   return(
     <>
-      <table id={crossword.id} className={showAnswers ? 'filledTable' : 'emptyTable'} >
+      <table id={crossword.id}>
         <tbody>
           {grid && grid.map((row, rowIndex) => (
             <tr key={rowIndex}>{
-              row.map((cell, colIndex) => {
-                let cellValue = Number(cell);
-                if(typeof cell === 'object'){
-                  return cell.direction === Word.DIRECTIONS.HORIZONTAL
-                    ? <th key={colIndex} className="numberCell hotizontalNumber">{cell.value}</th>
-                    : <th key={colIndex} className="numberCell verticalNumber">{cell.value}</th>
-                }
-                const isLetter = isNaN(cellValue);
-                return <th key={colIndex} className={isLetter ? "filledCell" : "emptyCell"}>{isLetter && showAnswers ? cell : ""}</th>
-              })}
+              row.map((cell, colIndex) => (
+                <CrosswordCell cell={cell} showAnswers={mode === MODES.FULL} isInteractive={mode === MODES.PLAY} key={colIndex} />
+              ))}
             </tr>
           ))}
         </tbody>
@@ -26,4 +25,4 @@ function CrosswordGrid({crossword, showAnswers = true}){
   )
 }
 
-export { CrosswordGrid }
+export { CrosswordGrid, MODES }
