@@ -35,6 +35,12 @@ function Publication(){
     if(DefinitionsFulfilled()){
       setErrorMessage("");
       if(user != null){
+        for (let i = 0; i < curCrossword.verticalWords.length; i++){
+          curCrossword.verticalWords[i].question = definitions.vertical[i];
+        }
+        for (let i = 0; i < curCrossword.horizontalWords.length; i++){
+          curCrossword.horizontalWords[i].question = definitions.horizontal[i];
+        }
         await fetchCrosswordPublication(user, crossword);
         navigate(`/account/${user.id}`);
       }
@@ -60,11 +66,11 @@ function Publication(){
           <div id="words">
             <p style={{marginBottom: '0'}}><b>Слова по вертикали:</b></p>
             <p style={{margin: 0}} id="vertical-words">
-              {crossword.verticalWords.map(w => w.word).join(', ')}
+              {crossword.verticalWords.map(w => w.wordText).join(', ')}
             </p>
             <p style={{marginBottom: '0'}}><b>Слова по горизонтали:</b></p>
             <p style={{margin: '0'}} id="horizontal-words">
-              {crossword.horizontalWords.map(w => w.word).join(', ')}
+              {crossword.horizontalWords.map(w => w.wordText).join(', ')}
             </p>
           </div>
           <div id="crosswordTable">
