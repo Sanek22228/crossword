@@ -6,8 +6,6 @@ import { wordsErrorHandler } from '../utils/errorHandler';
 import infoIcon from '../images/info.png';
 import { useCrossword } from '../hook/useCrossword';
 
-// document.onreset
-
 function Main(){
   const [inputValue, setInputValue] = useState(() => {return window.localStorage.getItem("words") ?? ""});
   const [error, setError] = useState("");

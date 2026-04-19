@@ -42,7 +42,7 @@ function CreateExportElement(crossword) {
 
     // 1. Заголовок (можно добавить название кроссворда, если оно есть)
     const title = document.createElement("h1");
-    title.innerText = crossword.name || "Кроссворд";
+    title.innerText = "Кроссворд";
     title.style.textAlign = "center";
     title.style.marginBottom = "1vw";
     container.appendChild(title);
@@ -52,9 +52,9 @@ function CreateExportElement(crossword) {
     container.appendChild(info);
 
     // 3. Сетка кроссворда (Берем существующую или отрисовываем заново)
-    const emptyTable = document.getElementById("emptyTable").cloneNode(true);
+    const emptyTable = document.getElementsByClassName("emptyTable")[0].cloneNode(true);
     emptyTable.hidden = false;
-    var filledTable = document.getElementById("filledTable").cloneNode(true);
+    var filledTable = document.getElementById(crossword.id).cloneNode(true);
     container.appendChild(filledTable);
 
     // 4. Разрыв страницы для PDF

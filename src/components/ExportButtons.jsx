@@ -1,17 +1,31 @@
+import { useEffect, useState } from 'react';
 import { ExportCrossword } from '../utils/crosswordExport'
+import { CrosswordGrid } from '../utils/CrosswordGrid';
 
 function ExportButtons({crossword}){
-    function handleDownload(type, crossword){
-        ExportCrossword(type, crossword);
+    const [isExporting, setIsExporting] = useState(false);
+    const [type, setType] = useState("");
+    useEffect(()=>{
+        if(!isExporting) return;
+        setTimeout(() => {  
+            ExportCrossword(type, crossword);
+            setIsExporting(false);
+        }, 10);
+    },[isExporting])
+
+    function handleDownload(type){
+        setType(type);
+        setIsExporting(true);
     }
     return(
         <>
-            <button onClick={() => handleDownload("xls", crossword)} className='downloadBtn'>
+            <button onClick={() => handleDownload("xls")} className='downloadBtn'>
                 Скачать в XLS
             </button>
-            <button onClick={() => handleDownload("pdf", crossword)} className='downloadBtn'>
+            <button onClick={() => handleDownload("pdf")} className='downloadBtn'>
                 Скачать в PDF
             </button>
+            {isExporting && <CrosswordGrid crossword={crossword} showAnswers={false}></CrosswordGrid>}
         </>
     )
 }

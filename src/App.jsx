@@ -16,6 +16,8 @@ import { useEffect, useState } from 'react'
 import HealthCheckPage from './components/HealthCheckPage'
 
 import './styles/App.css';
+import { Feed } from './components/Feed'
+import { Play } from './components/Play'
 
 function App(){
   
@@ -59,6 +61,8 @@ function App(){
               <Route path="/account/:id" element={<RequireAuth><Account/></RequireAuth>}>
                 <Route path="edit" element={<AccountEditModal/>}></Route>
               </Route>
+              <Route path="/feed" element={<Feed/>}></Route>
+              <Route path="/play/:id" element={<Play/>}></Route>
               <Route path='/policy' element={<Policy/>}></Route>
             </Route>
           </Routes>

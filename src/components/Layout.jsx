@@ -18,11 +18,11 @@ function Layout(){
         <div/>
         <nav>
           <NavLink to='/' className={({isActive}) => `navlink ${isActive ? 'active': ''}`}>Создать кроссворд</NavLink>
-          <NavLink to='/publication' className={({isActive}) => `navlink ${isActive ? 'active' : ''}`}>Опубликовать</NavLink>
+          <NavLink to='/feed' className={({isActive}) => `navlink ${isActive ? 'active' : ''}`}>Пройти кроссворд</NavLink>
         </nav>
           <NavLink onClick={CheckAuthorization} to={`/account/${user?.id}`} className="account-link"><img src={avatarIcon} style={{height:"100%"}} alt='account'/></NavLink>
       </header>
-      <Outlet></Outlet>
+      <Outlet/>
       <footer style={{width: "100%", background: "#AFAFAF", marginTop: "120px", bottom: 0, position: "relative"}}>
         Кроссворды
       </footer>

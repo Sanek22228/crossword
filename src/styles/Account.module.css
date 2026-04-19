@@ -30,18 +30,13 @@
     padding: 3%;
 }
 
-.crosswordInfo{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-
-}
 .crosswordTable{
     width: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+    justify-content: end;
 }
 .crosswordTable:hover .crosswordOverlay{
     visibility: visible;

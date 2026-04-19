@@ -1,0 +1,18 @@
+.playButton {
+    width: fit-content;
+}
+.playButton img:hover{
+    opacity: .8;
+    cursor: pointer;
+}
+.crosswordContainer{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    gap: 2vh;
+    justify-content: space-between;
+    border-radius: 1vw;
+    box-shadow: 0px 0px 10px rgba(128, 128, 128, 0.251);
+    padding: 1vw;
+}

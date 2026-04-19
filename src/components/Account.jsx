@@ -44,7 +44,7 @@ function Account(){
           </p> */}
           <AccountEditModal user={user}/>
         </div>
-        <div className={styles.crosswordInfo}>
+        <div className="crosswordInfo">
           {crosswords && crosswords.length > 0 ?
           crosswords.map((item, key) => (
                 <div key={item.id || key} className={styles.crosswordTable}>
