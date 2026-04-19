@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchCrosswords } from "../services/feed";
-import { CrosswordGrid } from "../utils/CrosswordGrid";
+import { MODES, CrosswordGrid } from "../utils/CrosswordGrid";
 import styles from "../styles/Feed.module.css"
 import { NavLink } from "react-router-dom";
 import Play from "../images/play.png"
@@ -19,7 +19,7 @@ function Feed(){
       <div className="crosswordInfo">
         {crosswords.map((item, key) => (
           <div key={key} className={styles.crosswordContainer} >
-            <CrosswordGrid crossword={item} showAnswers={false}/>
+            <CrosswordGrid crossword={item} mode={MODES.VIEW}/>
             <NavLink to={`/play/${item.id}`}><img src={Play} alt="play crossword" style={{width:"1.5vw"}}/></NavLink>
           </div>
         ))}

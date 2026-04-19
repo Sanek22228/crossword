@@ -31,7 +31,7 @@ namespace backend.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<List<List<string>>>("Grid")
+                    b.Property<List<List<object>>>("Grid")
                         .IsRequired()
                         .HasColumnType("jsonb");
 
@@ -60,8 +60,9 @@ namespace backend.Migrations
                     b.Property<int>("Direction")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsSkipped")
-                        .HasColumnType("boolean");
+                    b.Property<string>("Question")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("StartCol")
                         .HasColumnType("integer");

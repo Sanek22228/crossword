@@ -1,4 +1,9 @@
 import axios from "axios";
+import { Crossword } from "../classes/Crossword";
+import { Word } from "../classes/Word";
+import { Coordinates } from "../classes/Coordinates";
+
+const API_URL = "http://localhost:5298";
 
 export const fetchCrosswordPublication = async (user, crossword) => {
     const crosswordWords = crossword.addedWords.map(word=>({
@@ -6,14 +11,14 @@ export const fetchCrosswordPublication = async (user, crossword) => {
         startRow: word.coordinates.startRow, 
         startCol: word.coordinates.startCol, 
         isSkipped: word.isSkipped || false,
-        direction: word.direction === "vertical" ? 0 : 1, 
+        direction: word.direction === Word.DIRECTIONS.VERTICAL ? 0 : 1, 
         wordOrder: word.order,
         question: word.question || ""
     }))
     try {
-        var cleanGrid = crossword.grid.map(r => 
+        let cleanGrid = crossword.grid.map(r => 
                 r.map(cell => (typeof cell === "object" && cell !== null ? {value: cell.value, direction: cell.direction} : cell)));
-        var response = await axios.post("http://localhost:5298/crossword/", {
+        let response = await axios.post(`${API_URL}/crossword`, {
             userId: user.id,
             wordAmount: crossword.wordAmount,
             grid: cleanGrid,
@@ -28,11 +33,37 @@ export const fetchCrosswordPublication = async (user, crossword) => {
 
 export const fetchUserCrosswords = async(user) => {
     try{
-        var response = await axios.get(`http://localhost:5298/crossword/${user.id}`);
+        let response = await axios.get(`${API_URL}/crossword/${user.id}`);
         return response.data;
     }
     catch(e){
         console.error("Server errors:", e.response?.data?.errors);
         return null;
     }
+}
+
+export const getCrosswordById = async(id) => {
+    try{
+        let response = await axios.get(`${API_URL}/crossword/${id}`);
+        return deserialize(response.data);
+    }
+    catch(e){
+        console.error("Server errors:", e.response?.data?.errors);
+        return null;
+    }
+}
+
+function deserialize(crossword){
+    let words = crossword.crosswordWords.map(w => {
+        let direction = Word.DIRECTIONS[w.direction];
+        let word = new Word(w.wordText, direction, new Coordinates(w.startRow, w.startCol, []));
+        word.wordOrder = w.wordOrder;
+        word.question = w.question;
+        return word;
+    });
+    let newCrossword = new Crossword(words, crossword.grid);
+    newCrossword.createdAt = crossword.createdAt;
+    newCrossword.userId = crossword.userId;
+    console.log(newCrossword);
+    return newCrossword;
 }

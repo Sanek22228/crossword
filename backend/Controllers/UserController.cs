@@ -110,7 +110,6 @@ public class UserController : ControllerBase
                     w.Id,
                     w.WordText,
                     w.WordOrder,
-                    w.IsSkipped,
                     w.Direction,
                     w.StartCol,
                     w.StartRow

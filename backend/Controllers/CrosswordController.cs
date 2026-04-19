@@ -34,7 +34,6 @@ public class CrosswordController : ControllerBase
             WordText = w.text,
             StartRow = w.startRow,
             StartCol = w.startCol,
-            IsSkipped = w.isSkipped,
             Direction = w.direction,
             WordOrder = w.wordOrder,
             Question = w.question
@@ -44,10 +43,38 @@ public class CrosswordController : ControllerBase
         await _context.SaveChangesAsync(ct);
         return Ok();
     }
-    [HttpGet("{id:guid}")]
+    [HttpGet("user/{id:guid}")]
     public async Task<IActionResult> GetUserCrosswords(Guid id)
     {
         var crosswords = await _context.Crosswords.Where(crossword => crossword.UserId == id).ToListAsync();
         return Ok(crosswords);
+    }
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetCrosswordById(Guid id, CancellationToken ct)
+    {
+        // try{
+            var crossword = await _context.Crosswords
+                .Include(c => c.CrosswordWords)
+                .FirstOrDefaultAsync(c => c.Id == id, ct) ?? throw new Exception("not found");
+            var words = crossword.CrosswordWords.Select(w => new CrosswordWordResponse(
+                w.WordText,
+                w.StartRow,
+                w.StartCol,
+                w.Direction,
+                w.WordOrder,
+                w.Question
+            )).ToList();
+            var crosswordResponse = new CrosswordResponse(
+                crossword.UserId,
+                crossword.WordAmount,
+                crossword.Grid,
+                crossword.CreatedAt,
+                words
+            );
+            return Ok(crosswordResponse);
+        // } catch(Exception e)
+        // {
+        //     return NotFound(e.Message);
+        // }
     }
 }

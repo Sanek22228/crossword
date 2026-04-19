@@ -1,8 +1,10 @@
 export class Word{
     static DIRECTIONS = {
-        HORIZONTAL : "horizontal",
-        VERTICAL : "vertical"
-    }
+        0: "vertical",
+        1: "horizontal",
+        VERTICAL: "vertical",
+        HORIZONTAL: "horizontal"
+    };
     constructor(word, dir, coordinates){
         this.wordText = word;
         if(dir && coordinates){
