@@ -10,12 +10,13 @@ public class CrosswordWord
     public bool IsSkipped {get;set;}
     public Direction Direction {get;set;}
     public int WordOrder {get;set;}
+    public string Question {get; set;} = null!;
     public Guid CrosswordId {get;set;}
     public Crossword Crossword {get;set;} = null!;
 }
 
 public enum Direction: int
 {
-    Vertical,
-    Horizontal
+    Vertical = 0,
+    Horizontal = 1
 }

@@ -37,6 +37,7 @@ public class CrosswordController : ControllerBase
             IsSkipped = w.isSkipped,
             Direction = w.direction,
             WordOrder = w.wordOrder,
+            Question = w.question
         }).ToList();
 
         await _context.Crosswords.AddAsync(curCrossword, ct);

@@ -10,12 +10,12 @@ import { AccountEditModal } from "./AccountEditModal";
 import { ExportButtons } from "./ExportButtons";
 
 function Account(){
-  // const [value, setValue] = useState(2);
   const {user} = useAuth();
   const [crosswords, setCrosswords] = useState(null);
   const {id} = useParams();
-  const [isMyProfile, setMyProfile] = useState(id == user.id);
+  // const [isMyProfile, setMyProfile] = useState(id == user.id);
   const [crosswordsCompleted, setCrosswordsCompleted] = useState(0);
+  
   // добавить loader
   useEffect(()=>{
     (async () => {
@@ -24,7 +24,7 @@ function Account(){
       setCrosswordsCompleted(data.completed);
     })()
   },[user]) // если без user есть шанс, что вызовется когда user = null
-  // var navigate = useNavigate();
+
   return(
     <main>
       <div className={styles.accountContainer}>

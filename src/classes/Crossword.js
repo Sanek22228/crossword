@@ -9,7 +9,8 @@ export class Crossword{
     }
     SortWords() {
         this.words.sort((a,b) => {
-            return a.coordinates.startRow - b.coordinates.startRow || a.coordinates.startCol - b.coordinates.startCol;
+            if(!a.isSkipped && !b.isSkipped)
+                return a.coordinates.startRow - b.coordinates.startRow || a.coordinates.startCol - b.coordinates.startCol;
         });
     }
     get addedWords(){

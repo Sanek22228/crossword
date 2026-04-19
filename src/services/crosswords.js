@@ -7,7 +7,8 @@ export const fetchCrosswordPublication = async (user, crossword) => {
         startCol: word.coordinates.startCol, 
         isSkipped: word.isSkipped || false,
         direction: word.direction === "vertical" ? 0 : 1, 
-        wordOrder: word.order
+        wordOrder: word.order,
+        question: word.question || ""
     }))
     try {
         var cleanGrid = crossword.grid.map(r => 
