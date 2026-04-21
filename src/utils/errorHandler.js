@@ -1,5 +1,5 @@
 export function wordsErrorHandler(words, crossword){
-    if(words.length <= 1){
+    if(words === null || words.length <= 1){
             console.log("word list is null");
             return "Количество слов слишком мало для составления кроссворда";
     }

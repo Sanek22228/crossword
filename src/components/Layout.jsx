@@ -23,9 +23,9 @@ function Layout(){
           <NavLink onClick={CheckAuthorization} to={`/account/${user?.id}`} className="account-link"><img src={avatarIcon} style={{height:"100%"}} alt='account'/></NavLink>
       </header>
       <Outlet/>
-      <footer style={{width: "100%", background: "#AFAFAF", marginTop: "120px", bottom: 0, position: "relative"}}>
+      {/* <footer style={{width: "100%", background: "#AFAFAF", bottom: 0, position: "sticky"}}>
         Кроссворды
-      </footer>
+      </footer> */}
     </>
   )
 }

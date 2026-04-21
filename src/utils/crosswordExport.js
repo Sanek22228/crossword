@@ -53,7 +53,7 @@ function CreateExportElement(crossword) {
 
     // 3. Сетка кроссворда (Берем существующую или отрисовываем заново)
     const emptyTable = document.getElementsByClassName("emptyTable")[0].cloneNode(true);
-    emptyTable.hidden = false;
+    // emptyTable.hidden = false;
     var filledTable = document.getElementById(crossword.id).cloneNode(true);
     container.appendChild(filledTable);
 

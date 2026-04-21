@@ -23,7 +23,7 @@ function Account(){
       setCrosswords(data.crosswords);
       setCrosswordsCompleted(data.completed);
     })()
-  },[user]) // если без user есть шанс, что вызовется когда user = null
+  },[user,crosswords]) // если без user есть шанс, что вызовется когда user = null
 
   return(
     <main>

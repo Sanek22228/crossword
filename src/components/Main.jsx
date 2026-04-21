@@ -26,18 +26,17 @@ function Main(){
     setError("");
     
     if(inputValue.trim() !== ""){
-      let words = inputValue;
+      let words = await validateWords(inputValue);
       setLoading(true);
-      words = await validateWords(words);
       setLoading(false);
       console.log(words);
-
-      const wordsError = wordsErrorHandler(words);
+      const wordsError = wordsErrorHandler(words, crossword);
       if(wordsError !== null){
         setCrossword(null);
+        setError("null");
         setError(wordsError);
         return;
-      } 
+      }
       let newCrossword = CreateCrossword(words);
       const crosswordError = wordsErrorHandler(words, newCrossword);
       if(crosswordError !== null){
@@ -47,6 +46,9 @@ function Main(){
       }
       console.log("crossword: ", crossword);
       setCrossword(newCrossword);
+    }
+    else{
+      setError("Поле ввода не может быть пустым");
     }
   }
 
@@ -63,15 +65,15 @@ function Main(){
                 <img src={infoIcon} alt='info'></img>
             </button>
             <div>
-            {showHint && <span className='hint'>
-              Правила ввода слов:
-              <ul style={{margin: '5px 0', paddingLeft: '20px'}}>
-                <li>Только буквы русского/английского алфавита</li>
-                <li>Цифры и спецсимволы запрещены</li>
-                <li>Минимум 2 слова для создания кроссворда</li>
-                <li>Разделяйте слова пробелами или знаками препинания</li>  
-              </ul>
-            </span>}
+              {showHint && <span className='hint'>
+                Правила ввода слов:
+                <ul style={{margin: '5px 0', paddingLeft: '20px'}}>
+                  <li>Только буквы русского/английского алфавита</li>
+                  <li>Цифры и спецсимволы запрещены</li>
+                  <li>Минимум 2 слова для создания кроссворда</li>
+                  <li>Разделяйте слова пробелами или знаками препинания</li>  
+                </ul>
+              </span>}
             </div>
           </div>
         </div>

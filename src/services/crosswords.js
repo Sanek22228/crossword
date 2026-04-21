@@ -27,7 +27,7 @@ export const fetchCrosswordPublication = async (user, crossword) => {
         return response.data;
     }
     catch(e){
-        console.error("Server errors:", e.response?.data?.errors);
+        console.error("Server errors:" + e.response?.data?.errors);
     }
 }
 
@@ -37,7 +37,7 @@ export const fetchUserCrosswords = async(user) => {
         return response.data;
     }
     catch(e){
-        console.error("Server errors:", e.response?.data?.errors);
+        console.error("Server errors:" + e.response?.data?.errors);
         return null;
     }
 }
@@ -57,7 +57,7 @@ function deserialize(crossword){
     let words = crossword.crosswordWords.map(w => {
         let direction = Word.DIRECTIONS[w.direction];
         let word = new Word(w.wordText, direction, new Coordinates(w.startRow, w.startCol, []));
-        word.wordOrder = w.wordOrder;
+        word.order = w.wordOrder;
         word.question = w.question;
         return word;
     });
