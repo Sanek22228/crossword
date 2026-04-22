@@ -25,7 +25,7 @@ function CrosswordGrid({crossword, mode = MODES.FULL, onChange = NOP, solvedCell
                   onCellChange={onChange}
                   coordinates={[rowIndex, colIndex]}
                   solved={solvedCells.length > 0 
-                    ? solvedCells.some(c => c[0] === rowIndex && c[1] === colIndex) 
+                    ? solvedCells.includes(`${rowIndex}-${colIndex}`) 
                     : false}
                 />
               ))}

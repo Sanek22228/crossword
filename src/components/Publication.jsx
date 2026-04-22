@@ -34,19 +34,19 @@ function Publication(){
   async function PublicateCrossword(){
     if(DefinitionsFulfilled()){
       setErrorMessage("");
+      for (let i = 0; i < curCrossword.verticalWords.length; i++){
+        curCrossword.verticalWords[i].question = definitions.vertical[i];
+      }
+      for (let i = 0; i < curCrossword.horizontalWords.length; i++){
+        curCrossword.horizontalWords[i].question = definitions.horizontal[i];
+      }
       if(user != null){
-        for (let i = 0; i < curCrossword.verticalWords.length; i++){
-          curCrossword.verticalWords[i].question = definitions.vertical[i];
-        }
-        for (let i = 0; i < curCrossword.horizontalWords.length; i++){
-          curCrossword.horizontalWords[i].question = definitions.horizontal[i];
-        }
         await fetchCrosswordPublication(user, crossword);
         navigate(`/account/${user.id}`);
       }
       else{
         setLoginActive(true);
-        setOnSuccessAction(() => async (loggedUser) => await fetchCrosswordPublication(loggedUser, crossword));
+        setOnSuccessAction(() => async (loggedUser) => {console.log("crossword: " + crossword + " logged user: " + loggedUser);await fetchCrosswordPublication(loggedUser, crossword)});
       }
     }
     else{

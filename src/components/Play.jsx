@@ -1,7 +1,19 @@
 import { useParams } from "react-router-dom";
 import { CrosswordGrid, MODES } from "../utils/CrosswordGrid";
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import { getCrosswordById } from "../services/crosswords";
+
+const checkWord = (word, currentGrid, change) => {
+    for(let i = 0; i < word.wordText.length; i++){
+        let cell = word.coordinates.cells[i];
+        let currentLetter = (cell[0] === change.row && cell[1] === change.col)
+            ? change.value
+            : currentGrid[`${cell[0]}-${cell[1]}`];
+        if (currentLetter !== word.wordText[i]) 
+            return false
+    }
+    return true
+}
 
 function Play() {
     const {id} = useParams();
@@ -14,45 +26,36 @@ function Play() {
     },[id]);
     
     function OnCellChange(row, col, value){
-        setPlayGrid(prev =>({
-            ...prev, 
+        let currentGrid = {
+            ...playGrid, 
             [`${row}-${col}`]:value
-        }));
+        }
+        console.log(currentGrid);
+        setPlayGrid(() =>({...currentGrid}));
         if(crossword.grid[row][col] === value){
-            // console.log("crossword.grid[row][col]: " + crossword.grid[row][col]);
-            // console.log("value: " + value);
             crossword.words.forEach(word => {
-                // console.log("word: " + word.wordText);
                 if(word.coordinates.cells.some(coord => coord[0] === row && coord[1]===col)){
-                    // console.log(`found in cells`);
-                    let correct = true;
-                    for(let i = 0; i < word.coordinates.cells.length; i++){
-                        const [cellRow, cellCol] = word.coordinates.cells[i];
-                        let currentLetter = word.coordinates.cells[i][0] === row && word.coordinates.cells[i][1] === col 
-                            ? value
-                            : playGrid[`${cellRow}-${cellCol}`]
-                        if(currentLetter !== word.wordText[i]){
-                            console.log("incorrect");
-                            correct = false;
-                            break;
-                        }
-                    }
-                    if(correct){
-                        for(let i = 0; i < word.coordinates.cells.length; i++)
-                        {
-                            setSolvedCells(prev => (
+                    if(checkWord(word, currentGrid, {row: row, col: col, value: value})){
+                        let newlySolved = word.coordinates.cells.map(cell => `${cell[0]}-${cell[1]}`);
+                        setSolvedCells(prev => (
                                 [
-                                    ...prev,
-                                    [word.coordinates.cells[i][0], word.coordinates.cells[i][1]]
+                                    ... new Set([...prev, ...newlySolved])
                                 ]
-                            ))
+                        ))
+                        if(IsWin(row, col, value, currentGrid)){
+                            console.log("win");
+                            return;
                         }
                     }
                 }
             });
         }
     }
-
+    function IsWin(row, col, value, currentGrid){
+        return crossword.words.every(w => 
+            checkWord(w, currentGrid, {row: row, col: col, value: value}
+        ));
+    }
     return (
         <>
             <main style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr", alignContent: "center"}}>
@@ -68,7 +71,7 @@ function Play() {
                                     </span>
                                 </div>
                             ))}
-                            <p><b>Слова по горизонтали:</b></p>
+                            <p style={{marginTop: "3vh"}}><b>Слова по горизонтали:</b></p>
                             {crossword.horizontalWords.map((word, i) => (
                                 <div key={i}>
                                     <label>{word.order}.</label>

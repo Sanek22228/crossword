@@ -53,11 +53,12 @@ function LoginModal() {
             setError("");
             setLoginActive(false);
             signin(user);
-            navigate(`/account/${user.id}`);
             if(onSuccessAction) {
-                await onSuccessAction(user)
+                console.log("onsuccessaction")
+                await onSuccessAction(user);
                 setOnSuccessAction(null);
             }
+            navigate(`/account/${user.id}`);
         }
         else{
             setError("Пользователь не найден");
