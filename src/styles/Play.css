@@ -1,0 +1,19 @@
+.hintContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin: auto;
+    align-self: left;
+}
+.hintContainer button{
+    margin: 0;
+}
+.mainContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    vertical-align: middle;
+    /* justify-content: center; */
+    max-width: 90vw;
+}

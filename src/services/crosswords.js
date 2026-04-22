@@ -53,6 +53,17 @@ export const getCrosswordById = async(id) => {
     }
 }
 
+export const deleteCrossword = async (crosswordId) => {
+    try{
+        let response = axios.delete(`${API_URL}/crossword/${crosswordId}`);
+        return response.data;
+    }
+    catch(e){
+        console.error("Server errors:", e.response?.data?.errors);
+        return null;
+    }
+}
+
 function deserialize(crossword){
     let words = crossword.crosswordWords.map(w => {
         let direction = Word.DIRECTIONS[w.direction];

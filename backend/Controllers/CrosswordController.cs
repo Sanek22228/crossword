@@ -77,4 +77,22 @@ public class CrosswordController : ControllerBase
         //     return NotFound(e.Message);
         // }
     }
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteCrossword(Guid id, CancellationToken ct)
+    {
+        try
+        {
+            var crossword = await _context.Crosswords.FirstOrDefaultAsync(c => c.Id == id, ct) ?? throw new Exception("not found");
+            if (crossword != null)
+            {
+                _context.Crosswords.Remove(crossword);   
+                await _context.SaveChangesAsync(ct);
+            }
+        }
+        catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
+        return Ok("crossword deleted");
+    }
 }

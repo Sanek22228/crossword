@@ -26,8 +26,8 @@ function Main(){
     setError("");
     
     if(inputValue.trim() !== ""){
-      let words = await validateWords(inputValue);
       setLoading(true);
+      let words = await validateWords(inputValue);
       setLoading(false);
       console.log(words);
       const wordsError = wordsErrorHandler(words, crossword);

@@ -8,16 +8,16 @@ const MODES = {
 
 const NOP = ()=>{} // No Operation
 
-function CrosswordGrid({crossword, mode = MODES.FULL, onChange = NOP, solvedCells = []}){
+function CrosswordGrid({crossword, mode = MODES.FULL, onChange = NOP, solvedCells = [], onFocus = NOP, playGrid ={} }){
   const grid = crossword.grid;
   return(
     <>
-      <table id={crossword.id}>
+      <table id={crossword.id} onFocusCapture={(e) => onFocus(e.target.dataset)}>
         <tbody>
           {grid && grid.map((row, rowIndex) => (
             <tr key={rowIndex}>{
               row.map((cell, colIndex) => (
-                <CrosswordCell 
+                <CrosswordCell
                   cell={cell} 
                   showAnswers={mode === MODES.FULL} 
                   isInteractive={mode === MODES.PLAY} 
@@ -27,6 +27,7 @@ function CrosswordGrid({crossword, mode = MODES.FULL, onChange = NOP, solvedCell
                   solved={solvedCells.length > 0 
                     ? solvedCells.includes(`${rowIndex}-${colIndex}`) 
                     : false}
+                    value={playGrid[`${rowIndex}-${colIndex}`] ?? ""}
                 />
               ))}
             </tr>

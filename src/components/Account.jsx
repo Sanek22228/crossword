@@ -8,22 +8,37 @@ import { Outlet, useParams } from "react-router-dom";
 import {fetchUserStatistics} from "../services/users"
 import { AccountEditModal } from "./AccountEditModal";
 import { ExportButtons } from "./ExportButtons";
+import { deleteCrossword } from "../services/crosswords";
 
 function Account(){
   const {user} = useAuth();
   const [crosswords, setCrosswords] = useState(null);
+  const [loading, setLoading] = useState(false);
   const {id} = useParams();
   // const [isMyProfile, setMyProfile] = useState(id == user.id);
   const [crosswordsCompleted, setCrosswordsCompleted] = useState(0);
   
+  const updateCrosswords = async () => {
+    if(!user) return;
+    const data = await fetchUserStatistics(user);
+    setCrosswords(data.crosswords);
+    setCrosswordsCompleted(data.completed);
+  }
+  
   // добавить loader
   useEffect(()=>{
     (async () => {
-      const data = await fetchUserStatistics(user);
-      setCrosswords(data.crosswords);
-      setCrosswordsCompleted(data.completed);
+      await updateCrosswords();
     })()
-  },[user,crosswords]) // если без user есть шанс, что вызовется когда user = null
+  },[user]) // если без user есть шанс, что вызовется когда user = null
+
+  async function DeleteCrossword(crosswordId){
+    if(loading) return;
+    setLoading(true);
+    let response = await deleteCrossword(crosswordId);
+    await updateCrosswords();
+    setLoading(false);
+  }
 
   return(
     <main>
@@ -54,7 +69,13 @@ function Account(){
                     Дата создания: {new Date(item.createdAt).toLocaleDateString()}
                   </p>
                   <div className={styles.crosswordOverlay}>
-                    <ExportButtons crossword={item} />
+                    <div className={styles.btnContainer}>
+                      <ExportButtons crossword={item} />
+                    </div>
+                    <div className={styles.btnContainer}>
+                      <button onClick={async () => await DeleteCrossword(item.id)}>delete</button>
+                      <button onClick={async () => await EditCrossword(item)}>edit</button>
+                    </div>
                   </div>
                 </div>
               ))
