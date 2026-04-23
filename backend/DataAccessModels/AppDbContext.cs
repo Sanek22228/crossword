@@ -11,6 +11,19 @@ public class AppDbContext : DbContext
         Database.EnsureCreated();
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<User>().
+            HasMany(u => u.CompletedCrosswords)
+            .WithMany(c => c.CompletedByUsers)
+            .UsingEntity(j => j.ToTable("UserCompletedCrosswords"));
+        modelBuilder.Entity<Crossword>().
+            HasOne(c => c.User)
+            .WithMany(u => u.Crosswords)
+            .HasForeignKey(c => c.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
     // 2-ой способ. более нестандартный
     // private readonly IConfiguration _configuration;
     // public AppDbContext(IConfiguration configuration)

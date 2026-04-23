@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using backend.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace backend.Controllers;
 
@@ -60,23 +62,28 @@ public class UserController : ControllerBase
     {
         try
         {    
-            User? user = await GetUser(id, ct);
-            if(user != null)
-            {  
-                if(user.UserName != userUpdateData.userName)
-                {
-                    user.UserName = userUpdateData.userName;
-                    await _context.SaveChangesAsync(ct);
-                }
-                // if(user.IconPath != userUpdateData.iconPath)
-                //     user.IconPath = userUpdateData.iconPath;
-                // return Ok({user.UserName, user.IconPath});
-                return Ok(user.UserName);
-            }
-            else
+            User? user = await _context.Users
+                .Include(u => u.CompletedCrosswords)
+                .FirstOrDefaultAsync(u => u.Id == id, ct);
+            
+            if(user == null) 
+                return NotFound();
+            
+            if(!string.IsNullOrWhiteSpace(userUpdateData.userName) && user.UserName != userUpdateData.userName)
             {
-                throw new Exception($"Couldn't find user by id: {id}");
+                user.UserName = userUpdateData.userName;
             }
+            if (userUpdateData.completedId.HasValue)
+            {
+                if(!user.CompletedCrosswords.Any(c => c.Id == userUpdateData.completedId))
+                {
+                    var completed = await _context.Crosswords.FirstOrDefaultAsync(c => c.Id == userUpdateData.completedId, ct) ?? throw new Exception("not found");
+                    user.CompletedCrosswords.Add(completed);
+                }
+            }
+
+            await _context.SaveChangesAsync(ct);
+            return Ok(user.UserName);
         }
         catch(Exception e)
         {
@@ -88,10 +95,6 @@ public class UserController : ControllerBase
     {
         return await _context.Users.FirstOrDefaultAsync(x => x.Email == email, ct);
     }
-    async Task<User?> GetUser(Guid id, CancellationToken ct)
-    {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Id == id, ct);
-    }
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetStats(Guid id, CancellationToken ct)
     {
@@ -99,6 +102,7 @@ public class UserController : ControllerBase
         {
             var user = await _context.Users
                 .Include(u => u.Crosswords)
+                .Include(u => u.CompletedCrosswords)
                 .ThenInclude(c => c.CrosswordWords)
                 .FirstOrDefaultAsync(u => u.Id == id, ct);
             var crosswords = user?.Crosswords.Select(c => new {
@@ -115,7 +119,11 @@ public class UserController : ControllerBase
                     w.StartRow
                 })
             });
-            var completed = user?.CompletedCrosswords;
+            var completed = user?.CompletedCrosswords.Select(c => new {
+                c.Id,
+                c.CreatedAt, 
+                c.Grid
+            });
             return Ok(new
             {
                 Crosswords = crosswords,

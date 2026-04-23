@@ -1,9 +1,9 @@
-    import { useParams } from "react-router-dom";
+    import { replace, useNavigate, useNavigation, useParams } from "react-router-dom";
     import { CrosswordGrid, MODES } from "../utils/CrosswordGrid";
     import { useEffect, useState} from "react";
     import { getCrosswordById } from "../services/crosswords";
     import "../styles/Play.css";
-import { WinModal } from "./WinModal";
+    import { WinModal } from "./WinModal";
 
     const checkWord = (word, currentGrid, change) => {
         for(let i = 0; i < word.wordText.length; i++){
@@ -30,11 +30,16 @@ import { WinModal } from "./WinModal";
         const [solvedCells, setSolvedCells] = useState([]);
         const [win, setWin] = useState(false);
         const [selectedCell, setSelectedCell] = useState("");
+        const [hints, setHints] = useState({letter: 0, randLetter: 0, word: 0});
+        const navigate = useNavigate();
         useEffect(()=>{(async()=>{
-            setCrossword(await getCrosswordById(id))
+            const data = await getCrosswordById(id)
+            if(!data)
+                navigate("/feed", {replace: true});
+            console.log("data  " + data);
+            setCrossword(data);
         })()
         },[id]);
-        
         function OnCellChange(row, col, value){
             console.log("on cell change");
             let currentGrid = {
@@ -64,7 +69,7 @@ import { WinModal } from "./WinModal";
             ));
         }
         function Show(type){
-            if(!selectedCell) {return}
+            if(!selectedCell || solvedCells.includes(`${selectedCell.row}-${selectedCell.col}`)) {return}
             switch (type){
                 case SHOW_TYPES.LETTER:
                     ShowLetter(selectedCell);
@@ -74,6 +79,7 @@ import { WinModal } from "./WinModal";
                 case SHOW_TYPES.WORD:
                     break;
             }
+            setHints(prev => ({...prev, [type]: prev[type]+1}));
         }
         function ShowLetter(coords){
             let letter = crossword.grid[coords.row][coords.col];
@@ -83,7 +89,6 @@ import { WinModal } from "./WinModal";
                                     ]
                             ))
             OnCellChange(coords.row, coords.col, letter);
-            
         }
         return (
             <>
@@ -121,7 +126,7 @@ import { WinModal } from "./WinModal";
                                         playGrid={playGrid}
                                     />
                                     {win && 
-                                        <WinModal/>
+                                        <WinModal hints={hints ?? null} crossword={crossword}/>
                                     }
                                 </div>
                             </>}

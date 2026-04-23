@@ -19,8 +19,7 @@ namespace backend.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Email = table.Column<string>(type: "text", nullable: true),
                     Password = table.Column<string>(type: "text", nullable: true),
-                    UserName = table.Column<string>(type: "text", nullable: true),
-                    CompletedCrosswords = table.Column<int>(type: "integer", nullable: false)
+                    UserName = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,6 +71,30 @@ namespace backend.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserCompletedCrosswords",
+                columns: table => new
+                {
+                    CompletedByUsersId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CompletedCrosswordsId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserCompletedCrosswords", x => new { x.CompletedByUsersId, x.CompletedCrosswordsId });
+                    table.ForeignKey(
+                        name: "FK_UserCompletedCrosswords_Crosswords_CompletedCrosswordsId",
+                        column: x => x.CompletedCrosswordsId,
+                        principalTable: "Crosswords",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserCompletedCrosswords_Users_CompletedByUsersId",
+                        column: x => x.CompletedByUsersId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Crosswords_UserId",
                 table: "Crosswords",
@@ -81,6 +104,11 @@ namespace backend.Migrations
                 name: "IX_CrosswordWords_CrosswordId",
                 table: "CrosswordWords",
                 column: "CrosswordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCompletedCrosswords_CompletedCrosswordsId",
+                table: "UserCompletedCrosswords",
+                column: "CompletedCrosswordsId");
         }
 
         /// <inheritdoc />
@@ -88,6 +116,9 @@ namespace backend.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CrosswordWords");
+
+            migrationBuilder.DropTable(
+                name: "UserCompletedCrosswords");
 
             migrationBuilder.DropTable(
                 name: "Crosswords");

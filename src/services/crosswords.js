@@ -45,7 +45,9 @@ export const fetchUserCrosswords = async(user) => {
 export const getCrosswordById = async(id) => {
     try{
         let response = await axios.get(`${API_URL}/crossword/${id}`);
-        return deserialize(response.data);
+        let data = deserialize(response.data);
+        data.id = id;
+        return data;
     }
     catch(e){
         console.error("Server errors:", e.response?.data?.errors);

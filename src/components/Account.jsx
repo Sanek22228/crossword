@@ -22,7 +22,7 @@ function Account(){
     if(!user) return;
     const data = await fetchUserStatistics(user);
     setCrosswords(data.crosswords);
-    setCrosswordsCompleted(data.completed);
+    setCrosswordsCompleted(data.completed.length);
   }
   
   // добавить loader

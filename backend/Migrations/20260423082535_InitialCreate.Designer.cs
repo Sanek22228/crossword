@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260419192932_InitialCreate")]
+    [Migration("20260423082535_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -49,6 +49,21 @@ namespace backend.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Crosswords");
+                });
+
+            modelBuilder.Entity("CrosswordUser", b =>
+                {
+                    b.Property<Guid>("CompletedByUsersId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CompletedCrosswordsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CompletedByUsersId", "CompletedCrosswordsId");
+
+                    b.HasIndex("CompletedCrosswordsId");
+
+                    b.ToTable("UserCompletedCrosswords", (string)null);
                 });
 
             modelBuilder.Entity("CrosswordWord", b =>
@@ -93,9 +108,6 @@ namespace backend.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("CompletedCrosswords")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
@@ -119,6 +131,21 @@ namespace backend.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CrosswordUser", b =>
+                {
+                    b.HasOne("User", null)
+                        .WithMany()
+                        .HasForeignKey("CompletedByUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Crossword", null)
+                        .WithMany()
+                        .HasForeignKey("CompletedCrosswordsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CrosswordWord", b =>

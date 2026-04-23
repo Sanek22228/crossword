@@ -48,6 +48,14 @@ export const fetchUserStatistics = async (user) => {
                 return crosswordObject;
             });
         }
+        if(data.completed && Array.isArray(data.completed)){
+            data.completed = data.completed.map(item => {
+                const crosswordObject = new Crossword([], item.grid);
+                crosswordObject.id = item.id;
+                crosswordObject.createdAt = item.createdAt;
+                return crosswordObject;
+            });
+        }
 
         return data; // Возвращаем объект { crosswords: [Crossword, ...], completed: X }
     } catch (e) {
@@ -58,7 +66,7 @@ export const fetchUserStatistics = async (user) => {
 
 export const updateUser = async (user, data) => {
     try{
-        var response = await axios.put(`http://localhost:5298/user/${user.id}`, data);
+        let response = await axios.put(`http://localhost:5298/user/${user.id}`, data);
         return response.data;
     }
     catch(e){

@@ -1,2 +1,2 @@
 namespace backend.Contracts;
-public record UserUpdateRequest(string userName, string iconPath);
+public record UserUpdateRequest(string? userName, string? iconPath, Guid? completedId);

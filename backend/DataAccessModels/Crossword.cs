@@ -11,5 +11,6 @@ public class Crossword
     [Column(TypeName = "jsonb")]
     public List<List<object>> Grid {get;set;} = new();
     public User User {get;set;} = null!;
+    public List<User> CompletedByUsers {get;set;} = new();
     public List<CrosswordWord> CrosswordWords {get;set;} = new();
 }
