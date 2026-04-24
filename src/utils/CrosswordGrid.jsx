@@ -12,7 +12,7 @@ function CrosswordGrid({crossword, mode = MODES.FULL, onChange = NOP, solvedCell
   const grid = crossword.grid;
   return(
     <>
-      <table id={crossword.id} onFocusCapture={(e) => onFocus(e.target.dataset)}>
+      <table className={mode===MODES.VIEW ? "emptyTable" : "filledTable"} id={crossword.id} onFocusCapture={(e) => onFocus(e.target.dataset)}>
         <tbody>
           {grid && grid.map((row, rowIndex) => (
             <tr key={rowIndex}>{

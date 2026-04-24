@@ -25,7 +25,7 @@ function ExportButtons({crossword}){
             <button onClick={() => handleDownload("pdf")} className='downloadBtn'>
                 Скачать в PDF
             </button>
-            {isExporting && <CrosswordGrid className="emptyTable" crossword={crossword} mode={MODES.VIEW}></CrosswordGrid>}
+            {isExporting && <CrosswordGrid crossword={crossword} mode={MODES.VIEW}></CrosswordGrid>}
         </>
     )
 }

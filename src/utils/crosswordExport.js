@@ -55,7 +55,14 @@ function CreateExportElement(crossword) {
     console.log(document.getElementsByClassName("emptyTable"));
     const emptyTable = document.getElementsByClassName("emptyTable")[0].cloneNode(true);
     // emptyTable.hidden = false;
-    var filledTable = document.getElementById(crossword.id).cloneNode(true);
+    let filledTable;
+    try{
+        filledTable = document.getElementById(crossword.id).cloneNode(true);
+    }
+    catch{
+        filledTable = document.getElementsByClassName("filledTable")[0].cloneNode(true);
+    }
+    
     container.appendChild(filledTable);
 
     // 4. Разрыв страницы для PDF
@@ -63,7 +70,7 @@ function CreateExportElement(crossword) {
     pageBreak.style.pageBreakBefore = "always";
     container.appendChild(pageBreak);
     
-    // 5. Второй лист (например, пустая сетка или ответы)
+    // 5. Второй лист
     container.appendChild(emptyTable);
 
     return container;
