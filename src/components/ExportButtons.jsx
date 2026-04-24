@@ -10,7 +10,7 @@ function ExportButtons({crossword}){
         setTimeout(() => {  
             ExportCrossword(type, crossword);
             setIsExporting(false);
-        }, 100);
+        }, 10);
     },[isExporting])
 
     function handleDownload(type){

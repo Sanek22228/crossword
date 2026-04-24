@@ -3,7 +3,7 @@ import { Crossword } from "../classes/Crossword";
 import { Word } from "../classes/Word";
 import { Coordinates } from "../classes/Coordinates";
 
-const API_URL = "http://localhost:5298";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const fetchCrosswordPublication = async (user, crossword) => {
     const crosswordWords = crossword.addedWords.map(word=>({

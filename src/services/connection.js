@@ -1,6 +1,8 @@
 import axios from "axios";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export async function fetchHealth(){
-    var response = await axios.get("http://localhost:5298/health");
+    var response = await axios.get(`${API_URL}/health`);
     return response.data;
 }

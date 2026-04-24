@@ -3,9 +3,11 @@ import { Crossword } from "../classes/Crossword";
 import { Word } from "../classes/Word";
 import { Coordinates } from "../classes/Coordinates";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 export const fetchLogin = async (user) => {
     try {
-        var response = await axios.post("http://localhost:5298/user/login", user);
+        var response = await axios.post(`${API_URL}/user/login`, user);
         return response.data;
     }
     catch(e){
@@ -15,7 +17,7 @@ export const fetchLogin = async (user) => {
 
 export const fetchRegister = async (user) => {
     try {
-        var response = await axios.post("http://localhost:5298/user/register", user);
+        var response = await axios.post(`${API_URL}/user/register`, user);
         return response.data;
     }
     catch(e){
@@ -25,7 +27,7 @@ export const fetchRegister = async (user) => {
 
 export const fetchUserStatistics = async (user) => {
     try {
-        const response = await axios.get(`http://localhost:5298/user/${user.id}`);
+        const response = await axios.get(`${API_URL}/user/${user.id}`);
         const data = response.data;
 
         if (data.crosswords && Array.isArray(data.crosswords)) {
@@ -66,7 +68,7 @@ export const fetchUserStatistics = async (user) => {
 
 export const updateUser = async (user, data) => {
     try{
-        let response = await axios.put(`http://localhost:5298/user/${user.id}`, data);
+        let response = await axios.put(`${API_URL}/user/${user.id}`, data);
         return response.data;
     }
     catch(e){

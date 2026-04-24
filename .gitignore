@@ -25,3 +25,5 @@ yarn-error.log*
 /backend/appsettings.json
 /backend/bin/
 /backend/obj/
+
+.env
