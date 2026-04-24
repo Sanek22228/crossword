@@ -10,7 +10,7 @@ function ExportButtons({crossword}){
         setTimeout(() => {  
             ExportCrossword(type, crossword);
             setIsExporting(false);
-        }, 10);
+        }, 100);
     },[isExporting])
 
     function handleDownload(type){
@@ -25,7 +25,7 @@ function ExportButtons({crossword}){
             <button onClick={() => handleDownload("pdf")} className='downloadBtn'>
                 Скачать в PDF
             </button>
-            {isExporting && <CrosswordGrid crossword={crossword} mode={MODES.VIEW}></CrosswordGrid>}
+            {isExporting && <CrosswordGrid className="emptyTable" crossword={crossword} mode={MODES.VIEW}></CrosswordGrid>}
         </>
     )
 }

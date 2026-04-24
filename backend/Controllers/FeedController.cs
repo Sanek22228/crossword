@@ -13,10 +13,15 @@ public class FeedController : ControllerBase
     {
         _context = context;
     }
-    [HttpGet]
-    public async Task<IActionResult> GetCrosswords(CancellationToken ct)
+    [HttpGet("{id:guid?}")]
+    public async Task<IActionResult> GetCrosswords(Guid? id, CancellationToken ct)
     {
-        var crosswords = await _context.Crosswords.ToListAsync(ct);
-        return Ok(crosswords);
+        IQueryable<Crossword> crosswords = _context.Crosswords;
+        if(id.HasValue)
+            crosswords = crosswords.Where(c => !c.CompletedByUsers.Any(u => u.Id==id));
+        
+        crosswords = crosswords.OrderByDescending(c => c.CreatedAt);
+        var result = await crosswords.ToListAsync(ct);
+        return Ok(result);
     }
 }

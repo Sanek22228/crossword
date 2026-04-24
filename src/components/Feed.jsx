@@ -4,17 +4,19 @@ import { MODES, CrosswordGrid } from "../utils/CrosswordGrid";
 import styles from "../styles/Feed.module.css"
 import { NavLink } from "react-router-dom";
 import Play from "../images/play.png"
+import { useAuth } from "../hook/useAuth";
 // VIOLATION
 function Feed(){
-  // const {user} = useAuth();
+  const {user} = useAuth();
   const [crosswords, setCrosswords] = useState(null);
   useEffect(()=>{
     (async () =>{
-      const data = await fetchCrosswords();
+      const id = user ? user.id : "";
+      const data = await fetchCrosswords(id);
       if(data)
         setCrosswords(data);
     })()
-  },[]);
+  },[user]);
   return(
     <main>
       <div className="crosswordInfo">
