@@ -81,6 +81,7 @@ table{
 }
 
 .exportBtnContainer{
+    margin-top: 1vh;
     visibility: hidden;
     display: flex;
     flex-wrap: wrap;

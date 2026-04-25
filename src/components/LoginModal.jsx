@@ -224,7 +224,7 @@ function LoginModal() {
                         </label>
                         	<PasswordToggleField.Root>
 								<div className={styles.Root}>
-									<PasswordToggleField.Input className="Input" onChange={(e) => setPassword(e.target.value)} value={password}/>
+									<PasswordToggleField.Input className="PasswordInput" onChange={(e) => setPassword(e.target.value)} value={password}/>
 									<PasswordToggleField.Toggle className={styles.Toggle}>
 										<PasswordToggleField.Icon
 											visible={<EyeOpenIcon />}
@@ -239,7 +239,7 @@ function LoginModal() {
                             Подтвердите пароль
                         </label>
                         <PasswordToggleField.Root>
-								<div className={`${styles.Root}`}>
+								<div className={styles.Root}>
 									<PasswordToggleField.Input 
                                         className="PasswordInput" 
                                         onChange={(e) => setConfirmPass(e.target.value)} 

@@ -18,7 +18,7 @@ function ExportButtons({crossword}){
         setIsExporting(true);
     }
     return(
-        <>
+        <div style={{display:"flex", gap:"1vw", margin: 0}}>
             <button onClick={() => handleDownload("xls")} className='downloadBtn'>
                 Скачать в XLS
             </button>
@@ -26,7 +26,7 @@ function ExportButtons({crossword}){
                 Скачать в PDF
             </button>
             {isExporting && <CrosswordGrid crossword={crossword} mode={MODES.VIEW}></CrosswordGrid>}
-        </>
+        </div>
     )
 }
 

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useCrossword } from "../hook/useCrossword";
 import { fetchCrosswordPublication } from "../services/crosswords";
 import { useAuth } from "../hook/useAuth"
-// import editIcon from "../images/edit.svg";
+import { ExportButtons } from '../components/ExportButtons';
 
 function Publication(){
   const navigate = useNavigate();
@@ -114,8 +114,16 @@ function Publication(){
             </button> */}
           </div>
         </div>
-        <p className="error">{errorMessage}</p>
-        <button style={{fontWeight: "bold", padding: ".4vw 2vw", margin: 0}} className='Button violet' onClick={PublicateCrossword}>Готово</button>
+        <div style={{display: "flex", flexDirection:"column", gap: "3vh", alignItems: "center"}}>
+          <p className="error">{errorMessage}</p>
+          <ExportButtons crossword={crossword}/>
+          <button 
+            style={{fontWeight: "bold", padding: ".4vw 2vw", margin: 0}} 
+            className='Button violet' 
+            onClick={PublicateCrossword}>
+              Опубликовать
+          </button>
+        </div>
       </main>
     </>
   );

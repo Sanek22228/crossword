@@ -54,13 +54,26 @@ function CreateExportElement(crossword) {
     // 3. Сетка кроссворда (Берем существующую или отрисовываем заново)
     console.log(document.getElementsByClassName("emptyTable"));
     const emptyTable = document.getElementsByClassName("emptyTable")[0].cloneNode(true);
-    // emptyTable.hidden = false;
+    
     let filledTable;
+    let verticalDefinitions;
+    let horizontalDefinitions;
+    
+    const questionWrapper = document.createElement("div");
+    questionWrapper.style.display = "flex";
+    questionWrapper.style.gap = "50pt";
+
     try{
-        filledTable = document.getElementById(crossword.id).cloneNode(true);
+        filledTable = document.getElementById(crossword.id).cloneNode(true);    
+        questionWrapper.appendChild(CreateQuestionList("Слова по вертикали: ", crossword.verticalWords));
+        questionWrapper.appendChild(CreateQuestionList("Слова по горизонтали: ", crossword.horizontalWords));
     }
     catch{
         filledTable = document.getElementsByClassName("filledTable")[0].cloneNode(true);
+        verticalDefinitions = getQuestionsFromPage("vertical-definitions")
+        horizontalDefinitions = getQuestionsFromPage("horizontal-definitions")
+        questionWrapper.appendChild(CreateQuestionList("Слова по вертикали: ", crossword.verticalWords, verticalDefinitions));
+        questionWrapper.appendChild(CreateQuestionList("Слова по горизонтали: ", crossword.horizontalWords, horizontalDefinitions));
     }
     
     container.appendChild(filledTable);
@@ -72,6 +85,7 @@ function CreateExportElement(crossword) {
     
     // 5. Второй лист
     container.appendChild(emptyTable);
+    container.appendChild(questionWrapper);
 
     return container;
 }
@@ -93,3 +107,42 @@ function CreateInfoContainer(crossword){
     `;
     return info;
 }
+function CreateQuestionList(title, words, questions) {
+    const column = document.createElement("div");
+    column.style.flex = "1";
+
+    const h3 = document.createElement("h3");
+    h3.innerText = title;
+    h3.style.borderBottom = "1px solid #ccc";
+    h3.style.paddingBottom = "5pt";
+    h3.style.marginBottom = "10pt";
+    h3.style.marginTop = "80pt";
+    h3.style.whiteSpace = "nowrap"; // Чтобы заголовок не рвался
+    column.appendChild(h3);
+
+    if(questions){
+        for (let i = 0; i < words.length; i ++){
+            const p = document.createElement("p");
+            p.style.display = "flex";
+            p.style.gap = "5pt";
+            p.style.margin = "8pt 0";
+            p.style.fontSize = "11pt";
+            p.style.lineHeight = "1.3";
+            p.style.wordBreak = "break-word";
+            const num = `<span style="font-weight: bold; min-width: 20pt; flex-shrink: 0;">${words[i].order}.</span>`;
+            const text = `<span style="flex-grow: 1;">${questions && questions[i] || words[i].question || "____________________"}</span>`;
+        
+            p.innerHTML = num + text;
+            column.appendChild(p);
+            column.appendChild(p);
+        };    
+    }
+
+    return column;
+}
+const getQuestionsFromPage = (id) => {
+        const el = document.getElementById(id);
+        if (!el) return null;
+        // Достаем значения из всех инпутов внутри контейнера
+        return Array.from(el.querySelectorAll('input')).map(input => input.value);
+    };

@@ -3,8 +3,6 @@ import "../styles/crosswordTable.css";
 import { useNavigate } from 'react-router-dom';
 import { useCrossword } from '../hook/useCrossword';
 import { CrosswordGrid } from './CrosswordGrid';
-import { ExportButtons } from '../components/ExportButtons';
-
 
 // {crossword} деструктуризация, так как при создании <CrosswordTable crossword={crossword}/> передается объект props (properties), в котором crossword: crossword
 const CrosswordViewer = ({crossword}) => {    
@@ -29,8 +27,7 @@ const CrosswordViewer = ({crossword}) => {
             </div>
             <CrosswordGrid crossword={crossword}/>
             <div className='exportBtnContainer'>
-                <ExportButtons crossword={crossword}/>
-                <button id='publishBtn' className='Button violet' onClick={() => ToPublication(crossword)}>Опубликовать</button>
+                <button id='publishBtn' className='Button violet' onClick={() => ToPublication(crossword)}>Выбрать</button>
             </div>
         </div>
     );
