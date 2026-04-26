@@ -63,12 +63,14 @@ function CreateExportElement(crossword) {
     questionWrapper.style.display = "flex";
     questionWrapper.style.gap = "50pt";
 
-    try{
+    if(crossword.id){
         filledTable = document.getElementById(crossword.id).cloneNode(true);    
         questionWrapper.appendChild(CreateQuestionList("Слова по вертикали: ", crossword.verticalWords));
+        console.log(crossword.verticalWords);
         questionWrapper.appendChild(CreateQuestionList("Слова по горизонтали: ", crossword.horizontalWords));
+        console.log(crossword.horizontalWords);
     }
-    catch{
+    else{
         filledTable = document.getElementsByClassName("filledTable")[0].cloneNode(true);
         verticalDefinitions = getQuestionsFromPage("vertical-definitions")
         horizontalDefinitions = getQuestionsFromPage("horizontal-definitions")
@@ -120,23 +122,21 @@ function CreateQuestionList(title, words, questions) {
     h3.style.whiteSpace = "nowrap"; // Чтобы заголовок не рвался
     column.appendChild(h3);
 
-    if(questions){
-        for (let i = 0; i < words.length; i ++){
-            const p = document.createElement("p");
-            p.style.display = "flex";
-            p.style.gap = "5pt";
-            p.style.margin = "8pt 0";
-            p.style.fontSize = "11pt";
-            p.style.lineHeight = "1.3";
-            p.style.wordBreak = "break-word";
-            const num = `<span style="font-weight: bold; min-width: 20pt; flex-shrink: 0;">${words[i].order}.</span>`;
-            const text = `<span style="flex-grow: 1;">${questions && questions[i] || words[i].question || "____________________"}</span>`;
-        
-            p.innerHTML = num + text;
-            column.appendChild(p);
-            column.appendChild(p);
-        };    
-    }
+    for (let i = 0; i < words.length; i ++){
+        const p = document.createElement("p");
+        p.style.display = "flex";
+        p.style.gap = "5pt";
+        p.style.margin = "8pt 0";
+        p.style.fontSize = "11pt";
+        p.style.lineHeight = "1.3";
+        p.style.wordBreak = "break-word";
+        const num = `<span style="font-weight: bold; min-width: 20pt; flex-shrink: 0;">${words[i].order}.</span>`;
+        const text = `<span style="flex-grow: 1;">${questions && questions[i] || words[i].question || "____________________"}</span>`;
+    
+        p.innerHTML = num + text;
+        column.appendChild(p);
+        column.appendChild(p);
+    };    
 
     return column;
 }

@@ -21,6 +21,7 @@ function Account(){
   const updateCrosswords = async () => {
     if(!user) return;
     const data = await fetchUserStatistics(user);
+    console.log(data.crosswords)
     setCrosswords(data.crosswords);
     setCrosswordsCompleted(data.completed.length);
   }

@@ -102,8 +102,8 @@ public class UserController : ControllerBase
         {
             var user = await _context.Users
                 .Include(u => u.Crosswords)
-                .Include(u => u.CompletedCrosswords)
                 .ThenInclude(c => c.CrosswordWords)
+                .Include(u => u.CompletedCrosswords)
                 .FirstOrDefaultAsync(u => u.Id == id, ct);
             var crosswords = user?.Crosswords.Select(c => new {
                 c.Id, 
@@ -116,7 +116,8 @@ public class UserController : ControllerBase
                     w.WordOrder,
                     w.Direction,
                     w.StartCol,
-                    w.StartRow
+                    w.StartRow,
+                    w.Question
                 })
             });
             var completed = user?.CompletedCrosswords.Select(c => new {

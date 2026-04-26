@@ -41,6 +41,7 @@ export const fetchUserStatistics = async (user) => {
                     );
                     newWord.order = w.wordOrder;
                     newWord.isSkipped = w.isSkipped;
+                    newWord.question = w.question;
                     return newWord;
                 });
                 const crosswordObject = new Crossword(wordArray, item.grid);
