@@ -17,3 +17,7 @@
     /* justify-content: center; */
     max-width: 90vw;
 }
+
+div{
+    text-align: left;
+}

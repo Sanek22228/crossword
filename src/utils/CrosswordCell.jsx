@@ -18,6 +18,7 @@ function CrosswordCell({cell, showAnswers, isInteractive, onCellChange = NOP, co
                     type="text"
                     maxLength={1} 
                     readOnly={solved}
+                    tabIndex={solved ? -1 : 1}
                     onChange={(e) => {
                         // e.target.value = e.target.value.toUpperCase(); 
                         onCellChange(coordinates[0], coordinates[1], e.target.value)
