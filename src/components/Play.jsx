@@ -105,7 +105,6 @@
                         });
                     break;
             }
-            setHints(prev => ({...prev, [type]: prev[type]+1}));
             if (cellsToOpen.length > 0) {
                 const updatedGrid = playGrid;
                 cellsToOpen.forEach(c => {

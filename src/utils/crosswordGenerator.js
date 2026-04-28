@@ -7,18 +7,26 @@ var addedWords;
 var skippedWords;
 var crosswordGrid;
 
+/**
+    * Основная функция создания кроссворда.
+    * Принимает массив строк, возвращает объект Crossword.
+*/
 export function CreateCrossword(words){
     let wordsCopy = [...words];
     addedWords = [];
     skippedWords = [];
     crosswordGrid = new Grid();
     
+    // 1. Ставим первое слово в центр сетки
     addedWords.push(PlaceFirstWord(wordsCopy, Word.DIRECTIONS.HORIZONTAL));
+    
+    // Сдвигаем всё, если слово упёрлось в край (нормализация)
     if(addedWords[0].coordinates.startCol === 0)
         NormalizeGrid(0, 1);
     else if(addedWords[0].coordinates.startRow === 0)
         NormalizeGrid(1, 0);
 
+    // 2. Попытка расставить остальные слова
     for(let word of wordsCopy){
         if (!TryPlaceWord(word)){
             console.warn("try place word failed skipped words push ", word)
@@ -28,7 +36,8 @@ export function CreateCrossword(words){
             console.warn("function try place word succeed, added words push", word);
         }   
     }
-
+    
+    // 3. Рекурсивная дозапись: пытаемся вставить пропущенные слова снова
     let changed = true;
     while(skippedWords.length > 0 && changed){
         changed = false;
@@ -40,14 +49,16 @@ export function CreateCrossword(words){
         }
     }
 
+    // Помечаем оставшиеся слова как пропущенные
     for (let i = 0; i < skippedWords.length; i++) {
         skippedWords[i].isSkipped = true;
     }
+    
+    let crossword = new Crossword([...addedWords, ...skippedWords], [])
+    NumberCrossword(crossword, crosswordGrid);         // Присваиваем порядковые номера для вопросов
+    crosswordGrid.trimGrid();                          // Удалить пустые строки
+    crossword.grid = crosswordGrid.grid;
 
-    let crossword = new Crossword([...addedWords, ...skippedWords], crosswordGrid.grid)
-    console.log("skipped words: ", crossword.skippedWords);
-    console.log("added words: ", crossword.addedWords);
-    NumberCrossword(crossword);
     return crossword;
 }
 
@@ -65,7 +76,6 @@ function PlaceFirstWord(wordsCopy, direction){
             col -= wordHalf;
             if(col < 0){
                 crosswordGrid.expandGrid(0, crosswordGrid.width - col)
-                // error handler
             }
         }
         else{
@@ -113,10 +123,15 @@ function PlaceFirstWord(wordsCopy, direction){
 //     }
 // }
 
+
+/**
+    * Ищет пересечения между новым словом (word1) и уже добавленными (addedWords)
+*/
 function TryPlaceWord(word1){
     for (let word2 of addedWords){
         for(let i = 0; i < word1.length; i++){
             for(let j = 0; j < word2.wordText.length; j++){
+                // Если буквы совпали, пытаемся построить слово перпендикулярно
                 if(word1[i] === word2.wordText[j]){
                     if(PlaceAtIntersection(i, j, word1, word2)){
                         return true;
@@ -248,10 +263,9 @@ function GetCoordinates(index1, index2, word1, word2){
     return {minRow, minCol, coordinates};
 }
 
-/*
-    return
-        true / false
-*/
+/**
+    * Проверяет, можно ли поставить слово: нет ли конфликтов с соседними буквами.
+ */
 function CanPlaceWord(word1, word2){
     const directions = [
         [-1, -1],  [-1, 0],  [-1, 1],
@@ -356,19 +370,19 @@ function NormalizeGrid(countRow, countCol){
 }
 
 // нумерация слов в кроссворде (с левого верхнего угла)
-function NumberCrossword(crossword){
+function NumberCrossword(crossword, crosswordGrid){
     let wordOrder = 1;
     crossword.addedWords.forEach((w) => {
         if(w.direction === Word.DIRECTIONS.HORIZONTAL){
             if(w.coordinates.startCol - 1 >= 0) 
-                crossword.grid[w.coordinates.startRow][w.coordinates.startCol-1] = {
+                crosswordGrid.grid[w.coordinates.startRow][w.coordinates.startCol-1] = {
                     value: wordOrder.toString(),
                     direction : Word.DIRECTIONS.HORIZONTAL
                 };
         }
         else{
             if(w.coordinates.startRow - 1 >= 0) 
-                crossword.grid[w.coordinates.startRow-1][w.coordinates.startCol] = {
+                crosswordGrid.grid[w.coordinates.startRow-1][w.coordinates.startCol] = {
                     value: wordOrder.toString(),
                     direction : Word.DIRECTIONS.VERTICAL
                 };
@@ -376,4 +390,17 @@ function NumberCrossword(crossword){
         w.order = wordOrder;
         wordOrder++;
     });
+}
+
+function TrimGrid(crossword, crosswordGrid){
+    let changedLength = crosswordGrid.trimGrid();
+    if(changedLength){
+        crossword.addedWords.map(w => {
+            w.coordinates.startRow -= changedLength;
+            w.coordinates.cells.map(c => {
+                c[1] -= changedLength;
+            })
+            console.log(w);
+        });
+    }
 }

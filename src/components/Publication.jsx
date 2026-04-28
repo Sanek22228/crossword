@@ -78,7 +78,7 @@ function Publication(){
           </div>
           <div id="definitions">
             <p><b>По вертикали:</b></p>
-            <div style={{display: "flex", flexDirection: "column"}} id="vertical-definitions">
+            <div style={{display: "flex", flexDirection: "column", whiteSpace: "nowrap"}} id="vertical-definitions">
               {curCrossword.verticalWords.map((word, i) => 
                 <div key={i}>
                   <label>{word.order}.</label>
@@ -94,7 +94,7 @@ function Publication(){
               )}
             </div>
             <p><b>По горизонтали:</b></p>
-            <div style={{display: "flex", flexDirection: "column"}} id="horizontal-definitions">
+            <div style={{display: "flex", flexDirection: "column", whiteSpace: "nowrap"}} id="horizontal-definitions">
               {curCrossword.horizontalWords.map((word, i) => 
                 <div key={i}>
                   <label>{word.order}.</label>

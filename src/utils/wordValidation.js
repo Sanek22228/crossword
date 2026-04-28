@@ -45,7 +45,7 @@ export async function validateWords(input){
             }
         }
         word = chars.join("");
-        if(word.length < MIN_CHARS_COUNT || word.length > MAX_SIZE){
+        if(word.length < MIN_CHARS_COUNT || word.length >= MAX_SIZE){
             valid = false;
         }
         if (valid){
@@ -57,9 +57,9 @@ export async function validateWords(input){
         return b.length - a.length;
     });
     validWords = Array.from(new Set(validWords));
-    var skippedWords = await fetchValidation(validWords);
-    console.log("non valid words: ", skippedWords);
-    validWords = validWords.filter(w => !skippedWords.includes(w));
+    // var skippedWords = await fetchValidation(validWords);
+    // console.log("non valid words: ", skippedWords);
+    // validWords = validWords.filter(w => !skippedWords.includes(w));
     console.log("valid Words: ", validWords);
     return validWords;
     // return skippedWords == null ? validWords: validWords.filter(w => !skippedWords.includes(w));

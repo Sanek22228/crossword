@@ -3,7 +3,7 @@ export const MAX_SIZE = 25;
 
 export class Grid{
     height = DEFAULT_SIZE;
-    width = DEFAULT_SIZE;ч
+    width = DEFAULT_SIZE;
     grid = [];
 
     constructor() {
@@ -62,5 +62,15 @@ export class Grid{
             {length : this.height},
             () => {return Array(this.width).fill('0')}
         );
+    }
+
+    trimGrid(){
+        this.grid = this.grid.filter(r => {
+            return r.some(c => (c != "0"))
+            }
+        )
+        let prevHeight = this.height;
+        this.height = this.grid.length;
+        return this.height - prevHeight;
     }
 }
