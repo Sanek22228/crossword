@@ -11,6 +11,7 @@ export class Grid{
             {length : this.height},
             () => {return Array(this.width).fill('0')}
         );
+        console.log(this.grid);
     }
     
     displayGrid() {
@@ -65,12 +66,44 @@ export class Grid{
     }
 
     trimGrid(){
+        console.log(`start: height: ${this.height}, width: ${this.width}`);
+        console.log("grid: \n");
+        console.log(this.grid);
         this.grid = this.grid.filter(r => {
-            return r.some(c => (c != "0"))
+            return r.some(c => (c !== '0'))
             }
         )
         let prevHeight = this.height;
         this.height = this.grid.length;
-        return this.height - prevHeight;
+        console.log(`after filter: height: ${this.height}, width: ${this.width}`);
+        console.log("grid: \n");
+        console.log(this.grid);
+        
+        let cols = Array.from(
+            {length : this.width},
+            () => {return Array(this.height).fill('0')}
+        );
+        
+        for (let i = 0; i < this.height; i++){
+            let row = this.grid[i];
+            for (let j = 0; j < this.width; j ++){
+                cols[j].push(row[j]);
+            }
+        }
+        let emptyColsIndexes = [];
+        for (let i = 0; i < cols.length; i++){
+            if(cols[i].every(item => item === '0'))
+                emptyColsIndexes.push(i);
+        }
+        if(emptyColsIndexes.reverse()){  
+            for(let i = 0; i < this.grid.length; i++){
+                emptyColsIndexes.forEach(ind => {
+                    this.grid[i].splice(ind,1);
+                })
+            }    
+        }
+        let prevWidth = this.width;
+        this.width = this.grid[0].length;
+        return [prevHeight - this.height, prevWidth - this.width];
     }
 }

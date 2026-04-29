@@ -12,9 +12,10 @@
   align-items: center; 
   display: flex;
   flex-direction: row;
-  width: 90%;
+  width: 100%;
   flex: 1;
   justify-content: space-around;
+  height: 100%;
   /* gap: 10vw; */
 }
 

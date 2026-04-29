@@ -60,69 +60,71 @@ function Publication(){
 
   return(
     <>
-      <main style={{alignItems: "center"}}>
+      <main>
         {/* <button id="backBtn" onClick={GoBack}>Отмена</button> */}
-        <div id="crosswordInfo">
-          <div id="words">
-            <p style={{marginBottom: '0'}}><b>Слова по вертикали:</b></p>
-            <p style={{margin: 0}} id="vertical-words">
-              {crossword.verticalWords.map(w => w.wordText).join(', ')}
-            </p>
-            <p style={{marginBottom: '0'}}><b>Слова по горизонтали:</b></p>
-            <p style={{margin: '0'}} id="horizontal-words">
-              {crossword.horizontalWords.map(w => w.wordText).join(', ')}
-            </p>
-          </div>
-          <div id="crosswordTable">
-            <CrosswordGrid crossword={crossword}/>
-          </div>
-          <div id="definitions">
-            <p><b>По вертикали:</b></p>
-            <div style={{display: "flex", flexDirection: "column", whiteSpace: "nowrap"}} id="vertical-definitions">
-              {curCrossword.verticalWords.map((word, i) => 
-                <div key={i}>
-                  <label>{word.order}.</label>
-                  <input className="QuestionInput" value={definitions.vertical[i]} onChange={(e) => {
-                    let copy = [...definitions.vertical];
-                    copy[i] = e.target.value;
-                    updateDefinitions({
-                      ...definitions,
-                      vertical: copy
-                    });
-                  }} type="text"/>
-                </div>
-              )}
+        <div style={{height: "100%", width: "100%"}}>
+          <div id="crosswordInfo">
+            <div id="words">
+              <p style={{marginBottom: '0'}}><b>Слова по вертикали:</b></p>
+              <p style={{margin: 0}} id="vertical-words">
+                {crossword.verticalWords.map(w => w.wordText).join(', ')}
+              </p>
+              <p style={{marginBottom: '0'}}><b>Слова по горизонтали:</b></p>
+              <p style={{margin: '0'}} id="horizontal-words">
+                {crossword.horizontalWords.map(w => w.wordText).join(', ')}
+              </p>
             </div>
-            <p><b>По горизонтали:</b></p>
-            <div style={{display: "flex", flexDirection: "column", whiteSpace: "nowrap"}} id="horizontal-definitions">
-              {curCrossword.horizontalWords.map((word, i) => 
-                <div key={i}>
-                  <label>{word.order}.</label>
-                  <input className="QuestionInput" value={definitions.horizontal[i]} onChange={(e) => {
-                    let copy = [...definitions.horizontal];
-                    copy[i] = e.target.value;
-                    updateDefinitions({
-                      ...definitions,
-                      horizontal: copy
-                    });
-                  }} type="text"/>
-                </div>
-              )}
+            <div id="crosswordTable">
+              <CrosswordGrid crossword={crossword}/>
             </div>
-            {/* <button>
-              Составить заново
-            </button> */}
+            <div id="definitions">
+              <p><b>По вертикали:</b></p>
+              <div style={{display: "flex", flexDirection: "column", whiteSpace: "nowrap"}} id="vertical-definitions">
+                {curCrossword.verticalWords.map((word, i) => 
+                  <div key={i}>
+                    <label>{word.order}.</label>
+                    <input className="QuestionInput" value={definitions.vertical[i]} onChange={(e) => {
+                      let copy = [...definitions.vertical];
+                      copy[i] = e.target.value;
+                      updateDefinitions({
+                        ...definitions,
+                        vertical: copy
+                      });
+                    }} type="text"/>
+                  </div>
+                )}
+              </div>
+              <p><b>По горизонтали:</b></p>
+              <div style={{display: "flex", flexDirection: "column", whiteSpace: "nowrap"}} id="horizontal-definitions">
+                {curCrossword.horizontalWords.map((word, i) => 
+                  <div key={i}>
+                    <label>{word.order}.</label>
+                    <input className="QuestionInput" value={definitions.horizontal[i]} onChange={(e) => {
+                      let copy = [...definitions.horizontal];
+                      copy[i] = e.target.value;
+                      updateDefinitions({
+                        ...definitions,
+                        horizontal: copy
+                      });
+                    }} type="text"/>
+                  </div>
+                )}
+              </div>
+              {/* <button>
+                Составить заново
+              </button> */}
+            </div>
           </div>
-        </div>
-        <div style={{display: "flex", flexDirection:"column", gap: "3vh", alignItems: "center"}}>
-          <p className="error">{errorMessage}</p>
-          <ExportButtons crossword={crossword}/>
-          <button 
-            style={{fontWeight: "bold", padding: ".4vw 2vw", margin: 0}} 
-            className='Button violet' 
-            onClick={PublicateCrossword}>
-              Опубликовать
-          </button>
+          <div style={{display: "flex", flexDirection:"column", gap: "3vh", alignItems: "center"}}>
+            <p className="error">{errorMessage}</p>
+            <ExportButtons crossword={crossword}/>
+            <button 
+              style={{fontWeight: "bold", padding: ".4vw 2vw", margin: 0}} 
+              className='Button violet' 
+              onClick={PublicateCrossword}>
+                Опубликовать
+            </button>
+          </div>
         </div>
       </main>
     </>

@@ -16,7 +16,7 @@ export function CreateCrossword(words){
     addedWords = [];
     skippedWords = [];
     crosswordGrid = new Grid();
-    
+    console.log(crosswordGrid.grid);
     // 1. Ставим первое слово в центр сетки
     addedWords.push(PlaceFirstWord(wordsCopy, Word.DIRECTIONS.HORIZONTAL));
     
@@ -36,7 +36,7 @@ export function CreateCrossword(words){
             console.warn("function try place word succeed, added words push", word);
         }   
     }
-    
+    console.log(crosswordGrid.grid);
     // 3. Рекурсивная дозапись: пытаемся вставить пропущенные слова снова
     let changed = true;
     while(skippedWords.length > 0 && changed){
@@ -48,7 +48,7 @@ export function CreateCrossword(words){
             }
         }
     }
-
+console.log(crosswordGrid.grid);
     // Помечаем оставшиеся слова как пропущенные
     for (let i = 0; i < skippedWords.length; i++) {
         skippedWords[i].isSkipped = true;
@@ -56,7 +56,7 @@ export function CreateCrossword(words){
     
     let crossword = new Crossword([...addedWords, ...skippedWords], [])
     NumberCrossword(crossword, crosswordGrid);         // Присваиваем порядковые номера для вопросов
-    crosswordGrid.trimGrid();                          // Удалить пустые строки
+    TrimGrid(crossword, crosswordGrid);                          // Удалить пустые строки
     crossword.grid = crosswordGrid.grid;
 
     return crossword;
@@ -76,6 +76,7 @@ function PlaceFirstWord(wordsCopy, direction){
             col -= wordHalf;
             if(col < 0){
                 crosswordGrid.expandGrid(0, crosswordGrid.width - col)
+                crosswordGrid.displayGrid()
             }
         }
         else{
@@ -393,14 +394,15 @@ function NumberCrossword(crossword, crosswordGrid){
 }
 
 function TrimGrid(crossword, crosswordGrid){
-    let changedLength = crosswordGrid.trimGrid();
-    if(changedLength){
+    let changed = crosswordGrid.trimGrid();
+    if(changed){
         crossword.addedWords.map(w => {
-            w.coordinates.startRow -= changedLength;
+            w.coordinates.startRow -= changed[0];
+            w.coordinates.startCol -= changed[1];
             w.coordinates.cells.map(c => {
-                c[1] -= changedLength;
+                c[1] -= changed[0];
+                c[0] -= changed[1];
             })
-            console.log(w);
         });
     }
 }

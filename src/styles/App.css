@@ -5,8 +5,9 @@ main{
   align-items: center;
   gap: 4vw;
   margin: 0;
-  padding-bottom: 4vw;
-  height: 100%;
+  padding-bottom: 10vh;
+  min-height: 70vh;
+  height: fit-content;
 }
 header {
   background-color: #9c9c9c;
