@@ -67,11 +67,6 @@ export const fetchUserStatistics = async (user) => {
 }
 
 export const updateUser = async (user, data) => {
-    try{
-        let response = await axios.put(`${API_URL}/user/${user.id}`, data);
-        return response.data;
-    }
-    catch(e){
-        console.error(e)
-    }
+    let response = await axios.put(`${API_URL}/user/${user.id}`, data);
+    return response.data;
 }

@@ -71,6 +71,11 @@ public class UserController : ControllerBase
             
             if(!string.IsNullOrWhiteSpace(userUpdateData.userName) && user.UserName != userUpdateData.userName)
             {
+                bool exists = await _context.Users.AnyAsync(u => u.UserName == userUpdateData.userName,ct);
+                if(exists)
+                {
+                    return Conflict(new { message = "Имя пользователя занято" });
+                }
                 user.UserName = userUpdateData.userName;
             }
             if (userUpdateData.completedId.HasValue)
@@ -83,11 +88,11 @@ public class UserController : ControllerBase
             }
 
             await _context.SaveChangesAsync(ct);
-            return Ok(user.UserName);
+            return Ok();
         }
-        catch(Exception e)
+        catch(Exception)
         {
-            return NotFound(e);
+            return NotFound(new {message = "Ошибка при обновлении профиля"});
         }
     }
     // возможно вместо UserRequest request передавать только string email
