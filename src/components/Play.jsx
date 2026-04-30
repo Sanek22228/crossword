@@ -146,6 +146,7 @@
                                     ))}
                                 </div>
                                 <div>
+                                    <p style={{textAlign: "center", margin: "5vh"}}>Название: {crossword.name}</p>
                                     <CrosswordGrid 
                                         crossword={crossword} 
                                         mode={MODES.PLAY} 

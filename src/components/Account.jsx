@@ -65,7 +65,7 @@ function Account(){
           crosswords.map((item, key) => (
                 <div key={item.id || key} className={styles.crosswordTable}>
                   <CrosswordGrid crossword={item} />
-                  <p>Название: {/* item.name */}</p>
+                  <p>Название: {item.name}</p>
                   <p>
                     Дата создания: {new Date(item.createdAt).toLocaleDateString()}
                   </p>

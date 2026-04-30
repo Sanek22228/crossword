@@ -47,6 +47,7 @@ export const fetchUserStatistics = async (user) => {
                 const crosswordObject = new Crossword(wordArray, item.grid);
                 crosswordObject.id = item.id;
                 crosswordObject.createdAt = item.createdAt;
+                crosswordObject.name = item.name;
 
                 return crosswordObject;
             });

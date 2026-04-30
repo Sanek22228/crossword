@@ -1,4 +1,4 @@
 namespace backend.Contracts;
 
-public record CrosswordRequest(Guid userId, int wordAmount, List<List<object>> grid, List<CrosswordWordRequest> crosswordWords);
+public record CrosswordRequest(Guid userId, List<List<object>> grid, string? name, List<CrosswordWordRequest> crosswordWords);
 

@@ -25,9 +25,8 @@ public class CrosswordController : ControllerBase
         Crossword curCrossword = new Crossword(){
             UserId = request.userId,
             CreatedAt = DateTime.UtcNow,
-            WordAmount = request.wordAmount,
-            Grid = request.grid
-            // Grid = System.Text.Json.JsonSerializer.Serialize(request.grid);
+            Grid = request.grid,
+            Name = request.name
         };
         curCrossword.CrosswordWords = request.crosswordWords.Select(w => new CrosswordWord()
         {
@@ -52,7 +51,7 @@ public class CrosswordController : ControllerBase
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetCrosswordById(Guid id, CancellationToken ct)
     {
-        // try{
+        try{
             var crossword = await _context.Crosswords
                 .Include(c => c.CrosswordWords)
                 .FirstOrDefaultAsync(c => c.Id == id, ct) ?? throw new Exception("not found");
@@ -66,16 +65,16 @@ public class CrosswordController : ControllerBase
             )).ToList();
             var crosswordResponse = new CrosswordResponse(
                 crossword.UserId,
-                crossword.WordAmount,
+                crossword.Name,
                 crossword.Grid,
                 crossword.CreatedAt,
                 words
             );
             return Ok(crosswordResponse);
-        // } catch(Exception e)
-        // {
-        //     return NotFound(e.Message);
-        // }
+        } catch(Exception e)
+        {
+            return NotFound(e.Message);
+        }
     }
     [HttpDelete("{id:guid}")]
     public async Task<IActionResult> DeleteCrossword(Guid id, CancellationToken ct)

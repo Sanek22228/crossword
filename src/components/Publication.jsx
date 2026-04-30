@@ -22,9 +22,10 @@ function Publication(){
   }, [curCrossword]);
 
   const [definitions, updateDefinitions] = useState({
-    vertical: curCrossword.verticalWords.map(w =>""),
-    horizontal: curCrossword.horizontalWords.map(w => "")
+    vertical: crossword.verticalWords.map(w =>""),
+    horizontal: crossword.horizontalWords.map(w => "")
   });
+  const [name, setName] = useState("");
 
   if(!crossword){
     console.log(!crossword);
@@ -32,25 +33,33 @@ function Publication(){
   }
 
   async function PublicateCrossword(){
-    if(DefinitionsFulfilled()){
-      setErrorMessage("");
-      for (let i = 0; i < curCrossword.verticalWords.length; i++){
-        curCrossword.verticalWords[i].question = definitions.vertical[i];
-      }
-      for (let i = 0; i < curCrossword.horizontalWords.length; i++){
-        curCrossword.horizontalWords[i].question = definitions.horizontal[i];
-      }
-      if(user != null){
-        await fetchCrosswordPublication(user, crossword);
-        navigate(`/account/${user.id}`);
-      }
-      else{
-        setLoginActive(true);
-        setOnSuccessAction(() => async (loggedUser) => {console.log("crossword: " + crossword + " logged user: " + loggedUser);await fetchCrosswordPublication(loggedUser, crossword)});
-      }
+    if(!DefinitionsFulfilled()){
+      setErrorMessage("Все поля вопросов должны быть заполнены");
+      return;
+    }
+    else if(!name){
+      setErrorMessage("Введите название кроссворда");
+      return;
+    }
+
+    setErrorMessage("");
+    for (let i = 0; i < crossword.verticalWords.length; i++){
+      crossword.verticalWords[i].question = definitions.vertical[i];
+    }
+    for (let i = 0; i < crossword.horizontalWords.length; i++){
+      crossword.horizontalWords[i].question = definitions.horizontal[i];
+    }
+    crossword.name = name;
+
+    if(user){
+      await fetchCrosswordPublication(user, crossword);
+      navigate(`/account/${user.id}`);
     }
     else{
-      setErrorMessage("Все поля объяснений должны быть заполнены");
+      setLoginActive(true);
+      setOnSuccessAction(() => async (loggedUser) => {
+        await fetchCrosswordPublication(loggedUser, crossword)
+      });
     }
   }
 
@@ -75,12 +84,22 @@ function Publication(){
               </p>
             </div>
             <div id="crosswordTable">
+              <div style={{textAlign: "center", marginBottom: "6vh"}}>
+                <label htmlFor="crosswordName">Название:</label>
+                <input 
+                  className="QuestionInput" style={{fontSize: ".9rem", marginLeft: ".5vw"}}
+                  type="text" 
+                  id="crosswordName" 
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  />
+              </div>
               <CrosswordGrid crossword={crossword}/>
             </div>
             <div id="definitions">
               <p><b>По вертикали:</b></p>
               <div style={{display: "flex", flexDirection: "column", whiteSpace: "nowrap"}} id="vertical-definitions">
-                {curCrossword.verticalWords.map((word, i) => 
+                {crossword.verticalWords.map((word, i) => 
                   <div key={i}>
                     <label>{word.order}.</label>
                     <input className="QuestionInput" value={definitions.vertical[i]} onChange={(e) => {
@@ -96,7 +115,7 @@ function Publication(){
               </div>
               <p><b>По горизонтали:</b></p>
               <div style={{display: "flex", flexDirection: "column", whiteSpace: "nowrap"}} id="horizontal-definitions">
-                {curCrossword.horizontalWords.map((word, i) => 
+                {crossword.horizontalWords.map((word, i) => 
                   <div key={i}>
                     <label>{word.order}.</label>
                     <input className="QuestionInput" value={definitions.horizontal[i]} onChange={(e) => {

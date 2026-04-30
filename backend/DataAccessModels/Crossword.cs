@@ -7,7 +7,7 @@ public class Crossword
     public Guid Id {get;set;} = Guid.NewGuid();
     public Guid UserId {get;set;}
     public DateTime CreatedAt {get;set;}
-    public int WordAmount {get;set;}
+    public string? Name {get;set;}
     [Column(TypeName = "jsonb")]
     public List<List<object>> Grid {get;set;} = new();
     public User User {get;set;} = null!;

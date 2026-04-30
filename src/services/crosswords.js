@@ -17,11 +17,11 @@ export const fetchCrosswordPublication = async (user, crossword) => {
     }))
     try {
         let cleanGrid = crossword.grid.map(r => 
-                r.map(cell => (typeof cell === "object" && cell !== null ? {value: cell.value, direction: cell.direction} : cell)));
+            r.map(cell => (typeof cell === "object" && cell !== null ? {value: cell.value, direction: cell.direction} : cell)));
         let response = await axios.post(`${API_URL}/crossword`, {
             userId: user.id,
-            wordAmount: crossword.wordAmount,
             grid: cleanGrid,
+            name: crossword.name,
             crosswordWords: crosswordWords
         });
         return response.data;
@@ -77,6 +77,7 @@ function deserialize(crossword){
     let newCrossword = new Crossword(words, crossword.grid);
     newCrossword.createdAt = crossword.createdAt;
     newCrossword.userId = crossword.userId;
+    newCrossword.name = crossword.name;
     console.log(newCrossword);
     return newCrossword;
 }

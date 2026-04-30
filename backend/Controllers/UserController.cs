@@ -109,6 +109,7 @@ public class UserController : ControllerBase
                 c.Id, 
                 c.CreatedAt, 
                 c.Grid, 
+                c.Name,
                 Words = c.CrosswordWords.Select(w => new
                 {
                     w.Id,
@@ -123,7 +124,8 @@ public class UserController : ControllerBase
             var completed = user?.CompletedCrosswords.Select(c => new {
                 c.Id,
                 c.CreatedAt, 
-                c.Grid
+                c.Grid,
+                c.Name,
             });
             return Ok(new
             {

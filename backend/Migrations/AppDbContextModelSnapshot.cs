@@ -35,11 +35,11 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasColumnType("jsonb");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
-
-                    b.Property<int>("WordAmount")
-                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

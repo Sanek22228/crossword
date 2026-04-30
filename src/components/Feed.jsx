@@ -22,8 +22,16 @@ function Feed(){
       <div className="crosswordInfo">
         {crosswords && crosswords.map((item, key) => (
           <div key={key} className={styles.crosswordContainer} >
-            <CrosswordGrid crossword={item} mode={MODES.VIEW}/>
-            <NavLink to={`/play/${item.id}`}><img src={Play} alt="play crossword" style={{width:"1.5vw"}}/></NavLink>
+            <div style={{border: "1px solid purple", borderRadius: "1vw", padding: "2%"}}>
+              <CrosswordGrid crossword={item} mode={MODES.VIEW}/>
+            </div>
+            <div className="InfoContainer" style={{display: "flex", justifyContent: "space-between", width: "90%", alignItems: "center"}}>
+              <div>
+                <p>Название: {item.name}</p>
+                <p>Дата создания: {new Date(item.createdAt).toLocaleDateString()}</p>
+              </div>
+              <NavLink to={`/play/${item.id}`}><img src={Play} alt="play crossword" style={{width:"1.5vw"}}/></NavLink>
+            </div>
           </div>
         ))}
       </div>

@@ -33,7 +33,7 @@ namespace backend.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    WordAmount = table.Column<int>(type: "integer", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: true),
                     Grid = table.Column<List<List<object>>>(type: "jsonb", nullable: false)
                 },
                 constraints: table =>
