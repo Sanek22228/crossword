@@ -48,7 +48,6 @@ export function CreateCrossword(words){
             }
         }
     }
-console.log(crosswordGrid.grid);
     // Помечаем оставшиеся слова как пропущенные
     for (let i = 0; i < skippedWords.length; i++) {
         skippedWords[i].isSkipped = true;
@@ -400,9 +399,10 @@ function TrimGrid(crossword, crosswordGrid){
             w.coordinates.startRow -= changed[0];
             w.coordinates.startCol -= changed[1];
             w.coordinates.cells.map(c => {
-                c[1] -= changed[0];
-                c[0] -= changed[1];
+                c[0] -= changed[0];
+                c[1] -= changed[1];
             })
+            console.log(w.coordinates);
         });
     }
 }

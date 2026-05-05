@@ -15,7 +15,9 @@ const CrosswordViewer = ({crossword}) => {
     }
 
     function ToPublication(crossword){
-        updateCrossword(crossword, () => navigate('/publication'));
+        updateCrossword(crossword);
+        console.log(crossword);
+        navigate('/publication');
     }
 
     return (

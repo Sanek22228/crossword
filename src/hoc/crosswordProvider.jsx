@@ -7,7 +7,7 @@ export const CrosswordProvider = ({children}) => {
   const [curCrossword, setCrossword] = useState(null);
   const updateCrossword = (crossword, cb) => {
     setCrossword(crossword);
-    cb();
+    // cb();
   }
 
   const value = {curCrossword, updateCrossword};

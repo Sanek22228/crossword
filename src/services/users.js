@@ -70,5 +70,5 @@ export const fetchUserStatistics = async (user) => {
 
 export const updateUser = async (user, data) => {
     let response = await axios.put(`${API_URL}/user/${user.id}`, data);
-    return response.data;
+    return response.status === 200 || response.status === 204;
 }

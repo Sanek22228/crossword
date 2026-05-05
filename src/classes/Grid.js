@@ -66,44 +66,27 @@ export class Grid{
     }
 
     trimGrid(){
-        console.log(`start: height: ${this.height}, width: ${this.width}`);
-        console.log("grid: \n");
-        console.log(this.grid);
-        this.grid = this.grid.filter(r => {
-            return r.some(c => (c !== '0'))
+        // перебираем каждую ячейку в поисках крайних координат
+        let minRow = this.height, minCol = this.width;
+        let maxRow = 0, maxCol = 0;
+        for (let r = 0; r < this.grid.length; r++){
+            for (let c = 0; c < this.grid[0].length; c++){
+                if(this.grid[r][c] !== '0'){
+                    if(r < minRow) minRow = r;
+                    if(c < minCol) minCol = c;
+
+                    if(r > maxRow) maxRow = r;
+                    if(c > maxCol) maxCol = c;
+                }
             }
-        )
-        let prevHeight = this.height;
+        }
+
+        // обрезаем grid по крайним координатам
+        this.grid = this.grid.slice(minRow, maxRow+1)
+            .map(r => r.slice(minCol, maxCol+1));
         this.height = this.grid.length;
-        console.log(`after filter: height: ${this.height}, width: ${this.width}`);
-        console.log("grid: \n");
-        console.log(this.grid);
-        
-        let cols = Array.from(
-            {length : this.width},
-            () => {return Array(this.height).fill('0')}
-        );
-        
-        for (let i = 0; i < this.height; i++){
-            let row = this.grid[i];
-            for (let j = 0; j < this.width; j ++){
-                cols[j].push(row[j]);
-            }
-        }
-        let emptyColsIndexes = [];
-        for (let i = 0; i < cols.length; i++){
-            if(cols[i].every(item => item === '0'))
-                emptyColsIndexes.push(i);
-        }
-        if(emptyColsIndexes.reverse()){  
-            for(let i = 0; i < this.grid.length; i++){
-                emptyColsIndexes.forEach(ind => {
-                    this.grid[i].splice(ind,1);
-                })
-            }    
-        }
-        let prevWidth = this.width;
         this.width = this.grid[0].length;
-        return [prevHeight - this.height, prevWidth - this.width];
+
+        return [minRow, minCol];
     }
 }

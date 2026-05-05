@@ -10,7 +10,7 @@ function AccountEditModal({ user }) {
     const [userName, setUserName] = useState(user.userName || "");
     const [avatar, setAvatar] = useState(null);
     const [error, setError] = useState("");
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState();
     const {updateUserData} = useAuth();
 
     async function SaveChanges(event) {

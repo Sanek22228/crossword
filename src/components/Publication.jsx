@@ -1,9 +1,9 @@
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import '../styles/Publication.css'
 import { CrosswordGrid } from '../utils/CrosswordGrid'
 import { useEffect, useState } from "react";
 import { useCrossword } from "../hook/useCrossword";
-import { fetchCrosswordPublication } from "../services/crosswords";
+import { editCrossword, fetchCrosswordPublication } from "../services/crosswords";
 import { useAuth } from "../hook/useAuth"
 import { ExportButtons } from '../components/ExportButtons';
 
@@ -12,21 +12,18 @@ function Publication(){
   const {curCrossword} = useCrossword();
   const [errorMessage, setErrorMessage] = useState("");
   const {user, setLoginActive, setOnSuccessAction} = useAuth();
+  const [params, setParams] = useSearchParams();
   
-  function GoBack(){
-    navigate(-1);
-  }
   const [crossword, SetCrossword] = useState(curCrossword);
   useEffect(() => {
     SetCrossword(curCrossword)
   }, [curCrossword]);
 
+  const [name, setName] = useState(crossword?.name ?? "");
   const [definitions, updateDefinitions] = useState({
-    vertical: crossword.verticalWords.map(w =>""),
-    horizontal: crossword.horizontalWords.map(w => "")
+    vertical: crossword?.verticalWords.map(w => w.question ?? ""),
+    horizontal: crossword?.horizontalWords.map(w => w.question ?? "")
   });
-  const [name, setName] = useState("");
-
   if(!crossword){
     console.log(!crossword);
     return <Navigate to="/"/>
@@ -52,7 +49,12 @@ function Publication(){
     crossword.name = name;
 
     if(user){
-      await fetchCrosswordPublication(user, crossword);
+      if(params.get("mode") === "edit"){
+        await editCrossword(crossword);
+      }
+      else{
+        await fetchCrosswordPublication(user, crossword);
+      }
       navigate(`/account/${user.id}`);
     }
     else{
@@ -85,7 +87,7 @@ function Publication(){
             </div>
             <div id="crosswordTable">
               <div style={{textAlign: "center", marginBottom: "6vh"}}>
-                <label htmlFor="crosswordName">Название:</label>
+                <label htmlFor="crosswordName">Название: </label>
                 <input 
                   className="QuestionInput" style={{fontSize: ".9rem", marginLeft: ".5vw"}}
                   type="text" 

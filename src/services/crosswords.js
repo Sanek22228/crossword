@@ -57,8 +57,27 @@ export const getCrosswordById = async(id) => {
 
 export const deleteCrossword = async (crosswordId) => {
     try{
-        let response = axios.delete(`${API_URL}/crossword/${crosswordId}`);
+        let response = await axios.delete(`${API_URL}/crossword/${crosswordId}`);
         return response.data;
+    }
+    catch(e){
+        console.error("Server errors:", e.response?.data?.errors);
+        return null;
+    }
+}
+
+export const editCrossword = async (crossword) => {
+    try{
+        const wordsQuestions = crossword.addedWords.map(word=>(
+            word.question || ""
+        ));
+        console.log(typeof wordsQuestions);
+        console.log(wordsQuestions);
+        let response = await axios.put(`${API_URL}/crossword/${crossword.id}`, {
+            name: crossword.name,
+            questions: wordsQuestions
+        });
+        return response.status === 200 || response.status === 204;
     }
     catch(e){
         console.error("Server errors:", e.response?.data?.errors);
@@ -72,6 +91,7 @@ function deserialize(crossword){
         let word = new Word(w.wordText, direction, new Coordinates(w.startRow, w.startCol, []));
         word.order = w.wordOrder;
         word.question = w.question;
+        console.log("question: " + w.question);
         return word;
     });
     let newCrossword = new Crossword(words, crossword.grid);

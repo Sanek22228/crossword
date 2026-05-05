@@ -51,7 +51,7 @@
             setPlayGrid(() =>({...currentGrid}));
             if(crossword.grid[row][col] === value){
                 crossword.words.forEach(word => {
-                    if(word.coordinates.cells.some(coord => coord[0] == row && coord[1]==col)){
+                    if(word.coordinates.cells.some(coord => coord[0] == row && coord[1] == col)){
                         if(checkWord(word, currentGrid, {row: row, col: col, value: value})){
                             let newlySolved = word.coordinates.cells.map(cell => `${cell[0]}-${cell[1]}`);
                             setSolvedCells(prev => (
@@ -84,7 +84,7 @@
                         .flatMap(w => (
                             w.coordinates.cells
                                 .map(c=>(`${c[0]}-${c[1]}`)))))]
-                        .filter(c=>!solvedCells.includes(c))
+                        .filter(c=>!solvedCells.includes(c));
                     console.log(notSolvedCoords);
                     const randNum = Math.floor(Math.random()* notSolvedCoords.length);
                     const [r,c] = notSolvedCoords[randNum].split("-").map(Number);

@@ -1,4 +1,5 @@
 using backend.Contracts;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -93,5 +94,31 @@ public class CrosswordController : ControllerBase
             return NotFound(e.Message);
         }
         return Ok("crossword deleted");
+    }
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> EditCrossword(Guid id, [FromBody] CrosswordEditRequest request, CancellationToken ct)
+    {
+        Console.WriteLine(request.name);
+        try
+        {
+            var crossword = await _context.Crosswords.Include(c => c.CrosswordWords).FirstOrDefaultAsync(c => c.Id == id, ct);
+
+            if (crossword == null)
+                return NotFound("not found");
+
+            crossword.Name = request.name;
+            List<CrosswordWord> sortedWords = [.. crossword.CrosswordWords.OrderBy(w => w.WordOrder)];
+            for (int i = 0; i < sortedWords.Count; i++)
+            {
+                sortedWords[i].Question = request.questions[i] ?? sortedWords[i].Question;
+            }
+            await _context.SaveChangesAsync(ct);
+        
+            return Ok();
+        }
+        catch
+        {
+            return NotFound("not found");
+        }
     }
 }

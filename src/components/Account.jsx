@@ -4,17 +4,20 @@ import avatarIcon from "../images/avatar.webp";
 import { useEffect, useState } from "react";
 import { useAuth } from "../hook/useAuth";
 import { CrosswordGrid } from "../utils/CrosswordGrid";
-import { Outlet, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import {fetchUserStatistics} from "../services/users"
 import { AccountEditModal } from "./AccountEditModal";
 import { ExportButtons } from "./ExportButtons";
 import { deleteCrossword } from "../services/crosswords";
+import { useCrossword } from "../hook/useCrossword";
 
 function Account(){
   const {user} = useAuth();
   const [crosswords, setCrosswords] = useState(null);
   const [loading, setLoading] = useState(false);
+  const { updateCrossword } = useCrossword();
   const {id} = useParams();
+  const navigate = useNavigate();
   // const [isMyProfile, setMyProfile] = useState(id == user.id);
   const [crosswordsCompleted, setCrosswordsCompleted] = useState(0);
   
@@ -39,6 +42,10 @@ function Account(){
     let response = await deleteCrossword(crosswordId);
     await updateCrosswords();
     setLoading(false);
+  }
+  async function EditCrossword(crossword){
+    updateCrossword(crossword);
+    navigate("/publication?mode=edit");
   }
 
   return(
