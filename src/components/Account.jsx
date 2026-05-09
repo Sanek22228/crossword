@@ -1,5 +1,7 @@
 import styles from "../styles/Account.module.css"
 import avatarIcon from "../images/avatar.webp";
+import binIcon from "../images/bin.svg";
+import editIcon from "../images/edit.svg";
 // import Rating from '@mui/material/Rating';
 import { useEffect, useState } from "react";
 import { useAuth } from "../hook/useAuth";
@@ -10,6 +12,7 @@ import { AccountEditModal } from "./AccountEditModal";
 import { ExportButtons } from "./ExportButtons";
 import { deleteCrossword } from "../services/crosswords";
 import { useCrossword } from "../hook/useCrossword";
+import { flexPropDefs } from "@radix-ui/themes/props";
 
 function Account(){
   const {user} = useAuth();
@@ -70,20 +73,20 @@ function Account(){
         <div className="crosswordInfo">
           {crosswords && crosswords.length > 0 ?
           crosswords.map((item, key) => (
-                <div key={item.id || key} className={styles.crosswordTable}>
+                <div key={item.id || key} className="crosswordTable">
+                  <p >{item.name}</p>
                   <CrosswordGrid crossword={item} />
-                  <p>Название: {item.name}</p>
-                  <p>
-                    Дата создания: {new Date(item.createdAt).toLocaleDateString()}
-                  </p>
-                  <div className={styles.crosswordOverlay}>
-                    <div className={styles.btnContainer}>
+                  <div className="controls">
+                      <p>
+                        Дата создания: {new Date(item.createdAt).toLocaleDateString()}
+                      </p>
                       <ExportButtons crossword={item} />
-                    </div>
-                    <div className={styles.btnContainer}>
-                      <button onClick={async () => await DeleteCrossword(item.id)}>delete</button>
-                      <button onClick={async () => await EditCrossword(item)}>edit</button>
-                    </div>
+                      <button onClick={async () => await DeleteCrossword(item.id)} className="controlBtn">
+                        <img src={binIcon} alt="bin icon" />
+                      </button>
+                        <button onClick={async () => await EditCrossword(item)} className="controlBtn">
+                          <img src={editIcon} alt="edit icon"/>
+                        </button>
                   </div>
                 </div>
               ))

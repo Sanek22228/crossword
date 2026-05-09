@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ExportCrossword } from '../utils/crosswordExport'
 import { MODES, CrosswordGrid } from '../utils/CrosswordGrid';
+import downloadIcon from "../images/download.svg"
 
 function ExportButtons({crossword}){
     const [isExporting, setIsExporting] = useState(false);
@@ -18,15 +19,12 @@ function ExportButtons({crossword}){
         setIsExporting(true);
     }
     return(
-        <div style={{display:"flex", gap:"1vw", margin: 0}}>
-            <button onClick={() => handleDownload("xls")} className='downloadBtn'>
-                Скачать в XLS
-            </button>
-            <button onClick={() => handleDownload("pdf")} className='downloadBtn'>
-                Скачать в PDF
+        <>
+            <button onClick={() => handleDownload("pdf")} className='controlBtn'>
+                <img src={downloadIcon} alt="pdf download" />
             </button>
             {isExporting && <CrosswordGrid crossword={crossword} mode={MODES.VIEW}></CrosswordGrid>}
-        </div>
+        </>
     )
 }
 

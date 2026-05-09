@@ -13,7 +13,8 @@ function Publication(){
   const [errorMessage, setErrorMessage] = useState("");
   const {user, setLoginActive, setOnSuccessAction} = useAuth();
   const [params, setParams] = useSearchParams();
-  
+  const [mode, setMode] = useState(params.get("mode"));
+
   const [crossword, SetCrossword] = useState(curCrossword);
   useEffect(() => {
     SetCrossword(curCrossword)
@@ -49,7 +50,7 @@ function Publication(){
     crossword.name = name;
 
     if(user){
-      if(params.get("mode") === "edit"){
+      if(mode === "edit"){
         await editCrossword(crossword);
       }
       else{
@@ -75,12 +76,12 @@ function Publication(){
         {/* <button id="backBtn" onClick={GoBack}>Отмена</button> */}
         <div style={{height: "100%", width: "100%"}}>
           <div id="crosswordInfo">
-            <div id="words">
-              <p style={{marginBottom: '0'}}><b>Слова по вертикали:</b></p>
+            <div style={{marginBottom: '0', width: "80%"}}>
+              <p style={{marginBottom: '0', width: "100%"}}><b>Слова по вертикали:</b></p>
               <p style={{margin: 0}} id="vertical-words">
                 {crossword.verticalWords.map(w => w.wordText).join(', ')}
               </p>
-              <p style={{marginBottom: '0'}}><b>Слова по горизонтали:</b></p>
+              <p style={{marginBottom: '0', width: "60%"}}><b>Слова по горизонтали:</b></p>
               <p style={{margin: '0'}} id="horizontal-words">
                 {crossword.horizontalWords.map(w => w.wordText).join(', ')}
               </p>
@@ -131,9 +132,6 @@ function Publication(){
                   </div>
                 )}
               </div>
-              {/* <button>
-                Составить заново
-              </button> */}
             </div>
           </div>
           <div style={{display: "flex", flexDirection:"column", gap: "3vh", alignItems: "center"}}>
@@ -143,7 +141,11 @@ function Publication(){
               style={{fontWeight: "bold", padding: ".4vw 2vw", margin: 0}} 
               className='Button violet' 
               onClick={PublicateCrossword}>
-                Опубликовать
+                {
+                  mode === "edit" 
+                  ? "Сохранить"
+                  : "Опубликовать"
+                }
             </button>
           </div>
         </div>

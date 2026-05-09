@@ -8,15 +8,13 @@
   /* font-weight: lighter; */
 }
 #crosswordInfo{
-  /* margin-top: 10vh; */
-  align-items: center; 
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
   width: 100%;
-  flex: 1;
-  justify-content: space-around;
   height: 100%;
-  /* gap: 10vw; */
+  align-content: center;
+  justify-items: center;
 }
 
 #definitions{

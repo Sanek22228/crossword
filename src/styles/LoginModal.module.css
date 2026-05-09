@@ -1,5 +1,5 @@
 .tabsRoot {
-    z-index: 2;
+    z-index: 3;
     background-color: var(--gray-1);
     border-radius: 6px;
     position: fixed;
@@ -69,6 +69,8 @@
     color: var(--mauve-11);
     font-size: 15px;
     line-height: 1.5;
+    /* text-align: justify; */
+    /* word-break: normal; */
 }
 
 .text a {
