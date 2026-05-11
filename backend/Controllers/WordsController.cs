@@ -9,13 +9,6 @@ namespace backend.Controllers;
 [Route("[controller]")]
 public class WordsController : ControllerBase
 {
-    // access to configuration to get api key
-    // private readonly string? _yandexApiKey;
-    // public WordsController(IConfiguration configuration)
-    // {
-    //     _yandexApiKey = configuration["YandexApiKey"];
-    // }
-
     [HttpPost("validate")]
     public async Task<ActionResult> Validate([FromBody] ValidateWordsRequest request)
     {
@@ -54,7 +47,7 @@ public class WordsController : ControllerBase
         }
     }
 
-    // unfinished (may require ML module for generating definitions)
+    // unfinished (may require ML module to generate definitions)
     [HttpGet]
     public async Task<ActionResult> GetDefinitions()
     {

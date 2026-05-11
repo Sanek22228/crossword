@@ -1,6 +1,5 @@
 import styles from "../styles/Account.module.css"
 import avatarIcon from "../images/avatar.webp";
-import binIcon from "../images/bin.svg";
 import editIcon from "../images/edit.svg";
 // import Rating from '@mui/material/Rating';
 import { useEffect, useState } from "react";
@@ -13,12 +12,13 @@ import { ExportButtons } from "./ExportButtons";
 import { deleteCrossword } from "../services/crosswords";
 import { useCrossword } from "../hook/useCrossword";
 import { flexPropDefs } from "@radix-ui/themes/props";
+import { DeleteModal } from "./DeleteModal";
 
 function Account(){
   const {user} = useAuth();
   const [crosswords, setCrosswords] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { updateCrossword } = useCrossword();
+  const { updateCurCrossword } = useCrossword();
   const {id} = useParams();
   const navigate = useNavigate();
   // const [isMyProfile, setMyProfile] = useState(id == user.id);
@@ -26,10 +26,11 @@ function Account(){
   
   const updateCrosswords = async () => {
     if(!user) return;
+
     const data = await fetchUserStatistics(user);
     console.log(data.crosswords)
     setCrosswords(data.crosswords);
-    setCrosswordsCompleted(data.completed.length);
+    setCrosswordsCompleted(data.completed);
   }
   
   // добавить loader
@@ -39,15 +40,8 @@ function Account(){
     })()
   },[user]) // если без user есть шанс, что вызовется когда user = null
 
-  async function DeleteCrossword(crosswordId){
-    if(loading) return;
-    setLoading(true);
-    let response = await deleteCrossword(crosswordId);
-    await updateCrosswords();
-    setLoading(false);
-  }
   async function EditCrossword(crossword){
-    updateCrossword(crossword);
+    updateCurCrossword(crossword);
     navigate("/publication?mode=edit");
   }
 
@@ -81,12 +75,10 @@ function Account(){
                         Дата создания: {new Date(item.createdAt).toLocaleDateString()}
                       </p>
                       <ExportButtons crossword={item} />
-                      <button onClick={async () => await DeleteCrossword(item.id)} className="controlBtn">
-                        <img src={binIcon} alt="bin icon" />
+                      <DeleteModal crossword={item} cb={updateCrosswords}/>
+                      <button onClick={async () => await EditCrossword(item)} className="controlBtn">
+                        <img src={editIcon} alt="edit icon"/>
                       </button>
-                        <button onClick={async () => await EditCrossword(item)} className="controlBtn">
-                          <img src={editIcon} alt="edit icon"/>
-                        </button>
                   </div>
                 </div>
               ))

@@ -43,7 +43,13 @@
 .Button.green:hover {
 	background-color: var(--green-5);
 }
-
+.Button.grey {
+    margin-top: 2vh;
+	background-color: rgb(222, 222, 222);
+}
+.Button.grey:hover {
+	background-color: rgb(234, 234, 234);
+}
 .closeButton {
     font-family: inherit;
     border-radius: 100%;

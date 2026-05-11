@@ -21,7 +21,7 @@ public class UserController : ControllerBase
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRequest request, CancellationToken ct)
     {
-        var user = await GetUser(request.Email, ct);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email, ct);
         if(user == null)
         {
             var newUser = new User()
@@ -45,7 +45,7 @@ public class UserController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserRequest request, CancellationToken ct)
     {
-        var user = await GetUser(request.Email, ct);
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email, ct);
         if(user == null || !_hasher.VerifyPassword(request.Password, user.Password ?? "")) {
             return Unauthorized();
         }
@@ -86,7 +86,6 @@ public class UserController : ControllerBase
                     user.CompletedCrosswords.Add(completed);
                 }
             }
-
             await _context.SaveChangesAsync(ct);
             return Ok();
         }
@@ -95,52 +94,26 @@ public class UserController : ControllerBase
             return NotFound(new {message = "Ошибка при обновлении профиля"});
         }
     }
-    // возможно вместо UserRequest request передавать только string email
-    async Task<User?> GetUser(string email, CancellationToken ct)
-    {
-        return await _context.Users.FirstOrDefaultAsync(x => x.Email == email, ct);
-    }
+    
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetStats(Guid id, CancellationToken ct)
+    public async Task<IActionResult> GetUser(Guid id, CancellationToken ct)
     {
-        try
-        {
-            var user = await _context.Users
-                .Include(u => u.Crosswords)
-                .ThenInclude(c => c.CrosswordWords)
-                .Include(u => u.CompletedCrosswords)
-                .FirstOrDefaultAsync(u => u.Id == id, ct);
-            var crosswords = user?.Crosswords.Select(c => new {
-                c.Id, 
-                c.CreatedAt, 
-                c.Grid, 
-                c.Name,
-                Words = c.CrosswordWords.Select(w => new
-                {
-                    w.Id,
-                    w.WordText,
-                    w.WordOrder,
-                    w.Direction,
-                    w.StartCol,
-                    w.StartRow,
-                    w.Question
-                })
-            });
-            var completed = user?.CompletedCrosswords.Select(c => new {
-                c.Id,
-                c.CreatedAt, 
-                c.Grid,
-                c.Name,
-            });
-            return Ok(new
+        var user = await _context.Users.Include(u=>u.Crosswords).Include(u => u.CompletedCrosswords).FirstOrDefaultAsync(u => u.Id == id);
+        if (user != null)
+        return Ok(new {
+            completed = user.CompletedCrosswords.ToList().Count, 
+            // userName = user.UserName, 
+            crosswords = user.Crosswords.Select(c => new
             {
-                Crosswords = crosswords,
-                Completed = completed
-            });
-        }
-        catch
+                c.CreatedAt,
+                c.Grid,
+                c.Id,
+                c.Name
+            })
+        });
+        else
         {
-            return BadRequest("Неверный идентификатор");
+            return BadRequest();
         }
     }
 }

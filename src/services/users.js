@@ -52,14 +52,7 @@ export const fetchUserStatistics = async (user) => {
                 return crosswordObject;
             });
         }
-        if(data.completed && Array.isArray(data.completed)){
-            data.completed = data.completed.map(item => {
-                const crosswordObject = new Crossword([], item.grid);
-                crosswordObject.id = item.id;
-                crosswordObject.createdAt = item.createdAt;
-                return crosswordObject;
-            });
-        }
+        console.log(data.completed);
 
         return data; // Возвращаем объект { crosswords: [Crossword, ...], completed: X }
     } catch (e) {

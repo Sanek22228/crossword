@@ -7,7 +7,7 @@ import { CrosswordGrid } from './CrosswordGrid';
 // {crossword} деструктуризация, так как при создании <CrosswordTable crossword={crossword}/> передается объект props (properties), в котором crossword: crossword
 const CrosswordViewer = ({crossword}) => {    
     const navigate = useNavigate();
-    const {updateCrossword} = useCrossword();
+    const {updateCurCrossword} = useCrossword();
 
     if(!(crossword instanceof Crossword)){
         console.error(`Expected Crossword instance`);
@@ -15,7 +15,7 @@ const CrosswordViewer = ({crossword}) => {
     }
 
     function ToPublication(crossword){
-        updateCrossword(crossword);
+        updateCurCrossword(crossword);
         console.log(crossword);
         navigate('/publication');
     }

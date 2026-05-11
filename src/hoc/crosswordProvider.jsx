@@ -5,12 +5,12 @@ export const CrosswordContext = createContext(null);
 // children - компоненты, которым предоставляется информация
 export const CrosswordProvider = ({children}) => {
   const [curCrossword, setCrossword] = useState(null);
-  const updateCrossword = (crossword, cb) => {
+  const updateCurCrossword = (crossword, cb) => {
     setCrossword(crossword);
     // cb();
   }
 
-  const value = {curCrossword, updateCrossword};
+  const value = {curCrossword, updateCurCrossword};
   return <CrosswordContext.Provider value={value}>
     {children} 
   </CrosswordContext.Provider>
