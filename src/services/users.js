@@ -25,9 +25,9 @@ export const fetchRegister = async (user) => {
     }
 }
 
-export const fetchUserStatistics = async (user) => {
+export const fetchUserStatistics = async (id) => {
     try {
-        const response = await axios.get(`${API_URL}/user/${user.id}`);
+        const response = await axios.get(`${API_URL}/user/${id}`);
         const data = response.data;
 
         if (data.crosswords && Array.isArray(data.crosswords)) {

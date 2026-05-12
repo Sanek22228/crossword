@@ -102,7 +102,7 @@ public class UserController : ControllerBase
         if (user != null)
         return Ok(new {
             completed = user.CompletedCrosswords.ToList().Count, 
-            // userName = user.UserName, 
+            userName = user.UserName, 
             crosswords = user.Crosswords.Select(c => new
             {
                 c.CreatedAt,

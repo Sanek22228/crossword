@@ -1,7 +1,7 @@
 import styles from "../styles/Account.module.css"
 import avatarIcon from "../images/avatar.webp";
 import editIcon from "../images/edit.svg";
-// import Rating from '@mui/material/Rating';
+
 import { useEffect, useState } from "react";
 import { useAuth } from "../hook/useAuth";
 import { CrosswordGrid } from "../utils/CrosswordGrid";
@@ -14,59 +14,66 @@ import { useCrossword } from "../hook/useCrossword";
 import { flexPropDefs } from "@radix-ui/themes/props";
 import { DeleteModal } from "./DeleteModal";
 
-function Account(){
-  const {user} = useAuth();
-  const [crosswords, setCrosswords] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const { updateCurCrossword } = useCrossword();
-  const {id} = useParams();
-  const navigate = useNavigate();
-  // const [isMyProfile, setMyProfile] = useState(id == user.id);
-  const [crosswordsCompleted, setCrosswordsCompleted] = useState(0);
-  
-  const updateCrosswords = async () => {
-    if(!user) return;
+const MODES = {
+  FULL: "full",
+  VIEW: "view"
+}
 
-    const data = await fetchUserStatistics(user);
-    console.log(data.crosswords)
-    setCrosswords(data.crosswords);
-    setCrosswordsCompleted(data.completed);
-  }
-  
-  // добавить loader
+function Account({mode = MODES.FULL}){
+  const { user } = useAuth();
+  const { id } = useParams();
+  const { updateCurCrossword } = useCrossword();
+  const [targetUser, setTarget] = useState(null);
+
+  const fullMode = mode === MODES.FULL;
+
   useEffect(()=>{
-    (async () => {
-      await updateCrosswords();
+    ( async () => {
+      await updateData();
     })()
-  },[user]) // если без user есть шанс, что вызовется когда user = null
+  },[user, mode, id])
+
+  async function updateData(){
+    try{  
+      const data = await fetchUserStatistics(id);
+      setTarget(data);
+    }
+    catch(e){
+      console.error(e);
+    }
+  }
 
   async function EditCrossword(crossword){
     updateCurCrossword(crossword);
     navigate("/publication?mode=edit");
   }
 
+  if (!targetUser) {
+    return <div className={styles.loader}>Загрузка профиля...</div>;
+  }
+  
   return(
     <main>
       <div className={styles.accountContainer}>
         <div className={styles.accountInfo}>
           <img src={avatarIcon} alt="account picture" />
           <h2>
-            {user.userName}
+            {targetUser.userName }
           </h2>
           <p>
-            {crosswordsCompleted} кроссворд{"ов"} решено
+            {targetUser.completed} кроссворд{"ов"} решено
           </p>
           <p>
-            {crosswords?.length} кроссворд{"а"} создано
+            {targetUser.crosswords?.length} кроссворд{"а"} создано
           </p>
           {/* <p>
             Рейтинг: {4.8}⭐
           </p> */}
-          <AccountEditModal user={user}/>
+          {fullMode && <AccountEditModal user={targetUser}/>}
         </div>
         <div className="crosswordInfo">
-          {crosswords && crosswords.length > 0 ?
-          crosswords.map((item, key) => (
+          {targetUser.crosswords && targetUser.crosswords.length > 0 ?
+          targetUser.crosswords.map((item, key) => (
                 <div key={item.id || key} className="crosswordTable">
                   <p >{item.name}</p>
                   <CrosswordGrid crossword={item} />
@@ -75,15 +82,21 @@ function Account(){
                         Дата создания: {new Date(item.createdAt).toLocaleDateString()}
                       </p>
                       <ExportButtons crossword={item} />
-                      <DeleteModal crossword={item} cb={updateCrosswords}/>
-                      <button onClick={async () => await EditCrossword(item)} className="controlBtn">
-                        <img src={editIcon} alt="edit icon"/>
-                      </button>
+                      {fullMode && 
+                      <>
+                        <DeleteModal crossword={item} cb={updateData}/>
+                        <button onClick={async () => await EditCrossword(item)} className="controlBtn">
+                          <img src={editIcon} alt="edit icon"/>
+                        </button>
+                      </>}
                   </div>
                 </div>
               ))
-            : (
-            <p>У вас пока нет кроссвордов</p>
+            : (<>
+              {fullMode 
+                ? <p>У вас пока нет кроссвордов</p> 
+                : <p>У пользователя еще нет кроссвордов</p>}
+            </>
           )}
         </div>
       </div>

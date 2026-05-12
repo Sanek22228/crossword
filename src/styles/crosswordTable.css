@@ -6,13 +6,16 @@
     background-color: rgb(255, 238, 195);
     border: 1px #d2a533;
 }
-th input{
-    background-color: transparent;
+th input {
+    display: block;
     width: 100%;
     height: 100%;
-    font-weight: bold;
-    text-align: center;
+    aspect-ratio: 1 / 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
     padding: 0;
+    margin: 0;
 }
 .solvedCell{
     background-color: var(--green-6);
@@ -20,8 +23,10 @@ th input{
 }
 
 .numberCell{
+    font-size: 0.6rem;
+    line-height: 1;
+    pointer-events: none;
     color: rgb(86, 85, 85);
-    height: 30px;
     font-size: .7rem;
 }
 .hotizontalNumber{
@@ -32,10 +37,13 @@ th input{
     vertical-align: bottom;
 }
 
-th{
-    width: 30px;
-    height: 30px;
+th {
+    width: 30px; 
+    height: 30px; 
+    aspect-ratio: 1 / 1;
     font-weight: bold;
+    padding: 0;
+    box-sizing: border-box;
 }
 div{
     text-align: justify;
@@ -46,26 +54,23 @@ div{
     text-align: center;
 }
 
-table{
+table {
     text-align: center;
-    width: fit-content;
+    width: auto;
+    max-width: 100%;
     align-items: center;
     vertical-align: middle;
-    
-    width: fit-content;
-    margin: 0 auto;
     padding: 0;
+    table-layout: fixed; 
 }
 .crossword{
-    width: fit-content;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
     flex-wrap: wrap;
-    width: 100%;
-    height: 100%;
 }
 
 .controlBtn{
