@@ -30,7 +30,6 @@ export const fetchUserStatistics = async (id, viewerId) => {
         console.log(viewerId);
         const response = await axios.get(`${API_URL}/user/${id}${viewerId && `?viewerId=${viewerId}`}`);
         const data = response.data;
-
         if (data.crosswords && Array.isArray(data.crosswords)) {
             data.crosswords = data.crosswords.map((item) => {
                 const wordArray = (item.crosswordWords || item.words || []).map(w => {
@@ -40,7 +39,7 @@ export const fetchUserStatistics = async (id, viewerId) => {
                         direction,
                         new Coordinates(w.startRow, w.startCol, [])
                     );
-                    newWord.order = w.wordOrder;
+                    newWord.order = w.order;
                     newWord.isSkipped = w.isSkipped;
                     newWord.question = w.question;
                     return newWord;

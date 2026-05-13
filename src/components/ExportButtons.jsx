@@ -23,7 +23,9 @@ function ExportButtons({crossword}){
             <button onClick={() => handleDownload("pdf")} className='controlBtn'>
                 <img src={downloadIcon} alt="pdf download" />
             </button>
-            {isExporting && <CrosswordGrid crossword={crossword} mode={MODES.VIEW}></CrosswordGrid>}
+            <div style={{position: "absolute", left: "-10000px"}}>
+                {isExporting && <CrosswordGrid crossword={crossword} mode={MODES.VIEW}></CrosswordGrid>}
+            </div>
         </>
     )
 }

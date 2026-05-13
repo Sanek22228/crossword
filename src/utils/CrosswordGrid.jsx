@@ -14,6 +14,7 @@ function CrosswordGrid({crossword, mode = MODES.FULL, onChange = NOP, solvedCell
   return(
     <>
       <table 
+        data-mode = {mode}
         className={mode===MODES.VIEW ? "emptyTable" : "filledTable"} 
         id={crossword.id} 
         onFocusCapture={(e) => onFocus(e.target.dataset)}

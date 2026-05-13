@@ -37,7 +37,6 @@ function Account({mode = MODES.FULL}){
     try{  
       let curUserId = user ? user.id : id;
       const data = await fetchUserStatistics(id, curUserId);
-      console.log(data);
       setTarget(data);
     }
     catch(e){

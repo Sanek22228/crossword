@@ -18,19 +18,31 @@ public class FeedController : ControllerBase
     {
         IQueryable<Crossword> crosswords = _context.Crosswords;
         if(id.HasValue)
-            crosswords = crosswords.Include(c => c.User).Where(c => c.UserId != id);
+            crosswords = crosswords
+                .Include(c => c.CrosswordWords)
+                .Include(c => c.User)
+                .Where(c => c.UserId != id);
         
         crosswords = crosswords.OrderByDescending(c => c.CreatedAt);
-        var result = await crosswords.Select(c => new {
+        return Ok(new {
+        crosswords = await crosswords.Select(c => new {
             createdAt = c.CreatedAt, 
             name = c.Name, 
             grid = c.Grid, 
             id = c.Id, 
             completed = c.CompletedByUsers.Any(u => u.Id == id),
-            userId = c.UserId,
             user = new{
-                userName = c.User.UserName}
-        }).ToListAsync(ct);
-        return Ok(result);
+                userName = c.User.UserName,
+                id = c.UserId},
+            words = c.CrosswordWords.Select(w => new {
+                wordText = w.WordText,
+                startRow = w.StartRow,
+                startCol = w.StartCol,
+                direction = w.Direction,
+                order = w.WordOrder,
+                question = w.Question
+            })
+        }).ToListAsync(ct)
+        });
     }
 }

@@ -100,20 +100,36 @@ public class UserController : ControllerBase
     {
         if(!viewerId.HasValue)
             viewerId = null;
-        var user = await _context.Users.Include(u=>u.Crosswords).ThenInclude(c => c.CompletedByUsers).Include(u => u.CompletedCrosswords).FirstOrDefaultAsync(u => u.Id == id);
+        var user = await _context.Users
+            .Include(u=>u.Crosswords)
+                .ThenInclude(c => c.CrosswordWords)
+            .Include(u=>u.Crosswords)
+                .ThenInclude(c => c.CompletedByUsers)
+            .Include(u => u.CompletedCrosswords)
+            .FirstOrDefaultAsync(u => u.Id == id);
+
         if (user != null)
         return Ok(new {
-            completed = user.CompletedCrosswords.ToList().Count, 
-            userName = user.UserName, 
-            crosswords = user.Crosswords.Select(c => new
-            {
-                createdAt = c.CreatedAt,
-                grid = c.Grid,
-                id = c.Id,
-                name = c.Name,
-                completed = c.CompletedByUsers.Any(u => u.Id == viewerId)
-            })
-        });
+        completed = user.CompletedCrosswords.Count, 
+        userName = user.UserName, 
+        crosswords = user.Crosswords.Select(c => new
+        {
+            id = c.Id,
+            name = c.Name,
+            grid = c.Grid,
+            createdAt = c.CreatedAt,
+            completed = c.CompletedByUsers.Any(u => u.Id == viewerId),
+            
+            words = c.CrosswordWords.Select(w => new {
+                wordText = w.WordText,
+                startRow = w.StartRow,
+                startCol = w.StartCol,
+                direction = w.Direction,
+                order = w.WordOrder,
+                question = w.Question
+            }).ToList()
+        })
+    });
         else
         {
             return BadRequest();

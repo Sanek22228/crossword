@@ -38,7 +38,6 @@
             const data = await getCrosswordById(id)
             if(!data)
                 navigate("/feed", {replace: true});
-            console.log("data  " + data);
             setCrossword(data);
             setTabMap(data.words.flatMap(w => (w.coordinates.cells.map(c => (`${c[0]}-${c[1]}`)))));
             console.log(tabMap);

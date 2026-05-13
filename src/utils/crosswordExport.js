@@ -37,12 +37,12 @@ export function ExportCrossword(type, crossword){
 
 function CreateExportElement(crossword) {
     if (!crossword) return null;
-    
     const container = CreateContainer();
 
     // 1. Заголовок (можно добавить название кроссворда, если оно есть)
     const title = document.createElement("h1");
-    title.innerText = "Кроссворд";
+    let name = crossword.id ? crossword.name : document.getElementById("crosswordName").value;
+    title.innerText = name !== null ? name : "Кроссворд";
     title.style.textAlign = "center";
     title.style.marginBottom = "1vw";
     container.appendChild(title);
@@ -52,7 +52,6 @@ function CreateExportElement(crossword) {
     container.appendChild(info);
 
     // 3. Сетка кроссворда (Берем существующую или отрисовываем заново)
-    console.log(document.getElementsByClassName("emptyTable"));
     const emptyTable = document.getElementsByClassName("emptyTable")[0].cloneNode(true);
     
     let filledTable;
@@ -64,11 +63,13 @@ function CreateExportElement(crossword) {
     questionWrapper.style.gap = "50pt";
 
     if(crossword.id){
-        filledTable = document.getElementById(crossword.id).cloneNode(true);    
+        let sourceTable = document.getElementById(crossword.id);
+        filledTable = sourceTable.cloneNode(true);
+        if(sourceTable.dataset.mode !== "full")
+            fillTableWithAnswers(filledTable, crossword.words);
+        console.log(filledTable);
         questionWrapper.appendChild(CreateQuestionList("Слова по вертикали: ", crossword.verticalWords));
-        console.log(crossword.verticalWords);
         questionWrapper.appendChild(CreateQuestionList("Слова по горизонтали: ", crossword.horizontalWords));
-        console.log(crossword.horizontalWords);
     }
     else{
         filledTable = document.getElementsByClassName("filledTable")[0].cloneNode(true);
@@ -91,6 +92,32 @@ function CreateExportElement(crossword) {
 
     return container;
 }
+function fillTableWithAnswers(tableElement, words) {
+    words.forEach(word => {
+        const { startRow, startCol } = word.coordinates;
+        const { direction, wordText } = word;
+
+        for (let i = 0; i < wordText.length; i++) {
+            const rowIdx = direction === "vertical" || direction === 0 ? startRow + i : startRow;
+            const colIdx = direction === "horizontal" || direction === 1 ? startCol + i : startCol;
+            
+            // Прямой доступ через rows и cells (быстрее и не требует data-атрибутов)
+            const row = tableElement.rows[rowIdx];
+            if (row) {
+                const cell = row.cells[colIdx];
+                if (cell) {
+                    // Очищаем ячейку и вставляем букву
+                    cell.innerHTML = ""; 
+                    const span = document.createElement("span");
+                    span.innerText = wordText[i];
+                    span.style.fontWeight = "bold";
+                    span.style.color = "black";
+                    cell.appendChild(span);
+                }
+            }
+        }
+    });
+}
 
 function CreateContainer(){
     const container = document.createElement("div");
@@ -104,9 +131,7 @@ function CreateInfoContainer(crossword){
     info.style.marginBottom = "30px";
     info.innerHTML = `
         <div style="margin-bottom: 10px;"><b>Слова по горизонтали:</b> ${FormatWordArray(crossword.horizontalWords)}</div>
-        <div style="margin-bottom: 10px;"><b>Слова по вертикали:</b> ${FormatWordArray(crossword.verticalWords)}</div>
-        ${crossword.skippedWords?.length > 0 ? `<div><b>Пропущенные слова:</b> ${FormatWordArray(crossword.skippedWords)}</div>` : ""}
-    `;
+        <div style="margin-bottom: 10px;"><b>Слова по вертикали:</b> ${FormatWordArray(crossword.verticalWords)}</div>`;
     return info;
 }
 function CreateQuestionList(title, words, questions) {
