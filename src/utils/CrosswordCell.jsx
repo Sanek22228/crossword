@@ -2,17 +2,18 @@ import { Word } from "../classes/Word";
 
 const NOP = ()=>{} // No Operation
 
-function CrosswordCell({cell, showAnswers, isInteractive, onCellChange = NOP, coordinates = [], solved = false, value}){
+function CrosswordCell({cell, showAnswers, isInteractive, onCellChange = NOP, coordinates = [], solved = false, value, tabIndex}){
     if(typeof cell === 'object'){
         return cell.direction === Word.DIRECTIONS.HORIZONTAL
         ? <th className="numberCell hotizontalNumber">{cell.value}</th>
         : <th className="numberCell verticalNumber">{cell.value}</th>
     }
     const isLetter = isNaN(Number(cell));
-    return <th className={isLetter ? solved ? "solvedCell" : "filledCell" : "emptyCell"}>
+    return <th className={isLetter ? solved ? "solvedCell" : "filledCell" : "emptyCell"} >
         {isLetter 
             ? isInteractive
                 ? <input 
+                    tabIndex={tabIndex}
                     data-row={coordinates[0]}
                     data-col={coordinates[1]}
                     type="text"
@@ -23,6 +24,7 @@ function CrosswordCell({cell, showAnswers, isInteractive, onCellChange = NOP, co
                         // e.target.value = e.target.value.toUpperCase(); 
                         onCellChange(coordinates[0], coordinates[1], e.target.value)
                     }}
+                    onFocus={(e) => e.target.select()}
                     value={value}
                 /> 
                 : showAnswers ? cell : ""

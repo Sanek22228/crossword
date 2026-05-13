@@ -32,6 +32,7 @@
         const [selectedCell, setSelectedCell] = useState("");
         const [hints, setHints] = useState({letter: 0, randLetter: 0, word: 0});
         const navigate = useNavigate();
+        const [tabMap, setTabMap] = useState([]);
 
         useEffect(()=>{(async()=>{
             const data = await getCrosswordById(id)
@@ -39,6 +40,8 @@
                 navigate("/feed", {replace: true});
             console.log("data  " + data);
             setCrossword(data);
+            setTabMap(data.words.flatMap(w => (w.coordinates.cells.map(c => (`${c[0]}-${c[1]}`)))));
+            console.log(tabMap);
         })()
         },[id]);
 
@@ -64,11 +67,28 @@
                     }
                 });
             }
+            FocusOnNextCell(row, col, value);
         }
         function IsWin(row, col, value, currentGrid){
             return crossword.words.every(w => 
                 checkWord(w, currentGrid, {row: row, col: col, value: value}
             ));
+        }
+        function FocusOnNextCell(row, col, value){
+            if(value === "") return;
+            let curIndex = tabMap.indexOf(`${row}-${col}`);
+            if(curIndex === tabMap.length-1)
+                curIndex = -1;
+            let nextCell = tabMap[curIndex+1];
+            const nextCoords = nextCell.split("-").flatMap(Number);
+            console.log(nextCoords);
+            const input = document.querySelector(`input[data-row="${nextCoords[0]}"][data-col="${nextCoords[1]}"]`);
+            if(input){
+                input.focus();
+                input.ariaSelected = true;
+            }
+            else
+                console.log("input not found")
         }
 
         function Show(type){
@@ -148,6 +168,7 @@
                                 <div>
                                     <p style={{textAlign: "center", margin: "5vh"}}>Название: {crossword.name}</p>
                                     <CrosswordGrid 
+                                        tabMap={tabMap}
                                         crossword={crossword} 
                                         mode={MODES.PLAY} 
                                         onChange={OnCellChange} 
