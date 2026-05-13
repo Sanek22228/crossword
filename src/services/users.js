@@ -25,9 +25,10 @@ export const fetchRegister = async (user) => {
     }
 }
 
-export const fetchUserStatistics = async (id) => {
+export const fetchUserStatistics = async (id, viewerId) => {
     try {
-        const response = await axios.get(`${API_URL}/user/${id}`);
+        console.log(viewerId);
+        const response = await axios.get(`${API_URL}/user/${id}${viewerId && `?viewerId=${viewerId}`}`);
         const data = response.data;
 
         if (data.crosswords && Array.isArray(data.crosswords)) {
@@ -48,6 +49,7 @@ export const fetchUserStatistics = async (id) => {
                 crosswordObject.id = item.id;
                 crosswordObject.createdAt = item.createdAt;
                 crosswordObject.name = item.name;
+                crosswordObject.completed = item.completed;
 
                 return crosswordObject;
             });

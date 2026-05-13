@@ -71,14 +71,14 @@ public class UserController : ControllerBase
             
             if(!string.IsNullOrWhiteSpace(userUpdateData.userName) && user.UserName != userUpdateData.userName)
             {
-                bool exists = await _context.Users.AnyAsync(u => u.UserName == userUpdateData.userName,ct);
+                bool exists = await _context.Users.AnyAsync(u => u.UserName == userUpdateData.userName, ct);
                 if(exists)
                 {
                     return Conflict(new { message = "Имя пользователя занято" });
                 }
                 user.UserName = userUpdateData.userName;
             }
-            if (userUpdateData.completedId.HasValue)
+            if (userUpdateData.completedId.HasValue && userUpdateData.completedId != Guid.Empty)
             {
                 if(!user.CompletedCrosswords.Any(c => c.Id == userUpdateData.completedId))
                 {
@@ -96,19 +96,22 @@ public class UserController : ControllerBase
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetUser(Guid id, CancellationToken ct)
+    public async Task<IActionResult> GetUser(Guid id, [FromQuery] Guid? viewerId, CancellationToken ct)
     {
-        var user = await _context.Users.Include(u=>u.Crosswords).Include(u => u.CompletedCrosswords).FirstOrDefaultAsync(u => u.Id == id);
+        if(!viewerId.HasValue)
+            viewerId = null;
+        var user = await _context.Users.Include(u=>u.Crosswords).ThenInclude(c => c.CompletedByUsers).Include(u => u.CompletedCrosswords).FirstOrDefaultAsync(u => u.Id == id);
         if (user != null)
         return Ok(new {
             completed = user.CompletedCrosswords.ToList().Count, 
             userName = user.UserName, 
             crosswords = user.Crosswords.Select(c => new
             {
-                c.CreatedAt,
-                c.Grid,
-                c.Id,
-                c.Name
+                createdAt = c.CreatedAt,
+                grid = c.Grid,
+                id = c.Id,
+                name = c.Name,
+                completed = c.CompletedByUsers.Any(u => u.Id == viewerId)
             })
         });
         else

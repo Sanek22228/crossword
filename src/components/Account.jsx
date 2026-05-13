@@ -5,7 +5,7 @@ import editIcon from "../images/edit.svg";
 import { useEffect, useState } from "react";
 import { useAuth } from "../hook/useAuth";
 import { CrosswordGrid } from "../utils/CrosswordGrid";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import {fetchUserStatistics} from "../services/users"
 import { AccountEditModal } from "./AccountEditModal";
 import { ExportButtons } from "./ExportButtons";
@@ -35,7 +35,9 @@ function Account({mode = MODES.FULL}){
 
   async function updateData(){
     try{  
-      const data = await fetchUserStatistics(id);
+      let curUserId = user ? user.id : id;
+      const data = await fetchUserStatistics(id, curUserId);
+      console.log(data);
       setTarget(data);
     }
     catch(e){
@@ -69,19 +71,22 @@ function Account({mode = MODES.FULL}){
           {/* <p>
             Рейтинг: {4.8}⭐
           </p> */}
-          {fullMode && <AccountEditModal user={targetUser}/>}
+          {fullMode && <AccountEditModal user={user}/>}
         </div>
         <div className="crosswordInfo">
           {targetUser.crosswords && targetUser.crosswords.length > 0 ?
           targetUser.crosswords.map((item, key) => (
                 <div key={item.id || key} className="crosswordTable">
-                  <p >{item.name}</p>
-                  <CrosswordGrid crossword={item} />
+                  <div className="topInfo" style={{display: "flex", width: "100%", justifyContent: "space-between", alignItems: "center"}}>
+                    <p >{item.name}</p>
+                    {item.completed && <p style={{textAlign: "center", backgroundColor: "var(--green-4)", padding: "1% 6%", borderRadius: "10vw", width: "fit-content", whiteSpace: "nowrap"}}>✓ Пройден</p>}
+                  </div>
+                  <CrosswordGrid crossword={item} mode={mode} />
                   <div className="controls">
                       <p>
-                        Дата создания: {new Date(item.createdAt).toLocaleDateString()}
+                        Дата: {new Date(item.createdAt).toLocaleDateString()}
                       </p>
-                      <ExportButtons crossword={item} />
+                      {(fullMode || item.completed) && <ExportButtons crossword={item} />}
                       {fullMode && 
                       <>
                         <DeleteModal crossword={item} cb={updateData}/>
@@ -89,12 +94,18 @@ function Account({mode = MODES.FULL}){
                           <img src={editIcon} alt="edit icon"/>
                         </button>
                       </>}
+                      {
+                        !fullMode &&
+                        <NavLink to={`/play/${item.id}`} style={{backgroundColor: "var(--violet-8)", padding: "2% 4%", color: "white", borderRadius: "5px", textDecoration: "none", marginLeft: "1vw", minWidth: "fit-content"}}>
+                          <p>{item.completed ? "Пройти снова" : "Играть"}</p>
+                        </NavLink>
+                      }
                   </div>
                 </div>
               ))
             : (<>
               {fullMode 
-                ? <p>У вас пока нет кроссвордов</p> 
+                ? <p style={{alignSelf: "flex-start"}}>Здесь будут расположены ваши кроссворды</p> 
                 : <p>У пользователя еще нет кроссвордов</p>}
             </>
           )}

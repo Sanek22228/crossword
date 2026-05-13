@@ -16,6 +16,8 @@ th input {
     background-color: transparent;
     padding: 0;
     margin: 0;
+    text-align: center;
+    font-weight: bold;
 }
 .solvedCell{
     background-color: var(--green-6);
