@@ -11,11 +11,12 @@
 }
 .mainContainer{
     display: grid;
+    vertical-align: middle;
+    width: 100%;
+
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
-    vertical-align: middle;
-    /* justify-content: center; */
-    max-width: 90vw;
+    justify-items: center;
 }
 
 div{

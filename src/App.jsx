@@ -58,9 +58,8 @@ function App(){
             <Route path='/' element={ <Layout/> }>
               <Route index element={<Main/>}></Route>
               <Route path='/publication' element={<RequireCrossword><Publication/></RequireCrossword>}></Route>
-              <Route path="/account/:id" element={<RequireAuth><Account/></RequireAuth>}>
-                <Route path="edit" element={<AccountEditModal/>}></Route>
-              </Route>
+              <Route path="/account/:id" element={<RequireAuth><Account/></RequireAuth>}/>
+              <Route path="/profile/:id" element={<Account mode={"view"}/>}/>
               <Route path="/feed" element={<Feed/>}></Route>
               <Route path="/play/:id" element={<Play/>}></Route>
               <Route path='/policy' element={<Policy/>}></Route>

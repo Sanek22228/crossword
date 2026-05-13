@@ -134,6 +134,7 @@ function LoginModal() {
             <Tabs.Root 
                 onValueChange={()=>setError("")}
                 className={styles.tabsRoot} 
+                style={{minWidth: "350px"}}
                 defaultValue="tab1" 
             >
                 <button 

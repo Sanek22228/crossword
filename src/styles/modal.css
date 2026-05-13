@@ -132,4 +132,7 @@ input[type="email"]:not(:placeholder-shown):invalid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1vw;
+    justify-content: center;
+    text-align: center;
+    align-items: stretch;
 }
